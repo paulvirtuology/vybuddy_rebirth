@@ -1,0 +1,56 @@
+services:
+  # Backend FastAPI
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vybuddy-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      # Montage optionnel pour le développement (commenté en production)
+      # - ./app:/app/app
+      # - ./main.py:/app/main.py
+      - ./logs:/app/logs
+    restart: unless-stopped
+    #healthcheck:
+    #  test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+    #  interval: 30s
+    #  timeout: 10s
+    #  retries: 3
+    #  start_period: 40s
+    networks:
+      - vybuddy-network
+
+  # Optionnel: Redis local (si vous ne voulez pas utiliser Redis Cloud)
+  # Décommentez si vous voulez utiliser Redis local au lieu de Redis Cloud
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: vybuddy-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis-data:/data
+  #   command: redis-server --appendonly yes
+  #   restart: unless-stopped
+  #   networks:
+  #     - vybuddy-network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 3s
+  #     retries: 3
+
+networks:
+  vybuddy-network:
+    driver: bridge
+
+# Volumes (pour Redis local si activé)
+# volumes:
+#   redis-data:
+

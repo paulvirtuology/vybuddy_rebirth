@@ -1,0 +1,41 @@
+# ============================================
+# VyBuddy Rebirth - Dépendances Python
+# ============================================
+# Les versions ne sont pas spécifiées pour laisser pip
+# résoudre automatiquement les conflits de dépendances.
+# Pour la production, générez un requirements.lock avec:
+# pip freeze > requirements.lock
+
+# FastAPI et serveur
+fastapi
+uvicorn[standard]
+websockets
+python-multipart
+
+# LangGraph et orchestration
+langgraph
+langchain
+langchain-openai
+langchain-anthropic
+# langchain-google-genai  # Incompatible avec les versions récentes, on utilise google-generativeai directement
+
+# LLMs
+openai
+anthropic
+google-generativeai
+
+# Bases de données
+supabase
+redis
+pinecone  # Anciennement pinecone-client, renommé en 2024
+
+# Utilitaires
+pydantic
+pydantic-settings
+python-dotenv
+httpx
+aiohttp
+
+# Logging
+structlog
+

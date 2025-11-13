@@ -1,0 +1,30 @@
+# Docker Compose pour le développement
+# Utilisez: docker-compose -f docker-compose.dev.yml up
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vybuddy-backend-dev
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=DEBUG
+    volumes:
+      # Montage du code pour le hot-reload (nécessite uvicorn --reload)
+      - ./app:/app/app
+      - ./main.py:/app/main.py
+      - ./logs:/app/logs
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    restart: unless-stopped
+    networks:
+      - vybuddy-network
+
+networks:
+  vybuddy-network:
+    driver: bridge
+
