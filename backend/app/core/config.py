@@ -37,6 +37,10 @@ class Settings(BaseSettings):
     ODOO_USERNAME: str
     ODOO_PASSWORD: str
     
+    # Authentication
+    NEXTAUTH_SECRET: str = ""
+    SECRET_KEY: str = ""  # Fallback si NEXTAUTH_SECRET n'est pas défini
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

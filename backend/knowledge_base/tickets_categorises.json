@@ -1,0 +1,3002 @@
+[
+  {
+    "ticket": "Réparation MAC - associé aux mails",
+    "category": "macos_issues",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne une réparation MAC, ce qui indique un problème lié au système d'exploitation macOS ou au matériel MacBook."
+  },
+  {
+    "ticket": "MAJ et migration nouveau macbook",
+    "category": "macos_issues",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour et une migration sur un nouveau MacBook, ce qui est directement lié aux problèmes macOS et MacBook."
+  },
+  {
+    "ticket": "Probleme de messagerie",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème de messagerie, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Ajustements DRIVE partagé Etail",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne des ajustements sur un DRIVE partagé, ce qui indique un besoin d'accès ou de configuration liée à Google Drive."
+  },
+  {
+    "ticket": "VyGeek Store",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket 'VyGeek Store' ne correspond à aucune des catégories spécifiques disponibles et semble être un sujet général ou non défini."
+  },
+  {
+    "ticket": "10639-Fwd: Delivery Status Notification (Failure)",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une notification d'échec de livraison, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "10640-Fwd: Delivery Status Notification (Failure)",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une notification d'échec de livraison, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "10644-Enlever de la redirection Marketing : Guillaume + Corentin",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne une demande spécifique de redirection marketing qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "Accès Tools",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à des outils, ce qui correspond à la catégorie des outils workspace."
+  },
+  {
+    "ticket": "10643-Re: Mise à jour Looker Studio - Inside Properties x maastery",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne une mise à jour de Looker Studio, qui est un outil de workspace."
+  },
+  {
+    "ticket": "Wifi Regus paris",
+    "category": "network_wifi",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne spécifiquement 'Wifi', ce qui indique un problème lié au réseau et au WiFi."
+  },
+  {
+    "ticket": "Demande de licence Microsoft Office sur Mac pour Guillaume Ouvry",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande de licence pour Microsoft Office, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "Partage ID + MDP",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne le partage d'identifiants et de mots de passe, ce qui est généralement lié à des outils de gestion de mots de passe ou d'accès à des applications de travail."
+  },
+  {
+    "ticket": "Demande d'adresse générique pour l'envoi de courriels liés aux règles CRM Monday",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne la création d'une adresse générique pour l'envoi de courriels, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "DocuSign Chloé",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne DocuSign, qui est un outil de workspace, indiquant un besoin d'assistance lié à cet outil."
+  },
+  {
+    "ticket": "Besoin du fichier de suivi des adresses mails etail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un fichier de suivi des adresses mails, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "10649-APVY - Préparation outils Sidonie",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la préparation d'outils, ce qui est lié à la catégorie des outils workspace."
+  },
+  {
+    "ticket": "10647-Re: VY | Implémentation bannière sur signature email",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "10648-blue2purple | Implémentation bannière sur signature email",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "10646-[Action Required] Cloud Build Default Service Account changing on April 29, 2024",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un changement de compte de service cloud, ce qui ne correspond pas aux catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "un bug sur Gmail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un bug sur Gmail, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Jeremy Muylaert // activation clickshare",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'activation de ClickShare, qui est un outil de collaboration utilisé dans les salles de réunion."
+  },
+  {
+    "ticket": "10650-URGENT - accès Monday Skeelz",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un accès à Monday.com, ce qui correspond directement à la catégorie 'Accès et configuration Monday.com'."
+  },
+  {
+    "ticket": "Monday Form Multilingue",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un formulaire multilingue sur Monday.com, ce qui indique un besoin d'accès ou de configuration sur cette plateforme."
+  },
+  {
+    "ticket": "blue2purple | Implémentation bannière sur signature email",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "10651-Fwd: VY Office Paris | ⚠️ Modification du système de réservation de Salles",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une modification du système de réservation de salles, ce qui le classe directement dans la catégorie des réservations de salles de réunion."
+  },
+  {
+    "ticket": "10652-Fwd: VY Office Paris | ⚠️ Modification du système de réservation de Salles",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une modification du système de réservation de salles, ce qui le classe clairement dans la catégorie de réservation de salles de réunion."
+  },
+  {
+    "ticket": "Difficultés d'accès à la salle Paris.",
+    "category": "meeting_rooms",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne des difficultés d'accès à une salle, ce qui est directement lié à la réservation et à l'accès aux salles de réunion."
+  },
+  {
+    "ticket": "Compte docusign Vy",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un compte DocuSign, qui est un outil de workspace."
+  },
+  {
+    "ticket": "Installation et suppression application - Nouvel ordi",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation et la suppression d'applications sur un nouvel ordinateur, ce qui relève de la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "eTAIL agency | Implémentation bannière sur signature email",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "New Programmads email address for freelance business development consultant",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une nouvelle adresse email pour un consultant, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Aide Booking Salles Paris > équipe etail + Skeelz",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande d'aide pour la réservation de salles à Paris, ce qui correspond à la catégorie des réservations de salles de réunion."
+  },
+  {
+    "ticket": "Installation Thunderbird pour Guillaume Ouvry",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'un logiciel spécifique, Thunderbird, pour un utilisateur."
+  },
+  {
+    "ticket": "Accès Drive + Monday",
+    "category": "monday_access",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne l'accès à Monday, ce qui indique une demande liée à la plateforme Monday.com."
+  },
+  {
+    "ticket": "Licence microsoft",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence Microsoft, ce qui correspond à la gestion des licences."
+  },
+  {
+    "ticket": "Création compte Gmail + Signature",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un compte Gmail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Monday access right",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne des droits d'accès à Monday.com, ce qui le classe directement dans la catégorie d'accès et configuration de cette plateforme."
+  },
+  {
+    "ticket": "Download of an app on laptop",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le téléchargement d'une application sur un ordinateur portable, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "Option salles bureaux Paris",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une option liée aux salles de bureaux, ce qui correspond à la réservation de salles de réunion."
+  },
+  {
+    "ticket": "10654-[Action Advised] Enable email enumeration protection on all of your Firebase projects",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la protection de l'énumération des emails sur des projets Firebase, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "10653-Compte laurence.baeten@blue2purple.com",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un compte email spécifique, ce qui le classe principalement dans la gestion des comptes email."
+  },
+  {
+    "ticket": "Problème accès monday et amazon.",
+    "category": "monday_access",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un problème d'accès à Monday.com, ce qui le classe principalement dans la catégorie d'accès et configuration de cette plateforme."
+  },
+  {
+    "ticket": "10655-Suppression et création compte office",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la suppression et la création d'un compte Office, ce qui est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "accès agendas",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès aux agendas, ce qui est généralement lié aux outils de gestion de workspace."
+  },
+  {
+    "ticket": "Monday : rétablissement des dashboards analytics portfolio",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le rétablissement des dashboards sur Monday.com, ce qui indique un problème d'accès ou de configuration sur cette plateforme."
+  },
+  {
+    "ticket": "Monday : ouverture dossier Lucas",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne l'ouverture d'un dossier sur Monday, ce qui indique un besoin d'accès ou de configuration sur la plateforme Monday.com."
+  },
+  {
+    "ticket": "Accès Monday Marion SKEELZ",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à Monday.com, ce qui le classe directement sous la catégorie d'accès et configuration de cette plateforme."
+  },
+  {
+    "ticket": "Programmads | Désactiver la bannière signature",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "La demande concerne la désactivation d'une fonctionnalité liée à une signature dans un outil de communication, ce qui relève des outils workspace."
+  },
+  {
+    "ticket": "Ouverture d'accès au Drive",
+    "category": "drive_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'ouverture d'accès au Drive, ce qui correspond directement à la catégorie 'Accès Google Drive'."
+  },
+  {
+    "ticket": "10656-Re: Ajout de deux personnes dans le mail commun Compta Vy.",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout de personnes dans un mail commun, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande de création de compte Gmail et Monday ProgrammAds suite à la mutation interne de Lisa Diamant de b2p à Pads",
+    "category": "email_accounts",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la création d'un compte Gmail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Adresses mail nouveaux stagiaire - Skeelz",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création ou la gestion d'adresses email pour de nouveaux stagiaires."
+  },
+  {
+    "ticket": "Boucle de mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une boucle de mail, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Mise en place Chatgps premium pour Guillaume Ouvry",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la mise en place d'un logiciel spécifique (Chatgps premium) pour un utilisateur."
+  },
+  {
+    "ticket": "ChatGPT :",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket ne correspond à aucune des catégories spécifiques disponibles et semble être un sujet général."
+  },
+  {
+    "ticket": "Débloquer et rajouter des applications sur mon ordi",
+    "category": "software_installation",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne le déblocage et l'ajout d'applications, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "Ajouter membre d'équipe dans Monday MKKM",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'un membre d'équipe dans Monday.com, ce qui relève de l'accès et de la configuration de la plateforme."
+  },
+  {
+    "ticket": "Website Form eTAIL et Diatly",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne un formulaire de site web, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "Nelly : pb de mise en place du nouveau système de résa de salles",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème lié à la mise en place d'un nouveau système de réservation de salles, ce qui correspond à la catégorie de réservation de salles de réunion."
+  },
+  {
+    "ticket": "Nouvelle adresse mail Office@virtuology",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une nouvelle adresse email, ce qui le classe dans la gestion des comptes email."
+  },
+  {
+    "ticket": "Gmail hors connexion",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème avec Gmail, qui est un service de gestion des comptes email."
+  },
+  {
+    "ticket": "10659-Adresse mail Programmads Lisa",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une adresse mail, ce qui indique qu'il est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "10658-New email - Office@virtuo",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un nouveau compte email, ce qui le classe clairement dans la gestion des comptes email."
+  },
+  {
+    "ticket": "Application GOOGLE DRIVE",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement l'application Google Drive, ce qui indique un besoin d'accès ou de support lié à cet outil."
+  },
+  {
+    "ticket": "10657-Accès Drive - Martial Parfait",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un accès à Google Drive, ce qui correspond directement à la catégorie 'drive_access'."
+  },
+  {
+    "ticket": "Facturation BigQuery projet \"API MONDAY\"",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la facturation d'un projet BigQuery, ce qui ne correspond à aucune des catégories disponibles."
+  },
+  {
+    "ticket": "Agenda GG Corentin Vy",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un agenda sans spécifier de problème technique ou de demande claire, ce qui le place dans une catégorie générale."
+  },
+  {
+    "ticket": "Licenses Microsoft office",
+    "category": "licenses",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne spécifiquement les licences Microsoft Office, ce qui correspond à la gestion des licences."
+  },
+  {
+    "ticket": "Création d'adresse email en urgence",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève directement de la gestion des comptes email."
+  },
+  {
+    "ticket": "Accès Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à Monday.com, ce qui correspond directement à la catégorie d'accès et configuration de cette plateforme."
+  },
+  {
+    "ticket": "Creation d'adresse email en urgence aussi",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "eTAIL | Retirer les bannières sur toutes les signatures eTAIL",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne la modification des signatures d'email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "10666-Re: Échec d'un paiement : Google Workspace Business Standard pour blue2purple.com",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un échec de paiement pour un service lié à Google Workspace, ce qui implique la gestion des licences."
+  },
+  {
+    "ticket": "Mobilosoft : création compte pour Sufyan notre stagiaire",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "La création d'un compte pour un stagiaire implique généralement l'utilisation d'outils de travail collaboratif, ce qui correspond à la catégorie des outils workspace."
+  },
+  {
+    "ticket": "Mise à jour des cartes SPENDESK",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "La mise à jour des cartes SPENDESK concerne des outils de gestion financière et de dépenses, ce qui correspond à la catégorie des outils workspace."
+  },
+  {
+    "ticket": "10667-Signature d'Annick",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne une signature, ce qui est souvent lié à des outils de gestion de documents comme DocuSign."
+  },
+  {
+    "ticket": "licence Intellij de Mohamed El Khamlichi",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence pour le logiciel Intellij, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "Installation Logiciel Scansnap",
+    "category": "software_installation",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'installation d'un logiciel spécifique, Scansnap, ce qui le classe clairement dans la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Donnner àaccès à tous les tableaux client pour Diana",
+    "category": "drive_access",
+    "confidence": 0.8,
+    "reasoning": "Le ticket demande un accès à des tableaux clients, ce qui implique généralement un accès à des fichiers ou documents stockés sur Google Drive."
+  },
+  {
+    "ticket": "Monday eTAIL",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket mentionne 'Monday', ce qui indique qu'il est lié à l'accès ou à la configuration de Monday.com."
+  },
+  {
+    "ticket": "Onboarding adresse mail programmads",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'onboarding d'une adresse mail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Accès Lucidchart",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'accès à Lucidchart, qui est un outil de workspace."
+  },
+  {
+    "ticket": "MKKM | SalesNavigator",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne 'SalesNavigator', qui est un outil de workspace, ce qui le classe dans la catégorie des outils workspace."
+  },
+  {
+    "ticket": "LinkedIn Premium - eTAIL (Marie Roux)",
+    "category": "licenses",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne LinkedIn Premium, qui est un service nécessitant une gestion de licence."
+  },
+  {
+    "ticket": "MAC demande mise à jour SONOMA et Excel",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande de mise à jour de logiciels spécifiques (SONOMA et Excel), ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "Arret de renouvellement de Licences Intellij",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'arrêt de renouvellement de licences pour un logiciel spécifique, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "It Problem",
+    "category": "other",
+    "confidence": 0.5,
+    "reasoning": "Le ticket est trop vague pour être catégorisé précisément dans les autres catégories disponibles."
+  },
+  {
+    "ticket": "MAJ Firefox",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour de Firefox, ce qui relève de l'installation ou de la mise à jour de logiciels."
+  },
+  {
+    "ticket": "Last Pass",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "DocuSign new user creation",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un nouvel utilisateur pour DocuSign, qui est un outil de workspace."
+  },
+  {
+    "ticket": "Pas accès au board",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un problème d'accès à un board, ce qui est directement lié à l'accès et à la configuration de Monday.com."
+  },
+  {
+    "ticket": "Configuration ordinateur P07DXWN9HC",
+    "category": "software_installation",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne la configuration d'un ordinateur, ce qui implique généralement l'installation ou la configuration de logiciels."
+  },
+  {
+    "ticket": "Installation de Teams",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation de Teams, ce qui relève de la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Je n'arriver à taguer personne sur les nouveaux boards",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un problème lié à l'utilisation des nouveaux boards sur Monday.com, ce qui indique un problème d'accès ou de configuration sur cette plateforme."
+  },
+  {
+    "ticket": "Demande d'accès Monday",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une demande d'accès à Monday.com, ce qui correspond directement à la catégorie 'Accès et configuration Monday.com'."
+  },
+  {
+    "ticket": "MKKM | Implémentation bannière sur signature email",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur la signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Achat nom de domaine Marketplace to be",
+    "category": "other",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'achat d'un nom de domaine, ce qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Bug vue Monday - Content Central View",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un bug dans la vue Monday, ce qui indique un problème lié à l'accès ou à la configuration de la plateforme Monday.com."
+  },
+  {
+    "ticket": "Question boards > Monday Form Mobilo",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne une question liée à Monday Form, ce qui indique un besoin d'accès ou de configuration sur la plateforme Monday.com."
+  },
+  {
+    "ticket": "Mettre membre équipe en cc des ticket support",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'ajout d'un membre d'équipe en copie des tickets de support, ce qui implique l'utilisation d'outils de collaboration et de gestion des tickets."
+  },
+  {
+    "ticket": "No access to the drive",
+    "category": "drive_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket mentionne un problème d'accès à un lecteur, ce qui correspond directement à la catégorie 'Accès Google Drive'."
+  },
+  {
+    "ticket": "accès à Tracy et Guillaume",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un accès à des personnes spécifiques (Tracy et Guillaume) sans préciser le type d'accès, ce qui ne correspond à aucune des catégories disponibles."
+  },
+  {
+    "ticket": "Mobilosoft | Formulaire - Remplacement du champ event (dans la notification) par le nom du formulaire",
+    "category": "other",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne une modification spécifique d'un champ dans un formulaire, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "SOS -- Intellij licence",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence pour Intellij, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "Boucle eTAIL - Sales",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'Boucle eTAIL - Sales', ce qui ne correspond pas directement aux catégories disponibles, indiquant un sujet potentiellement spécifique ou non standard."
+  },
+  {
+    "ticket": "Remove Meeting in calender",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la suppression d'une réunion dans le calendrier, ce qui est lié à la gestion des réunions."
+  },
+  {
+    "ticket": "Mobilosoft : Donner accès à nos 2 clients sur leur board",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à un tableau sur une plateforme de gestion de projet, ce qui correspond à la catégorie d'accès et configuration de Monday.com."
+  },
+  {
+    "ticket": "Ajout d'une licence docusign",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'une licence pour DocuSign, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "Problème de migration, mdp incorrect",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un problème de migration avec un mot de passe incorrect, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Mise à jour boucles de mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour des boucles de mail, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Creation email stagiaire",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'un compte email pour un stagiaire, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Nettoyage adresses mails etail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le nettoyage des adresses mails, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "MKKM // Adresse Mail Studio",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne une adresse mail, ce qui indique qu'il est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Google Drive eTAIL",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne Google Drive, ce qui indique un besoin d'accès ou de support lié à cette plateforme."
+  },
+  {
+    "ticket": "Creation d'adresse mail",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse mail, ce qui relève directement de la gestion des comptes email."
+  },
+  {
+    "ticket": "Achat abonnement - Formidable Form",
+    "category": "licenses",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'achat d'un abonnement, ce qui est lié à la gestion des licences."
+  },
+  {
+    "ticket": "suppression / creation adresse mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la suppression et la création d'adresses email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Plus d'accès aux fonctions drive",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un problème d'accès aux fonctions drive, ce qui correspond directement à la catégorie d'accès Google Drive."
+  },
+  {
+    "ticket": "Ajouter \"Tunnel Blick\" au VyGeek Store",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'un logiciel spécifique ('Tunnel Blick') au store, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "rajouter iantsa à la boucle team.mada",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'ajout d'un utilisateur à une boucle d'équipe, ce qui est lié à la gestion des outils de collaboration et de communication."
+  },
+  {
+    "ticket": "Création adresse email",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève directement de la gestion des comptes email."
+  },
+  {
+    "ticket": "Mise à jour fiche GMB eTAIL BE",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La mise à jour de la fiche GMB ne correspond à aucune des catégories spécifiques disponibles et est considérée comme une demande générale."
+  },
+  {
+    "ticket": "Demande d'activation du mode \"Hors connexion\"",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande d'activation du mode 'Hors connexion' ne correspond pas directement aux catégories disponibles, mais elle concerne une fonctionnalité qui pourrait être liée à des outils de travail ou à des logiciels spécifiques."
+  },
+  {
+    "ticket": "New Email Address for Programmads",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une nouvelle adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande de rajout adresse",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "La demande concerne l'ajout d'une adresse, ce qui est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande de création d'une adresse mail \"support\" pour b2p R",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "La demande concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Timesheet Corentin",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne spécifiquement 'Timesheet', ce qui indique qu'il concerne la gestion des feuilles de temps."
+  },
+  {
+    "ticket": "Demande d'accès pour les boards client eTAIL",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne l'accès aux boards client sur Monday.com, ce qui correspond à la catégorie d'accès et configuration de cette plateforme."
+  },
+  {
+    "ticket": "Nouvelle adresse mail coloc@virtuology",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création ou la gestion d'une nouvelle adresse email."
+  },
+  {
+    "ticket": "Login Microsoft",
+    "category": "email_accounts",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un problème de connexion à un compte Microsoft, ce qui est généralement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Probleme Service Sendgrid",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un problème avec le service Sendgrid, qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Ajout nouveau stagiaire ads à Monday + drive eTAIL",
+    "category": "monday_access",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'ajout d'un nouveau stagiaire à Monday, ce qui implique une gestion des accès et configurations sur la plateforme."
+  },
+  {
+    "ticket": "Suppresion des licences Google",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la suppression de licences Google, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "MKKM - Monday access",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne spécifiquement 'Monday access', ce qui indique qu'il concerne l'accès et la configuration de Monday.com."
+  },
+  {
+    "ticket": "Demande d'accès à Themeforest via l'ancienne adresse e-mail de Noureddine",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "La demande concerne l'accès à un service via une ancienne adresse e-mail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Process création mail et boucle de mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un compte email et des problèmes liés aux boucles de mail, ce qui le classe clairement dans la gestion des comptes email."
+  },
+  {
+    "ticket": "Création boite Gmail finance Diatly",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une boîte Gmail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Création adresse mail Stagiaire sur Virtuocode",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email pour un stagiaire, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Creation d'adresse email pour stagiaire - Virtuocode",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Installation MacWhisper sur mac Luana",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'un logiciel spécifique (MacWhisper) sur un Mac."
+  },
+  {
+    "ticket": "Problème connection Wifi",
+    "category": "network_wifi",
+    "confidence": 0.95,
+    "reasoning": "Le ticket mentionne un problème de connexion WiFi, ce qui correspond directement à la catégorie des problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Réseau wifi VyFrance indispo sur mon ordi",
+    "category": "network_wifi",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne un problème d'indisponibilité du réseau WiFi sur un ordinateur, ce qui correspond directement à la catégorie des problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Réactiver un groupe Google",
+    "category": "email_accounts",
+    "confidence": 0.8,
+    "reasoning": "La réactivation d'un groupe Google est liée à la gestion des comptes email, car les groupes Google sont souvent utilisés pour la gestion des communications par email."
+  },
+  {
+    "ticket": "Abonnement / infos de paiement Lucidchart expiré",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un abonnement et des informations de paiement pour Lucidchart, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "Docusign",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne DocuSign, qui est un outil de workspace utilisé pour la gestion des signatures électroniques."
+  },
+  {
+    "ticket": "réseau vyfrance introuvable",
+    "category": "network_wifi",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un problème de réseau, ce qui correspond à la catégorie des problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Accès Monday pour stagiaires Pads",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'accès à Monday.com pour des stagiaires, ce qui correspond directement à la catégorie d'accès et configuration de Monday."
+  },
+  {
+    "ticket": "DocuSign Lucas Demarecaux",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne DocuSign, qui est un outil de workspace."
+  },
+  {
+    "ticket": "demande licence monday pour 2 membres",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne l'acquisition de licences pour des membres, ce qui correspond à la gestion des licences."
+  },
+  {
+    "ticket": "Internet Paris",
+    "category": "network_wifi",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne 'Internet', ce qui indique probablement un problème de connexion réseau ou WiFi."
+  },
+  {
+    "ticket": "Création adresse email Virtuology pour Newsletter",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "renouvellement de license intelij",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le renouvellement d'une licence, ce qui correspond à la gestion des licences."
+  },
+  {
+    "ticket": "Suivi activité informatique Stéphanie Cukier",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket ne correspond pas clairement à une des catégories disponibles et semble être un suivi d'activité sans spécification technique."
+  },
+  {
+    "ticket": "Création adresse mail MKKM pour les créa",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Perte de fichiers sur le Drive partagé \"AAA - Prospecting & Sales\"",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la perte de fichiers sur un Drive partagé, ce qui relève directement de l'accès et de la gestion de Google Drive."
+  },
+  {
+    "ticket": "Installation Imprimante Hub BXL",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'une imprimante, ce qui relève de l'installation de logiciels ou de périphériques."
+  },
+  {
+    "ticket": "Départ Collaborateur",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne le départ d'un collaborateur, ce qui ne correspond pas directement aux catégories disponibles mais peut impliquer plusieurs aspects non spécifiés."
+  },
+  {
+    "ticket": "Suppression + création licence Monday blue2purple",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la suppression et la création d'une licence, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "Réseau bureau introuvable - PC Nelly",
+    "category": "network_wifi",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un problème de réseau, spécifiquement lié à un bureau introuvable, ce qui indique un problème de connectivité réseau."
+  },
+  {
+    "ticket": "Connexion",
+    "category": "network_wifi",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne 'connexion', ce qui suggère un problème lié à l'accès réseau ou WiFi."
+  },
+  {
+    "ticket": "MKKM | Retrait signature bannière mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le retrait d'une signature dans une bannière d'email, ce qui est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Timesheet : saisie dates impossible",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème lié à la saisie des dates dans un timesheet, ce qui le classe directement dans la gestion des timesheets."
+  },
+  {
+    "ticket": "The Creative > Drive, Emails",
+    "category": "drive_access",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne 'Drive', ce qui indique un besoin d'accès ou de support lié à Google Drive."
+  },
+  {
+    "ticket": "Timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne directement la gestion des timesheets, ce qui correspond à la catégorie spécifiée."
+  },
+  {
+    "ticket": "Chrono erratique dans la Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème lié à la gestion des heures dans la Timesheet, ce qui correspond directement à la catégorie 'timesheet'."
+  },
+  {
+    "ticket": "erreur log",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne une 'erreur log', ce qui ne correspond pas directement aux catégories disponibles, mais pourrait impliquer un problème technique général."
+  },
+  {
+    "ticket": "Timesheet : Manque le client PUMA",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème lié à la gestion des timesheets, spécifiquement l'absence d'un client dans le système."
+  },
+  {
+    "ticket": "Oubli arrêt TS",
+    "category": "timesheet",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un oubli d'arrêt de Timesheet, ce qui le classe clairement dans la gestion des Timesheets."
+  },
+  {
+    "ticket": "Connexion Wi-Fi",
+    "category": "network_wifi",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une connexion Wi-Fi, ce qui correspond directement aux problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour de Timesheet, ce qui correspond directement à la catégorie de gestion des Timesheets."
+  },
+  {
+    "ticket": "Flush DNS sans VyGeek Store",
+    "category": "network_wifi",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne le flush DNS, qui est généralement lié à des problèmes de réseau et de connectivité."
+  },
+  {
+    "ticket": "Macbook a reinitaliser",
+    "category": "macos_issues",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la réinitialisation d'un MacBook, ce qui est directement lié aux problèmes macOS et MacBook."
+  },
+  {
+    "ticket": "réseau wifi VyFrance invisible",
+    "category": "network_wifi",
+    "confidence": 0.95,
+    "reasoning": "Le ticket mentionne un problème lié au réseau WiFi, ce qui correspond directement à la catégorie des problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Oubli démarrage",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un oubli de démarrage, ce qui ne correspond pas directement aux catégories disponibles et semble être un problème général."
+  },
+  {
+    "ticket": "Call Opulize - oubli démarrage TimeSheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un oubli lié au démarrage d'un Timesheet, ce qui le classe directement dans la gestion des Timesheets."
+  },
+  {
+    "ticket": "Demande de Récupération d'Adresse E-mail \"noureddine@mobilosoft.com\"",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une demande de récupération d'une adresse e-mail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande d'ajout accès Monday",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une demande d'ajout d'accès à Monday.com, ce qui correspond directement à la catégorie 'Accès et configuration Monday.com'."
+  },
+  {
+    "ticket": "Wolf absent des clients",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un problème d'absence de 'Wolf' des clients, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Timesheet : Rajouter le client \"Arthur\" à la liste des clients + lien pour la correction de temps logé",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'ajout d'un client à la liste des clients dans le système de gestion des temps, ce qui relève directement de la gestion des timesheets."
+  },
+  {
+    "ticket": "Organisation Tableau Monday - Fixer meeting",
+    "category": "meeting_rooms",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la fixation d'une réunion, ce qui est lié à la réservation de salles de réunion."
+  },
+  {
+    "ticket": "URGENT: Commande non envoyée au logisticien (Nestlé)",
+    "category": "other",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une commande non envoyée au logisticien, ce qui ne correspond à aucune des catégories disponibles."
+  },
+  {
+    "ticket": "Accès à reporting",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à un reporting, ce qui est généralement lié à des outils de travail collaboratif ou de reporting, classés sous les outils workspace."
+  },
+  {
+    "ticket": "Salle réunion BE",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne une salle de réunion, ce qui indique une demande liée à la réservation ou à la gestion des salles de réunion."
+  },
+  {
+    "ticket": "Oubli arrêt /démarrage",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un oubli d'arrêt/démarrage, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Ajouter l'application \"JDownloader2\" au VyGeek Store",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'une application, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "2 erreures Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne des erreurs liées aux timesheets, ce qui correspond directement à la catégorie de gestion des timesheets."
+  },
+  {
+    "ticket": "heures manquantes",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne des heures manquantes, ce qui est directement lié à la gestion des timesheets."
+  },
+  {
+    "ticket": "Correction Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une correction de timesheet, ce qui le place directement dans la catégorie de gestion des timesheets."
+  },
+  {
+    "ticket": "Marque à ajouter dans la liste",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande concerne l'ajout d'une marque dans une liste, ce qui ne correspond pas aux catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Accès LastPass Content",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Modification Time sheet pour 7 mars 2024",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une modification de la feuille de temps, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "oubli démarrage TS",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un oubli de démarrage de TS, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Oubli démarrage Timeline",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un oubli lié au démarrage de la Timeline, ce qui est directement lié à la gestion des heures et des tâches dans un système de timesheet."
+  },
+  {
+    "ticket": "Oubli démarrage TS",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un oubli lié au démarrage de la feuille de temps (TS), ce qui le classe sous la gestion des timesheets."
+  },
+  {
+    "ticket": "Demande gestion adresse mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande liée à la gestion d'une adresse email, ce qui correspond à la catégorie des comptes email."
+  },
+  {
+    "ticket": "Internet à Paris",
+    "category": "network_wifi",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un problème d'Internet, ce qui est généralement lié aux problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Chat accès",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne 'Chat accès', ce qui suggère un besoin d'accès à un outil de communication, typiquement classé sous les outils workspace."
+  },
+  {
+    "ticket": "accès aux plannings de salle de réunion pour carmen",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès aux plannings de salle de réunion, ce qui correspond directement à la catégorie de réservation de salles de réunion."
+  },
+  {
+    "ticket": "Demande de transfert des licences SALESNAV de Skeelz vers la licence groupe",
+    "category": "licenses",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une demande de transfert de licences, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "Pas de connection au wifi VyFrance",
+    "category": "network_wifi",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne un problème de connexion au WiFi, ce qui correspond directement à la catégorie des problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "MAJ signature mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour de la signature d'email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Internet ne fonctionne toujours pas",
+    "category": "network_wifi",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne un problème d'accès à Internet, ce qui est directement lié aux problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Timesheet : Ajouter la marque Future Home",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'une marque dans le système de gestion des timesheets, ce qui le classe directement sous la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Timesheet - ajouter un call",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'un appel dans le Timesheet, ce qui le classe directement sous la gestion des Timesheets."
+  },
+  {
+    "ticket": "Timesheet : Ajouter 1h30 sur la tâche meeting/call sur le compte Future Home",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'ajout d'heures sur une tâche dans un système de gestion des temps, ce qui correspond à la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour de Timesheet, ce qui correspond directement à la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Demande d'assistance pour le service de support technique Google Cloud Platform",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande concerne le support technique pour Google Cloud Platform, qui ne correspond pas aux catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Ajout client",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'ajout d'un client, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "installation zoom",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation de Zoom, ce qui relève de la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Utilisation de l'outil Language Tooler",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "L'outil Language Tooler est un outil de travail qui s'inscrit dans la catégorie des outils workspace."
+  },
+  {
+    "ticket": "Ajout nouveaux Statut sur dashboard Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout de nouveaux statuts sur le dashboard de Monday.com, ce qui relève de l'accès et de la configuration de la plateforme."
+  },
+  {
+    "ticket": "Erreur sur Monday après analyses du Timesheet de Sophie SIOR",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne une erreur liée à l'analyse du Timesheet, ce qui le classe principalement dans la gestion des Timesheets."
+  },
+  {
+    "ticket": "hébergement web / test",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne 'hébergement web', qui ne correspond à aucune des catégories disponibles, donc il est classé comme 'Autres'."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour de Timesheet, ce qui correspond directement à la catégorie de gestion des Timesheets."
+  },
+  {
+    "ticket": "Caméra d'ordinateur ne fonctionne pas",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La caméra d'ordinateur ne fonctionne pas ne correspond à aucune des catégories spécifiques disponibles, mais concerne un problème matériel général."
+  },
+  {
+    "ticket": "MDP Admin du PC",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un mot de passe admin pour un PC, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "Création mail stagiaire Virtuocode",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un compte email pour un stagiaire, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "OUbli démarrage à l'heure",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne un oubli de démarrage à l'heure, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Créer boucles d'email pour b2p",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "La création de boucles d'email pour b2p implique l'utilisation d'outils de communication et de collaboration, ce qui correspond à la catégorie des outils workspace."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Oubli démarrage",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un oubli de démarrage, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait être lié à un problème général qui nécessite une assistance."
+  },
+  {
+    "ticket": "Ajouter clients pour log du temps",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout de clients pour le suivi du temps, ce qui est directement lié à la gestion des timesheets."
+  },
+  {
+    "ticket": "Accès RH",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne l'accès aux ressources RH, qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour des Timesheets, ce qui correspond directement à la gestion des Timesheets."
+  },
+  {
+    "ticket": "Champ emplacement vide",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un champ emplacement vide, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait être lié à un problème de configuration ou d'utilisation d'un outil spécifique."
+  },
+  {
+    "ticket": "Fwd: Reminder Notice: Past Due Balance",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un rappel de solde impayé, ce qui ne correspond à aucune des catégories spécifiques liées à l'IT."
+  },
+  {
+    "ticket": "Compte Microsoft lié à l'adresse LVDS",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un compte Microsoft, ce qui est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Problème de connexion à Authenticator",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le problème de connexion à Authenticator concerne un outil de sécurité utilisé pour l'accès aux applications, ce qui le classe sous les outils workspace."
+  },
+  {
+    "ticket": "Perdu identificator",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un 'identificator' perdu, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait impliquer un besoin d'assistance générale."
+  },
+  {
+    "ticket": "installing clickshare",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation de ClickShare, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "manque client",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un 'manque client', ce qui ne correspond pas directement à une des catégories disponibles et semble être un problème général ou non spécifié."
+  },
+  {
+    "ticket": "Authanticator supprimé",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un authentificateur, qui est généralement lié à des outils de sécurité et d'accès aux applications, classés sous les outils workspace."
+  },
+  {
+    "ticket": "Installation session Clotilde",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'une session, ce qui indique une demande liée à l'installation de logiciels."
+  },
+  {
+    "ticket": "Accès boite mail outlook Client",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'accès à une boîte mail Outlook, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Code OTP",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un code OTP, ce qui ne correspond pas directement aux catégories disponibles et semble être un sujet général lié à la sécurité ou à l'authentification."
+  },
+  {
+    "ticket": "Marque Artlove à créer dans TimeSheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une marque dans TimeSheet, ce qui relève de la gestion des timesheets."
+  },
+  {
+    "ticket": "Connexion VY France",
+    "category": "network_wifi",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne une connexion, ce qui suggère un problème lié au réseau ou au WiFi."
+  },
+  {
+    "ticket": "Etail - Creation d'adresse email NR arrivée le 25/03/2024",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Authentificator",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un outil d'authentification, ce qui le classe dans la catégorie des outils workspace."
+  },
+  {
+    "ticket": "Installer VPN",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'un VPN, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "Transmettre Acces Domaine VCode à VYMAR",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la transmission d'accès à un domaine spécifique, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "Timesheet : Ajouter 45 min à mon timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'ajout de temps sur un timesheet, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Problème dans Déclaration du temps",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème lié à la déclaration du temps, ce qui correspond à la gestion des timesheets."
+  },
+  {
+    "ticket": "test",
+    "category": "other",
+    "confidence": 0.1,
+    "reasoning": "Le ticket ne fournit pas d'informations spécifiques sur un problème ou une demande, ce qui le rend difficile à catégoriser."
+  },
+  {
+    "ticket": "Timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne directement la gestion des timesheets, ce qui correspond à la catégorie spécifiée."
+  },
+  {
+    "ticket": "Récupération accès anne.lemoine - Lastpass",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la récupération d'accès à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Création adresse email",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève directement de la gestion des comptes email."
+  },
+  {
+    "ticket": "Accès Stagiaire eTail",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne l'accès d'un stagiaire, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Accès Board Client Portfolio eTail",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'accès à un tableau client sur une plateforme de gestion de projet, ce qui correspond à la catégorie d'accès et configuration de Monday.com."
+  },
+  {
+    "ticket": "timetracking : Today n'est plus disponible",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème avec la fonctionnalité de suivi du temps, ce qui est directement lié à la gestion des timesheets."
+  },
+  {
+    "ticket": "Oubli Timesheet - pour call client",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un oubli de timesheet, ce qui le classe directement dans la gestion des timesheets."
+  },
+  {
+    "ticket": "Champ emplacement vide",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un champ emplacement vide, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait être lié à un problème de configuration ou d'utilisation d'un outil spécifique."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "souci de connexion",
+    "category": "network_wifi",
+    "confidence": 0.85,
+    "reasoning": "Le ticket mentionne un souci de connexion, ce qui est généralement lié à des problèmes de réseau ou de WiFi."
+  },
+  {
+    "ticket": "Timesheet : Ajouter 1h45 de tâche Injection / Diffusion sur le compte Mondelez",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'ajout d'heures sur un timesheet, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Programmads | Implémentation bannière sur signature email",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Récupération des documents supprimés depuis Drive",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la récupération de documents supprimés depuis Google Drive, ce qui relève directement de l'accès et de la gestion de Drive."
+  },
+  {
+    "ticket": "Oubli démarrage TS",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un oubli lié au démarrage de TS, ce qui fait probablement référence à la gestion des feuilles de temps."
+  },
+  {
+    "ticket": "Demande d'accès salles FR",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande d'accès aux salles, ce qui correspond à la catégorie de réservation de salles de réunion."
+  },
+  {
+    "ticket": "Monday email linking",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un lien d'email avec Monday.com, ce qui indique un problème d'accès ou de configuration lié à cette plateforme."
+  },
+  {
+    "ticket": "Oubli Timesheet - pour call client",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un oubli de timesheet, ce qui le classe directement dans la gestion des timesheets."
+  },
+  {
+    "ticket": "Mot de passe Last Passe oublié",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un mot de passe LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Monday adaptation dans les Quotes",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket mentionne une adaptation dans les Quotes sur Monday, ce qui indique un besoin d'accès ou de configuration sur la plateforme Monday.com."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des timesheets, ce qui correspond directement à la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Paramètrage ordinateur",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne le paramétrage d'un ordinateur, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Accès Helium 10 - Equipe etail",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'accès à Helium 10, qui est un outil de travail utilisé par l'équipe eTail, ce qui le classe sous les outils workspace."
+  },
+  {
+    "ticket": "Accès Helium10",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à Helium10, qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Authenticator - Pas accès au seller amz@diatly.com",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un problème d'accès à un compte email spécifique."
+  },
+  {
+    "ticket": "Not able to print",
+    "category": "network_wifi",
+    "confidence": 0.8,
+    "reasoning": "Le problème d'impression est souvent lié à des problèmes de connexion réseau ou WiFi, ce qui justifie cette catégorisation."
+  },
+  {
+    "ticket": "Champs",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le terme 'Champs' est vague et ne correspond pas clairement à une des catégories disponibles, ce qui justifie une classification dans 'Autres'."
+  },
+  {
+    "ticket": "Timesheet : Mettre à jour des tâches",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la mise à jour des tâches dans un timesheet, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Timesheet : Ajouter une tâche sur timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'ajout d'une tâche sur un timesheet, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des Timesheets, ce qui correspond directement à la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Demande Accès - Tableau Marketplace Expertise",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "La demande concerne l'accès à un outil spécifique (Tableau Marketplace), ce qui le classe sous les outils workspace."
+  },
+  {
+    "ticket": "Ajouter temps Clotilde",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne 'Ajouter temps', ce qui indique une demande liée à la gestion des heures dans un système de timesheet."
+  },
+  {
+    "ticket": "Accès nouvelle adresse pour creative",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à une nouvelle adresse, ce qui pourrait impliquer des outils de collaboration ou de gestion de projet."
+  },
+  {
+    "ticket": "Problème de connexion adresse mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un problème de connexion lié à une adresse mail, ce qui le classe clairement dans la gestion des comptes email."
+  },
+  {
+    "ticket": "Signatures email",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne les signatures email, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Accès Thomas S",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un accès sans spécifier de service particulier, ce qui le rend difficile à catégoriser précisément."
+  },
+  {
+    "ticket": "Urgent : accès outils 3 nouveaux ads expert",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'accès à des outils pour de nouveaux experts en publicité, ce qui correspond à la gestion des outils de travail."
+  },
+  {
+    "ticket": "Demande d'accès modification dans Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande d'accès et de modification dans Monday.com, ce qui correspond directement à la catégorie d'accès et configuration de Monday."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des Timesheets, ce qui correspond directement à la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Mail d'un ancien collègue",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un mail d'un ancien collègue, ce qui indique une problématique liée à la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande Accès Last pass pour accès aux tools M19 / H10/ Keepa ..",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande d'accès à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "TimeSheet correction",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une correction de Timesheet, ce qui correspond directement à la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Mise à jour Mac et installation suite office",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'une suite logicielle (Office) sur un Mac, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "access",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne simplement 'access', ce qui est trop vague pour être catégorisé précisément dans les catégories disponibles."
+  },
+  {
+    "ticket": "Luxottica : Ajout de nouveaux produits sur Mochi",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'ajout de nouveaux produits sur Mochi, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "issue Teams",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne une problématique liée à Teams, qui est un outil de collaboration et de communication dans l'espace de travail."
+  },
+  {
+    "ticket": "anomalie dans boucle de mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne une anomalie dans une boucle de mail, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "URGENT - ACCES DRIVE",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un accès à Drive, ce qui correspond directement à la catégorie 'Accès Google Drive'."
+  },
+  {
+    "ticket": "Demande accès M19 et H10",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande d'accès M19 et H10 ne correspond pas aux catégories spécifiques disponibles et semble être une demande générale d'accès."
+  },
+  {
+    "ticket": "Ajout de deux personnes dans le mail commun Compta Vy",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout de personnes dans un compte email commun, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Changement Time sheet Carmen",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un changement de time sheet, ce qui le classe directement dans la gestion des timesheets."
+  },
+  {
+    "ticket": "MKKM | Implémentation bannière sur signature email - à partir de 28/03",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Champ emplacement vide",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un champ emplacement vide, ce qui ne correspond à aucune des catégories spécifiques disponibles et semble être un problème général."
+  },
+  {
+    "ticket": "Champ emplacement vide",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un champ emplacement vide, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait être lié à un problème de configuration ou d'interface."
+  },
+  {
+    "ticket": "Timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne spécifiquement la gestion des timesheets, ce qui correspond directement à la catégorie 'Gestion Timesheet'."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des timesheets, ce qui correspond directement à la catégorie de gestion des timesheets."
+  },
+  {
+    "ticket": "Migration boite mail Outlook Diatly vers Gmail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la migration d'une boîte mail Outlook vers Gmail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Future Home : SFTP accès",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un accès SFTP, qui ne correspond pas aux catégories disponibles et est donc classé comme 'Autres'."
+  },
+  {
+    "ticket": "Boucle The Creatives",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'Boucle The Creatives', ce qui ne correspond pas clairement à une des catégories disponibles, indiquant un besoin d'assistance qui pourrait être général ou spécifique à un projet."
+  },
+  {
+    "ticket": "Stockage photo",
+    "category": "drive_access",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne le stockage de photos, ce qui est généralement lié à l'accès et à la gestion de fichiers sur des services de stockage en ligne comme Google Drive."
+  },
+  {
+    "ticket": "Oubli démarrage TS",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un oubli lié au démarrage de TS, ce qui fait référence à la gestion des feuilles de temps."
+  },
+  {
+    "ticket": "Changement Time sheet Carmen",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un changement de time sheet, ce qui le classe directement dans la gestion des timesheets."
+  },
+  {
+    "ticket": "Création de compte Docusign",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un compte DocuSign, qui est un outil de workspace."
+  },
+  {
+    "ticket": "Devis Pricing - 12 accès Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un devis pour 12 accès à Monday.com, ce qui le classe clairement dans la catégorie d'accès et configuration de la plateforme."
+  },
+  {
+    "ticket": "Timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne directement la gestion des timesheets, ce qui correspond à la catégorie spécifiée."
+  },
+  {
+    "ticket": "accès drive à donner",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement l'accès à Google Drive, ce qui correspond directement à la catégorie 'drive_access'."
+  },
+  {
+    "ticket": "Modifications des noms",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne des modifications de noms, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Changement Time sheet Carmen",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un changement de time sheet, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Pb affichage tâche au delà de minuit",
+    "category": "timesheet",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un problème d'affichage lié à une tâche, ce qui est généralement associé à la gestion des heures et des tâches dans un système de timesheet."
+  },
+  {
+    "ticket": "Changement graphs",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un changement de graphiques, ce qui ne correspond pas directement aux catégories disponibles et semble être un sujet général."
+  },
+  {
+    "ticket": "Problématique Google Agenda chez Thomas",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne une problématique liée à Google Agenda, qui est un outil de workspace."
+  },
+  {
+    "ticket": "Suppression un paramétrage Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la suppression d'un paramétrage sur Monday.com, ce qui relève de l'accès et de la configuration de la plateforme."
+  },
+  {
+    "ticket": "Monday Access",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'accès à Monday.com, ce qui correspond directement à la catégorie 'Accès et configuration Monday.com'."
+  },
+  {
+    "ticket": "Demande automation sur le board Essai gratuit - Clients",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "La demande concerne l'automatisation sur un board spécifique de Monday.com, ce qui indique un besoin d'accès et de configuration sur cette plateforme."
+  },
+  {
+    "ticket": "Reporting Tool - Data integration new Pays",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'intégration de données pour un nouvel pays dans un outil de reporting, ce qui ne correspond pas aux catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Catégories Jodas dans le reporting tool",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne les catégories Jodas dans un outil de reporting, ce qui est lié à la gestion des outils de travail."
+  },
+  {
+    "ticket": "eTAIL Automation",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'eTAIL Automation', qui ne correspond pas directement aux catégories disponibles, indiquant qu'il pourrait s'agir d'un sujet spécifique ou d'un outil non listé."
+  },
+  {
+    "ticket": "Supprimer doublon INABA dans colonne \"project management\"",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "La demande concerne la gestion d'un doublon dans un outil de gestion de projet, ce qui relève des outils workspace."
+  },
+  {
+    "ticket": "Ajout nouveaux Board sur dashboard client Monday MKKM",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout de nouveaux boards sur un dashboard client dans Monday.com, ce qui relève de l'accès et de la configuration de la plateforme."
+  },
+  {
+    "ticket": "Client manquant",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un 'client manquant', ce qui ne correspond pas directement aux catégories disponibles, mais pourrait impliquer un problème général qui ne s'inscrit pas dans les autres catégories spécifiques."
+  },
+  {
+    "ticket": "Transfert emails boite adobe.express1 @ virtuology.com vers 2 adresses",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le transfert d'emails d'un compte spécifique vers d'autres adresses, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Intellij license expired",
+    "category": "licenses",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'expiration d'une licence pour le logiciel Intellij, ce qui le classe dans la gestion des licences."
+  },
+  {
+    "ticket": "Acces Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne spécifiquement 'Acces Monday', ce qui indique un besoin d'assistance lié à l'accès ou à la configuration de Monday.com."
+  },
+  {
+    "ticket": "Demande identifiants compte adobe Nakiya",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne l'obtention d'identifiants pour un compte Adobe, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Mise à jour Mac",
+    "category": "macos_issues",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour sur un Mac, ce qui est directement lié aux problèmes macOS."
+  },
+  {
+    "ticket": "Client manquant",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket 'Client manquant' ne correspond pas directement à une des catégories spécifiques, il semble être un problème général qui pourrait nécessiter une attention particulière."
+  },
+  {
+    "ticket": "Licences Confluence Atlassian",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement les licences de Confluence Atlassian, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "Champs",
+    "category": "other",
+    "confidence": 0.5,
+    "reasoning": "Le ticket mentionne simplement 'Champs', ce qui ne correspond à aucune des catégories disponibles de manière claire."
+  },
+  {
+    "ticket": "Demande d'intervention export donnée sur Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande d'intervention liée à l'exportation de données sur Monday, ce qui indique un besoin d'accès ou de configuration sur la plateforme Monday.com."
+  },
+  {
+    "ticket": "Création compte outlook pour l'adresse hello@etail-agency.com",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'un compte Outlook, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Access to B2P Drive",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à un drive, ce qui correspond à la catégorie 'Accès Google Drive'."
+  },
+  {
+    "ticket": "Timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket mentionne spécifiquement 'Timesheet', ce qui correspond directement à la catégorie de gestion des timesheets."
+  },
+  {
+    "ticket": "Je ne connais plus mon mot pass pour Microsoft",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la récupération d'un mot de passe pour un service Microsoft, ce qui est généralement lié à des outils de gestion de mots de passe ou de sécurité."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Installation Snapscan - FVFFVBN3Q05D",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'un logiciel spécifique, Snapscan."
+  },
+  {
+    "ticket": "Enregistrement Fichier sur Mac",
+    "category": "macos_issues",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne un enregistrement de fichier sur un Mac, ce qui indique un problème lié à macOS."
+  },
+  {
+    "ticket": "Conseil sur l'opportunité de réparation - Demande de Christina",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande concerne un conseil sur une opportunité de réparation, ce qui ne correspond pas aux catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Scam b2p",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un scam, ce qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Accès Confluence Robin",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'accès à Confluence, qui est un outil de collaboration et de gestion de projet, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Migration 1 password",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la migration de 1Password, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "anomalie persistante sur le drive",
+    "category": "drive_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne une anomalie sur le drive, ce qui indique un problème lié à l'accès ou à l'utilisation de Google Drive."
+  },
+  {
+    "ticket": "Monday : Supprimer une ligne",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une action à effectuer sur Monday.com, ce qui le classe sous l'accès et la configuration de cette plateforme."
+  },
+  {
+    "ticket": "Mobilosoft | Implémentation bannière signature mail - 11/04 - Width> 725px",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière dans une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Oubli démarrage TS",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un oubli lié au démarrage de la feuille de temps (TS), ce qui le classe sous la gestion des timesheets."
+  },
+  {
+    "ticket": "Accès Monday Mobilo",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à Monday Mobilo, ce qui indique un besoin d'accès et de configuration sur la plateforme Monday.com."
+  },
+  {
+    "ticket": "Oubli démarrage TS",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un oubli lié au démarrage de la feuille de temps (TS), ce qui le classe dans la gestion des timesheets."
+  },
+  {
+    "ticket": "Champs",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le terme 'Champs' est vague et ne correspond pas clairement à une des catégories disponibles, ce qui justifie la classification dans 'Autres'."
+  },
+  {
+    "ticket": "Ajout champ TEXTE",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'ajout d'un champ texte, ce qui est généralement lié à des outils de gestion de projet ou de collaboration, comme ceux utilisés dans un environnement de travail."
+  },
+  {
+    "ticket": "renouvellement de la licence de IntilliJ",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le renouvellement d'une licence pour un logiciel spécifique, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "Timesheet",
+    "category": "timesheet",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne directement la gestion des timesheets, ce qui correspond à la catégorie spécifiée."
+  },
+  {
+    "ticket": "Programmads | Implémentation bannière sur signature email",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur une signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Besoin d'accès keepa pour les as et mps",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à Keepa, qui est un outil de workspace, ce qui le classe dans la catégorie des outils workspace."
+  },
+  {
+    "ticket": "Time tracking : Suppression de tâche",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la suppression d'une tâche liée au suivi du temps, ce qui est directement associé à la gestion des timesheets."
+  },
+  {
+    "ticket": "erreur fin timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne une erreur liée à la fin d'un timesheet, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Oubli démarrage TS",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un oubli lié au démarrage de TS, ce qui semble faire référence à un problème avec la gestion des feuilles de temps."
+  },
+  {
+    "ticket": "Today / Leroy Merlin : Offres non envoyées",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne des offres non envoyées, ce qui ne correspond pas aux catégories disponibles et semble être un problème général."
+  },
+  {
+    "ticket": "Changement adresse mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un changement d'adresse mail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Serveur d'écoute de requête Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un serveur d'écoute de requête pour Monday, ce qui indique un problème lié à l'accès ou à la configuration de la plateforme Monday.com."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour des feuilles de temps, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Installation pack Microsoft essai 1 mois",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'un pack Microsoft, ce qui relève de la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Confluence : Ajout team AS",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'ajout d'une équipe dans Confluence, qui est un outil de collaboration et de gestion de projet, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Adresses Adobe eTAIL vers The creatives",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne des adresses Adobe eTAIL, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Oubli démarrage TS",
+    "category": "timesheet",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne un oubli lié au démarrage de TS, ce qui fait référence à la gestion des feuilles de temps."
+  },
+  {
+    "ticket": "Transfères Lastpast vers nouvelles adresses email",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le transfert de LastPass, qui est un outil de gestion de mots de passe, ce qui le classe sous les outils workspace."
+  },
+  {
+    "ticket": "Agenda Planning office presence",
+    "category": "meeting_rooms",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la planification de la présence au bureau, ce qui est lié à la réservation de salles de réunion."
+  },
+  {
+    "ticket": "Paramètrage : FVFF771DQ05N",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne un paramétrage spécifique qui ne correspond pas clairement aux catégories disponibles."
+  },
+  {
+    "ticket": "Donner accès monday VYMAR à teamdatamanagement@smartelia.com",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la demande d'accès à Monday.com, ce qui correspond directement à la catégorie d'accès et configuration de Monday.com."
+  },
+  {
+    "ticket": "Imprimante + retirer application",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne des actions liées à une imprimante et à la suppression d'une application, qui ne correspondent pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Lastpass connection",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une connexion à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Carmen Druta - modification time sheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande de modification d'une feuille de temps, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Paramètrage : C02CWAYSP3XY",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un paramétrage spécifique sans indiquer clairement à quelle catégorie il se rapporte, ce qui le classe dans 'Autres'."
+  },
+  {
+    "ticket": "Renewal Needed - IntelliJ License Expiry",
+    "category": "licenses",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne le renouvellement d'une licence pour IntelliJ, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "INTELLIJ IDEA License",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence pour IntelliJ IDEA, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "Clotilde timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne spécifiquement 'Clotilde timesheet', ce qui indique qu'il est lié à la gestion des feuilles de temps."
+  },
+  {
+    "ticket": "Carmen Druta - Mon QR code n'est plus dans mon Autentificator",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le problème concerne un QR code dans une application d'authentification, ce qui relève des outils de sécurité et de gestion des accès."
+  },
+  {
+    "ticket": "Enable AI assistance for Intellij",
+    "category": "software_installation",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'activation d'une fonctionnalité d'assistance AI dans un logiciel spécifique (Intellij), ce qui relève de l'installation ou de la configuration de logiciels."
+  },
+  {
+    "ticket": "pb last pass",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne 'LastPass', qui est un outil de gestion de mots de passe, ce qui le classe dans la catégorie des outils workspace."
+  },
+  {
+    "ticket": "Licence Intellij",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence pour Intellij, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "création mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un compte email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une mise à jour de Timesheet, ce qui correspond directement à la catégorie de gestion des Timesheets."
+  },
+  {
+    "ticket": "Champ emplacement vide",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un champ emplacement vide, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait être lié à un problème de configuration ou d'utilisation d'un outil spécifique."
+  },
+  {
+    "ticket": "Champ emplacement vide",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un champ emplacement vide, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait être lié à un problème de configuration ou d'utilisation d'un outil."
+  },
+  {
+    "ticket": "creation adresse mail",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "mise en prod du chatbot eTAIL agency",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne la mise en production d'un chatbot, ce qui ne correspond pas aux catégories disponibles et relève d'un sujet technique spécifique."
+  },
+  {
+    "ticket": "Données systèmes",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'Données systèmes', ce qui ne correspond pas directement aux catégories disponibles, mais pourrait impliquer des problèmes liés à d'autres outils ou systèmes."
+  },
+  {
+    "ticket": "pas accès aux boards de mgmt",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne un problème d'accès aux boards de gestion, ce qui est directement lié à l'accès et à la configuration de Monday.com."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Avoir accès à mon ancien Drive",
+    "category": "drive_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'accès à un ancien Drive, ce qui correspond directement à la catégorie d'accès Google Drive."
+  },
+  {
+    "ticket": "Compte Microsoft",
+    "category": "email_accounts",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un compte Microsoft, ce qui est généralement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Accès adresse ads.seller@etail-agency.com",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à une adresse email spécifique, ce qui le classe dans la gestion des comptes email."
+  },
+  {
+    "ticket": "Mise à jour Timesheet",
+    "category": "timesheet",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne spécifiquement une mise à jour des timesheets, ce qui correspond directement à la gestion des timesheets."
+  },
+  {
+    "ticket": "Licence Excel pour Robin",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une demande de licence pour Excel, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "ajouter Hugo dans l'adresse groupée managers",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'un utilisateur dans une adresse groupée, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Ajout de personne dans les mail commun",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'une personne dans des emails communs, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Enlever adresse mail de boucle de mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la gestion d'une adresse email, ce qui le classe dans la catégorie des comptes email."
+  },
+  {
+    "ticket": "New Programmads email address",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une nouvelle adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Redirection email vers nouvelle adresse email",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la redirection d'emails, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Paiement APIfew",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un paiement lié à une API, ce qui ne correspond à aucune des catégories disponibles."
+  },
+  {
+    "ticket": "Installation logiciel machines The Creatives",
+    "category": "software_installation",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'installation d'un logiciel sur des machines, ce qui correspond directement à la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Accès à la liste des salles de meetings Bruxelles",
+    "category": "meeting_rooms",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à la liste des salles de meetings, ce qui correspond à la gestion des réservations de salles de réunion."
+  },
+  {
+    "ticket": "Orbit",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket 'Orbit' ne correspond pas clairement à une des catégories spécifiques fournies, ce qui le place dans la catégorie 'Autres'."
+  },
+  {
+    "ticket": "Accès GG Drive",
+    "category": "drive_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'accès à Google Drive, ce qui correspond directement à la catégorie 'drive_access'."
+  },
+  {
+    "ticket": "Accès reporting",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à un reporting, ce qui est souvent lié à des outils de travail collaboratif ou de reporting, classés sous les outils workspace."
+  },
+  {
+    "ticket": "New e-mail account",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'un nouveau compte email, ce qui correspond directement à la gestion des comptes email."
+  },
+  {
+    "ticket": "Tableau congé FR",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'Tableau congé FR', ce qui ne correspond pas directement aux catégories disponibles, indiquant qu'il pourrait s'agir d'une demande spécifique ou d'une question qui ne rentre pas dans les autres catégories."
+  },
+  {
+    "ticket": "Champ emplacement vide",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un champ emplacement vide, ce qui ne correspond pas directement aux catégories disponibles, mais pourrait être lié à un problème de configuration ou d'interface."
+  },
+  {
+    "ticket": "Ajout de personne dans les mail commun",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'une personne dans les mails communs, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Sortie Antoine Becker - Tracking",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne une sortie spécifique d'un employé, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "Création adresse email",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève directement de la gestion des comptes email."
+  },
+  {
+    "ticket": "Accès Docu Sign Virtuology",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à DocuSign, qui est un outil de workspace."
+  },
+  {
+    "ticket": "Installer une app",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'une application, ce qui correspond à la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Reporting Tool accès",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à un outil de reporting, ce qui le classe sous les outils de workspace."
+  },
+  {
+    "ticket": "Virtuocode - Tracking",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'Virtuocode - Tracking', ce qui ne correspond pas directement à une des catégories disponibles, mais pourrait impliquer des outils ou des logiciels spécifiques."
+  },
+  {
+    "ticket": "Ajout de Charlie dans les adresses boucles",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'une personne dans les adresses boucles, ce qui est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Installer app Chime sur mon Mac",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation d'une application spécifique sur un Mac, ce qui correspond à la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Création mail etail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un compte email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Track MAC",
+    "category": "macos_issues",
+    "confidence": 0.85,
+    "reasoning": "Le ticket mentionne 'Track MAC', ce qui suggère un problème ou une demande liée à un appareil Mac, indiquant une catégorie de problèmes macOS."
+  },
+  {
+    "ticket": "Monday and Google Drive Access (newcomer: Andrea Herrero Villar)",
+    "category": "monday_access",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à Monday.com pour un nouvel employé, ce qui le classe principalement sous l'accès et la configuration de cette plateforme."
+  },
+  {
+    "ticket": "Zippo - recharger data Analytics HISTORIQUE",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne le rechargement de données analytiques, ce qui ne correspond pas directement aux catégories disponibles."
+  },
+  {
+    "ticket": "Etail - création adresse email NR",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Installation JAMF - Nouvel ordinateur KKQ3WWY0FR",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'installation de JAMF sur un nouvel ordinateur, ce qui relève de l'installation de logiciels."
+  },
+  {
+    "ticket": "Demande de résiliation des licences teams b2p",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne la résiliation de licences, ce qui correspond à la gestion des licences."
+  },
+  {
+    "ticket": "Enable business email address to be used on Microsoft",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'activation d'une adresse email professionnelle, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "VyGeek_Store app + Office Suite - Andrea Herrero Villar",
+    "category": "software_installation",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne l'application VyGeek_Store et la suite Office, ce qui implique une demande d'installation ou de configuration de logiciels."
+  },
+  {
+    "ticket": "Formater mon ordi - Carmen Druta",
+    "category": "other",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le formatage de l'ordinateur, ce qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Transformation de la licence IntelliJ IDEA vers un autre compte",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la transformation d'une licence IntelliJ IDEA, ce qui relève de la gestion des licences."
+  },
+  {
+    "ticket": "Ajout nouveaux collaborateurs ads dans Monday",
+    "category": "monday_access",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout de nouveaux collaborateurs dans Monday.com, ce qui relève de l'accès et de la configuration de la plateforme."
+  },
+  {
+    "ticket": "MKKM - reactivation compte avant 8h30 BE",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la réactivation d'un compte, ce qui est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Ajout de personne dans les mail commun",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'ajout d'une personne dans les mails communs, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Création compte Microsoft",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "La création d'un compte Microsoft est liée à la gestion des comptes email, car Microsoft propose des services de messagerie."
+  },
+  {
+    "ticket": "Docusign Skeelz",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne DocuSign, qui est un outil de workspace, indiquant un besoin d'assistance lié à cet outil."
+  },
+  {
+    "ticket": "Virtuology Group - Tracking",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'Tracking' sans spécifier de problème ou de demande claire liée aux catégories disponibles."
+  },
+  {
+    "ticket": "Ajouter Lara à l'équipe MKKM",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande d'ajouter une personne à une équipe ne correspond à aucune des catégories spécifiques, mais elle est liée à la gestion des ressources humaines."
+  },
+  {
+    "ticket": "LastPass access",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Mise à jour adresse boucle",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "La mise à jour d'une adresse boucle ne correspond à aucune des catégories spécifiques disponibles et semble être une demande générale."
+  },
+  {
+    "ticket": "Licence Microsoft",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence Microsoft, ce qui correspond directement à la gestion des licences."
+  },
+  {
+    "ticket": "Paramètrage : C02CLQ2NML7H",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne un paramétrage sans spécifier de catégorie précise, ce qui le place dans la catégorie 'Autres'."
+  },
+  {
+    "ticket": "LastPass : donner accès au coffre à Cassandra",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Serveur d'écoute de requête (API)",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un serveur d'écoute de requête API, qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "URGENCE ! Accès Keepa à partager",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'accès à Keepa, qui est un outil de travail, ce qui le classe sous les outils workspace."
+  },
+  {
+    "ticket": "Leexie - problème NO show meeting",
+    "category": "meeting_rooms",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un problème de non-présentation à une réunion, ce qui est lié à la gestion des salles de réunion."
+  },
+  {
+    "ticket": "cloture compte Gmail Antoine Becker",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la clôture d'un compte Gmail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande d'accès Monday",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une demande d'accès à Monday.com, ce qui correspond directement à la catégorie 'Accès et configuration Monday.com'."
+  },
+  {
+    "ticket": "Connexion Adresse mail Edouard",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une connexion à une adresse mail, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Monday Access",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne l'accès à Monday.com, ce qui correspond directement à la catégorie 'Accès et configuration Monday.com'."
+  },
+  {
+    "ticket": "Virtuology International",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'Virtuology International' sans spécifier un problème technique ou une demande claire, ce qui le place dans la catégorie 'Autres'."
+  },
+  {
+    "ticket": "Partage accès Keepa",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne le partage d'accès à Keepa, qui est un outil de workspace."
+  },
+  {
+    "ticket": "Changement adresses email",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un changement d'adresses email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Jo Delannoy",
+    "category": "other",
+    "confidence": 0.5,
+    "reasoning": "Le ticket ne fournit pas d'informations spécifiques sur un problème technique ou une demande claire, ce qui le rend difficile à catégoriser."
+  },
+  {
+    "ticket": "Accès GA4",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à GA4, qui ne correspond pas aux catégories disponibles et est donc classé comme 'Autres'."
+  },
+  {
+    "ticket": "MKKM | Implémentation bannière sur signature email - à partir du 20/06",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'implémentation d'une bannière sur la signature email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Accès Confluence Ibtihale",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne l'accès à Confluence, qui est un outil de collaboration et de gestion de projet, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Licence Microsoft 365",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence Microsoft 365, ce qui le classe clairement dans la gestion des licences."
+  },
+  {
+    "ticket": "Recpetion to do monday",
+    "category": "monday_access",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne 'to do monday', ce qui indique un lien avec l'accès ou la configuration de Monday.com."
+  },
+  {
+    "ticket": "accès pour last pass",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "App à download",
+    "category": "software_installation",
+    "confidence": 0.8,
+    "reasoning": "Le ticket mentionne une application à télécharger, ce qui implique une demande d'installation de logiciel."
+  },
+  {
+    "ticket": "onboarding tools",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne des outils d'onboarding, qui sont généralement classés sous les outils de workspace."
+  },
+  {
+    "ticket": "Julie",
+    "category": "other",
+    "confidence": 0.1,
+    "reasoning": "Le ticket ne fournit pas d'informations spécifiques sur un problème ou une demande, ce qui rend difficile de le classer dans une catégorie précise."
+  },
+  {
+    "ticket": "accès authentificator",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne l'accès à un authentificateur, ce qui est lié aux outils de sécurité et de gestion des accès dans un environnement de travail."
+  },
+  {
+    "ticket": "Hubert ne peut pas se connecter à son ordinateur",
+    "category": "network_wifi",
+    "confidence": 0.8,
+    "reasoning": "L'incapacité de se connecter à un ordinateur peut souvent être liée à des problèmes de réseau ou de WiFi."
+  },
+  {
+    "ticket": "Programmads -  Tracking",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne 'Programmads - Tracking', ce qui suggère l'utilisation d'outils de gestion ou de suivi, typiquement associés aux outils workspace."
+  },
+  {
+    "ticket": "Urgent - Demande d'aide/assistance de Hubert",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne une demande d'aide urgente sans spécifier de problème technique particulier, ce qui le classe dans la catégorie 'Autres'."
+  },
+  {
+    "ticket": "Demande de création sous-domaine eTAIL (matrice.etail-agency.com)",
+    "category": "other",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne la création d'un sous-domaine, ce qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Déconnexion de mon Mac de la gestion par Virtuology",
+    "category": "macos_issues",
+    "confidence": 0.85,
+    "reasoning": "Le ticket concerne une déconnexion d'un Mac, ce qui indique un problème lié à macOS ou à la gestion des appareils Mac."
+  },
+  {
+    "ticket": "Demande d'accès - Monday eTAIL",
+    "category": "monday_access",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une demande d'accès à Monday.com, ce qui le classe directement sous la catégorie d'accès et configuration de cette plateforme."
+  },
+  {
+    "ticket": "Créer 2 nouvelles adresses mail adsecura.com",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création de nouvelles adresses email, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Restauration compte google Alain programmads",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la restauration d'un compte Google, ce qui est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Suivi Paiement Adobe",
+    "category": "licenses",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un suivi de paiement pour un service Adobe, ce qui est lié à la gestion des licences de logiciels."
+  },
+  {
+    "ticket": "Access Reporting tool",
+    "category": "workspace_tools",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne un outil de reporting, ce qui le classe dans les outils workspace."
+  },
+  {
+    "ticket": "Rossignol : Gestion d'un 2eme transporteur",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande concerne la gestion d'un transporteur, ce qui ne correspond pas aux catégories disponibles."
+  },
+  {
+    "ticket": "SERP API",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket mentionne 'SERP API', qui ne correspond à aucune des catégories disponibles et semble être un sujet technique spécifique."
+  },
+  {
+    "ticket": "Gestion Internet Bureau de Paris Regus",
+    "category": "network_wifi",
+    "confidence": 0.85,
+    "reasoning": "Le ticket mentionne la gestion d'Internet, ce qui est généralement lié à des problèmes de réseau ou de WiFi."
+  },
+  {
+    "ticket": "Règle Gmail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une règle Gmail, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "network concern",
+    "category": "network_wifi",
+    "confidence": 0.9,
+    "reasoning": "Le ticket mentionne une préoccupation réseau, ce qui correspond à des problèmes liés au réseau et au WiFi."
+  },
+  {
+    "ticket": "Network Concerns",
+    "category": "network_wifi",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne des préoccupations liées au réseau, ce qui correspond à la catégorie des problèmes réseau et WiFi."
+  },
+  {
+    "ticket": "Edouard Buyle Adresse Mail + OOO",
+    "category": "email_accounts",
+    "confidence": 0.85,
+    "reasoning": "Le ticket mentionne une adresse mail, ce qui indique qu'il est lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande d'installation Node.js sur le machine ClientPortfolio",
+    "category": "software_installation",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne une demande d'installation de Node.js, ce qui correspond à la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Signature mail manquante pour catia",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une signature mail manquante, ce qui est directement lié à la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande de création sous domaine eTAIL (vendorcentral.etail-agency.com)",
+    "category": "other",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne la création d'un sous-domaine, ce qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Demande de récupération \"Digit code\" pour le compte Udemy",
+    "category": "other",
+    "confidence": 0.85,
+    "reasoning": "La demande concerne la récupération d'un code spécifique pour un compte Udemy, qui ne correspond à aucune des catégories disponibles."
+  },
+  {
+    "ticket": "Slack sur Mac",
+    "category": "macos_issues",
+    "confidence": 0.8,
+    "reasoning": "Le ticket concerne Slack sur Mac, ce qui indique un problème lié au système d'exploitation macOS."
+  },
+  {
+    "ticket": "Accès freelance",
+    "category": "other",
+    "confidence": 0.7,
+    "reasoning": "Le ticket concerne un accès freelance, qui ne correspond pas directement aux catégories disponibles, mais peut être considéré comme un besoin d'accès général."
+  },
+  {
+    "ticket": "Requête de vérification de compte Udemy \"formation@virtuocode.com\"",
+    "category": "other",
+    "confidence": 0.8,
+    "reasoning": "La demande concerne une vérification de compte Udemy, qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Téléchargement de Google Ads Editor",
+    "category": "software_installation",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne le téléchargement d'un logiciel spécifique, Google Ads Editor, ce qui le classe dans la catégorie d'installation de logiciels."
+  },
+  {
+    "ticket": "Création mail etail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne la création d'un compte email, ce qui correspond à la gestion des comptes email."
+  },
+  {
+    "ticket": "Accés au board / automatisation QA",
+    "category": "monday_access",
+    "confidence": 0.85,
+    "reasoning": "Le ticket mentionne un accès au board, ce qui est lié à la configuration et à l'accès à Monday.com."
+  },
+  {
+    "ticket": "serveur python avec FastAPI et Nginx",
+    "category": "other",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un serveur Python avec FastAPI et Nginx, ce qui ne correspond à aucune des catégories disponibles."
+  },
+  {
+    "ticket": "Urgent - Bug connexion Mail",
+    "category": "email_accounts",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne un bug de connexion à un service de messagerie, ce qui relève de la gestion des comptes email."
+  },
+  {
+    "ticket": "Demande de nouvel API Key OpenAI pour VyData",
+    "category": "other",
+    "confidence": 0.9,
+    "reasoning": "La demande concerne un nouvel API Key pour OpenAI, ce qui ne correspond à aucune des catégories spécifiques disponibles."
+  },
+  {
+    "ticket": "Demande d'accès sur l'organisation Etail/VyData etc... sur GCP pour les nouveaux Gars. BigQuery etc...",
+    "category": "workspace_tools",
+    "confidence": 0.85,
+    "reasoning": "La demande concerne l'accès à des outils de travail collaboratif sur GCP, notamment BigQuery, ce qui relève des outils workspace."
+  },
+  {
+    "ticket": "Diana Excel licence",
+    "category": "licenses",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne une licence Excel, ce qui le classe sous la gestion des licences."
+  },
+  {
+    "ticket": "Admin access sur lastpass  - Ads",
+    "category": "workspace_tools",
+    "confidence": 0.9,
+    "reasoning": "Le ticket concerne l'accès administrateur à LastPass, qui est un outil de gestion de mots de passe, classé sous les outils workspace."
+  },
+  {
+    "ticket": "Création adresse email eTAIL agency",
+    "category": "email_accounts",
+    "confidence": 0.95,
+    "reasoning": "Le ticket concerne la création d'une adresse email, ce qui relève de la gestion des comptes email."
+  }
+]

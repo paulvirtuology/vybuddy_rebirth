@@ -5,6 +5,8 @@ Script pour charger la base de connaissances dans Pinecone
 import asyncio
 import sys
 import os
+import unicodedata
+import re
 from pathlib import Path
 
 # Ajouter le répertoire parent au path
@@ -16,6 +18,24 @@ from app.core.config import settings
 import structlog
 
 logger = structlog.get_logger()
+
+
+def normalize_id(text: str) -> str:
+    """
+    Normalise un texte pour créer un ID ASCII valide pour Pinecone
+    Remplace les caractères accentués et les caractères spéciaux
+    """
+    # Normaliser les caractères Unicode (NFD = décomposition)
+    text = unicodedata.normalize('NFD', text)
+    # Supprimer les accents
+    text = text.encode('ascii', 'ignore').decode('ascii')
+    # Remplacer les espaces et caractères spéciaux par des underscores
+    text = re.sub(r'[^a-zA-Z0-9_-]', '_', text)
+    # Supprimer les underscores multiples
+    text = re.sub(r'_+', '_', text)
+    # Supprimer les underscores en début/fin
+    text = text.strip('_')
+    return text
 
 
 async def load_knowledge_base():
@@ -45,6 +65,12 @@ async def load_knowledge_base():
     
     # Traiter uniquement les fichiers Markdown (format uniforme)
     md_files = list(knowledge_dir.glob("*.md"))
+    
+    # Charger aussi les procédures si elles existent
+    procedures_dir = knowledge_dir / "procedures"
+    if procedures_dir.exists():
+        logger.info("Found procedures directory, loading procedures...")
+        md_files.extend(list(procedures_dir.glob("*.md")))
     # Exclure README.md
     md_files = [f for f in md_files if f.name != "README.md"]
     
@@ -89,10 +115,13 @@ async def load_knowledge_base():
         if not sections:
             sections = [{"title": md_file.stem, "content": content}]
         
+        # Normaliser le nom de fichier pour l'ID
+        normalized_stem = normalize_id(md_file.stem)
+        
         # Créer un embedding pour le document complet
         doc_embedding = await embeddings.aembed_query(content)
         doc_vector = {
-            "id": f"kb_doc_{md_file.stem}",
+            "id": f"kb_doc_{normalized_stem}",
             "values": doc_embedding,
             "metadata": {
                 "text": content,
@@ -109,8 +138,11 @@ async def load_knowledge_base():
             section_text = f"{section['title']}\n\n{section['content']}"
             section_embedding = await embeddings.aembed_query(section_text)
             
+            # Normaliser le titre de section pour l'ID
+            normalized_section_title = normalize_id(section['title'])
+            
             section_vector = {
-                "id": f"kb_section_{md_file.stem}_{idx}",
+                "id": f"kb_section_{normalized_stem}_{idx}_{normalized_section_title[:30]}",
                 "values": section_embedding,
                 "metadata": {
                     "text": section_text,

@@ -32,6 +32,7 @@ htmlcov/
 .env
 .env.local
 .env.*.local
+.secrets.local
 
 # Next.js
 .next/
@@ -59,4 +60,6 @@ logs/
 # Docker
 *.log.docker
 docker-compose.override.yml
+backend/myenv
+
 

@@ -7,6 +7,7 @@ import structlog
 
 from app.agents.base_agent import BaseAgent
 from app.database.pinecone_client import PineconeClient
+from app.services.procedure_service import ProcedureService
 
 logger = structlog.get_logger()
 
@@ -40,11 +41,26 @@ class KnowledgeAgent(BaseAgent):
                 f"Document {i+1}: {doc.get('text', '')}"
                 for i, doc in enumerate(relevant_docs)
             ]) if relevant_docs else "Aucune documentation pertinente trouvée."
+            
+            # Recherche de procédures pertinentes
+            procedure_service = ProcedureService()
+            relevant_procedure = await procedure_service.find_relevant_procedure(message)
+            
+            if relevant_procedure:
+                procedure_context = "\n\n" + procedure_service.format_procedure_for_prompt(relevant_procedure)
+                knowledge_context += procedure_context
         except Exception as e:
             logger.error("Pinecone search error", error=str(e))
             knowledge_context = "Erreur lors de la recherche dans la base de connaissances."
         
         system_prompt = """Vous êtes VyBuddy, un assistant de support IT chaleureux et empathique qui répond aux questions en vous basant sur la documentation interne et les procédures.
+
+IMPORTANT - SUIVI DES PROCÉDURES:
+- Si une procédure est fournie, SUIVEZ-LA ÉTAPE PAR ÉTAPE
+- Posez les questions de diagnostic dans l'ordre indiqué
+- Suivez les étapes de résolution exactement comme décrit
+- Créez un ticket Odoo selon les instructions de la procédure si nécessaire
+- Agissez comme un support N1 humain qui suit les procédures internes
 
 VOTRE PERSONNALITÉ:
 - Vous êtes amical, rassurant et compréhensif
@@ -88,9 +104,9 @@ Soyez humain, chaleureux mais CONCIS. Évitez les répétitions, les phrases tro
 """
         
         try:
-            # Utiliser le streaming si un callback est fourni
+            # Utiliser generate_and_stream_response qui génère d'abord, puis stream
             if stream_callback:
-                response_text = await self.stream_response(
+                response_text = await self.generate_and_stream_response(
                     llm=llm,
                     system_prompt=system_prompt,
                     user_prompt=prompt,

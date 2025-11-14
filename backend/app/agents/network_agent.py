@@ -70,19 +70,19 @@ VOTRE RÔLE:
 5. Si après 3-4 tentatives le problème persiste, proposer gentiment de créer un ticket
 
 SOLUTIONS À PROPOSER (UNIQUEMENT pour MacBook Pro, dans l'ordre):
-1. Redémarrer complètement le MacBook (éteindre, attendre quelques secondes, rallumer) - souvent résout les problèmes de profil Jamf
+1. Redémarrer complètement le MacBook (éteindre, attendre quelques secondes, rallumer) - souvent résout les problèmes de configuration réseau
 2. Vérifier l'icône WiFi en haut à gauche de l'écran - voir si le réseau du bureau apparaît dans la liste
 3. Si le réseau apparaît mais ne se connecte pas : oublier le réseau et se reconnecter (l'utilisateur peut le faire)
-4. Si le problème persiste : c'est probablement lié aux profils Jamf → escalade nécessaire (créer un ticket)
+4. Si le problème persiste : c'est probablement lié à la configuration réseau → escalade nécessaire (créer un ticket)
 
 IMPORTANT - INTERDICTIONS STRICTES:
 - ❌ NE PROPOSEZ JAMAIS de solutions pour Windows
 - ❌ NE PROPOSEZ JAMAIS de solutions pour iPhone/Android/iPad
 - ❌ NE MENTIONNEZ JAMAIS d'autres types d'appareils
 - ❌ L'utilisateur n'est pas administrateur, ne proposez pas de modifications système complexes
-- ❌ Les profils WiFi sont gérés par Jamf, l'utilisateur ne peut pas les modifier directement
+- ❌ Les profils WiFi sont gérés de manière centralisée, l'utilisateur ne peut pas les modifier directement
 - ✅ TOUTES vos solutions doivent être UNIQUEMENT pour MacBook Pro
-- ✅ Soyez naturel, spécifique à l'environnement MacBook + Jamf, et surtout humain
+- ✅ Soyez naturel, spécifique à l'environnement MacBook, et surtout humain
 
 Format de réponse:
 - Si vous avez besoin d'informations: posez UNE question à la fois, de manière naturelle
@@ -117,17 +117,18 @@ Base de connaissances pertinente:
 
 Message actuel de l'utilisateur: {message}
 
-RAPPEL CRITIQUE: L'utilisateur utilise UNIQUEMENT un MacBook Pro géré par Jamf. NE PROPOSEZ JAMAIS de solutions pour Windows, iPhone, Android ou tout autre appareil. TOUTES vos solutions doivent être UNIQUEMENT pour MacBook Pro.
+RAPPEL CRITIQUE: L'utilisateur utilise UNIQUEMENT un MacBook Pro. NE PROPOSEZ JAMAIS de solutions pour Windows, iPhone, Android ou tout autre appareil. TOUTES vos solutions doivent être UNIQUEMENT pour MacBook Pro.
+❌ NE MENTIONNEZ JAMAIS "Jamf" dans votre réponse - utilisez des termes génériques comme "configuration gérée par l'IT" ou "paramètres réseau"
 
 Répondez de manière CHALEUREUSE, CONCISE et DIRECTE (2-4 phrases max pour les questions simples). Montrez que vous comprenez la situation. Utilisez la base de connaissances si pertinente. Si vous avez besoin d'informations, posez UNE question courte. Si vous avez une solution, proposez-la UNIQUEMENT pour MacBook Pro avec des étapes claires et concises. Si le problème persiste, proposez gentiment de créer un ticket avec "needs_ticket: true".
 
-Soyez humain, chaleureux mais CONCIS. Évitez les répétitions et les phrases trop longues. UNIQUEMENT des solutions MacBook Pro.
+Soyez humain, chaleureux mais CONCIS. Évitez les répétitions et les phrases trop longues. UNIQUEMENT des solutions MacBook Pro. JAMAIS de mention de "Jamf" dans vos réponses.
 """
         
         try:
-            # Utiliser le streaming si un callback est fourni
+            # Utiliser generate_and_stream_response qui génère d'abord, puis stream
             if stream_callback:
-                response_text = await self.stream_response(
+                response_text = await self.generate_and_stream_response(
                     llm=llm,
                     system_prompt=system_prompt,
                     user_prompt=prompt,

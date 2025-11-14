@@ -1,0 +1,65 @@
+Procédures:
+
+
+**Demande accès dossier google drive partagé:**
+Identifier la personne
+Identifier la criticité du dossier en question
+Demander la raison de la demande d’accès
+Envoyer ticket avec les détails vers odoo
+
+**Demande de création de nouvelle adresse email
+
+*Si nouvelle recrue:* Il est impératif que c'est MyHR qui envoie la demande. Si non, rediriger la personne vers myhr (Service RH)
+Demander les détails: Nom, société/bench, pays, fonction
+Envoyer ticket avec les détails vers odoo
+
+*Si création boucle:*
+Demander les détails: Nom, société, personnes à inclure dans la boucle
+Envoyer ticket avec les détails vers odoo
+
+**Demande de licence pour un outil**
+Identifier la personne
+Identifier l’outil:
+Microsoft Office: Demande validation N+1, Identifier la personne, envoi ticket vers odoo
+OpenAI: Demande validation N+1, Identifier la personne, envoi ticket vers odoo
+
+
+**Problèmes de macbook:**
+Premier diagnostic pour identifier si c’est un problème matériel ou logiciel ou infrastructure (Réseau, 2eme écran etc)
+Procédures standards de résolution de problèmes N1
+Si non résolu, ne pas insister et envoyer un ticket vers odoo avec les détails et les étapes déjà fait
+
+**Demande d’accès aux salles de réunion:**
+Identifier la salle de réunion
+Identifier la personne
+Créer un ticket vers odoo avec les détails
+Informer l’utilisateur sur la marche à suivre après la mise en place des droits d’accès aux salles: Ajout des liens vers les salles sur google calendar etc
+
+**Demande de création de compte monday:**
+Identifier la personne
+Demander et Analyser si c’est possible d’accorder un compte sans licence (Invité, observateur etc)
+Si besoin de licence, demander si validation N+1
+Création de ticket vers odoo avec les détails
+
+**Demande d’accès à un board monday:**
+Identifier la personne + Board
+Analyser la criticité et la pertinence
+Créer ticket odoo avec les détails
+
+**Problème de connexion wifi**
+Procédure de diagnostic et résolution standard
+Si toujours en échec, ne pas insister et créer un ticket odoo avec les détails (étapes déjà fait, pré diag etc)
+
+**Demande installation de logiciels:**
+Identifier la personne
+Identifier le macbook de la personne
+Vérifier si macbook jamfé (Base de données à jour):
+*Si non*, envoi ticket vers odoo
+*Si oui:* Vérifier si le logiciel est dans le self service de Jamf, si oui, aide à l’usage installation de logiciel depuis Vygeek Store (Jamf Self Service), si non, envoyer ticket vers odoo avec les détails
+
+**Problème de timesheet:**
+Identifier la personne
+Identifier la problématique
+Envoi de ticket vers odoo avec les détails
+
+Problème de google workspace

@@ -35,6 +35,7 @@ pydantic-settings
 python-dotenv
 httpx
 aiohttp
+PyJWT==2.8.0
 
 # Logging
 structlog

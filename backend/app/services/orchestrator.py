@@ -44,6 +44,15 @@ class OrchestratorService:
             # Détection des questions sur l'identité du bot
             identity_response = self._check_identity_question(message)
             if identity_response:
+                # Pour les réponses système, on peut streamer si un callback est fourni
+                if stream_callback:
+                    # Streamer la réponse mot par mot pour un effet visuel fluide
+                    import asyncio
+                    words = identity_response.split(' ')
+                    for i, word in enumerate(words):
+                        await stream_callback(word + (' ' if i < len(words) - 1 else ''))
+                        await asyncio.sleep(0.03)  # Petit délai pour l'effet visuel
+                
                 # Sauvegarde de l'historique
                 await self.redis.add_to_session_history(
                     session_id=session_id,
@@ -70,6 +79,15 @@ class OrchestratorService:
             # Détection des salutations simples
             greeting_response = self._check_greeting(message)
             if greeting_response:
+                # Pour les réponses système, on peut streamer si un callback est fourni
+                if stream_callback:
+                    # Streamer la réponse mot par mot pour un effet visuel fluide
+                    import asyncio
+                    words = greeting_response.split(' ')
+                    for i, word in enumerate(words):
+                        await stream_callback(word + (' ' if i < len(words) - 1 else ''))
+                        await asyncio.sleep(0.03)  # Petit délai pour l'effet visuel
+                
                 # Sauvegarde de l'historique
                 await self.redis.add_to_session_history(
                     session_id=session_id,

@@ -113,15 +113,37 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
     """
     Endpoint WebSocket pour le chat en temps réel avec streaming
     """
+    # Vérifier l'authentification via query parameter
+    token = websocket.query_params.get("token")
+    if not token:
+        await websocket.close(code=1008, reason="Authentication required")
+        return
+    
+    # Vérifier le token
+    from app.services.auth_service import AuthService
+    auth_service = AuthService()
+    user_info = await auth_service.verify_token(token)
+    
+    if not user_info:
+        await websocket.close(code=1008, reason="Invalid or expired token")
+        return
+    
     await manager.connect(websocket, session_id)
-    logger.info("WebSocket connection established", session_id=session_id)
+    logger.info(
+        "WebSocket connection established",
+        session_id=session_id,
+        user_email=user_info.get("email")
+    )
     
     try:
         while True:
             # Réception du message
             data = await websocket.receive_json()
             message = data.get("message", "")
-            user_id = data.get("user_id", "unknown")
+            user_id_from_data = data.get("user_id", "unknown")
+            
+            # Utiliser l'email de l'utilisateur authentifié
+            user_id = user_info.get("email", user_id_from_data)
             
             logger.info(
                 "Message received",
@@ -130,35 +152,65 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                 message_preview=message[:50]
             )
             
+            # Sauvegarder le message utilisateur dans Supabase
+            from app.database.supabase_client import SupabaseClient
+            supabase = SupabaseClient()
+            await supabase.save_message(
+                session_id=session_id,
+                user_id=user_id,
+                message_type="user",
+                content=message
+            )
+            
             # Variable pour accumuler la réponse complète
-            full_response = ""
             agent_used = "processing"
             metadata = {}
+            stream_started = False
             
-            # Callback pour le streaming
+            # Callback pour le streaming (appelé APRÈS génération complète)
             async def stream_callback(token: str):
                 """Envoie chaque token au client via WebSocket"""
-                nonlocal full_response, agent_used
-                full_response += token
+                nonlocal stream_started
+                
+                # Vérifier l'état du WebSocket avant d'envoyer
+                if websocket.client_state.name != "CONNECTED":
+                    logger.debug("WebSocket not connected, skipping stream token")
+                    return
+                
+                # Envoyer stream_start au premier token
+                if not stream_started:
+                    stream_started = True
+                    try:
+                        if websocket.client_state.name == "CONNECTED":
+                            await websocket.send_json({
+                                "type": "stream_start",
+                                "agent": "processing"  # "processing" pendant le streaming visuel
+                            })
+                    except RuntimeError as e:
+                        if "close message has been sent" in str(e) or "Cannot call" in str(e):
+                            logger.debug("WebSocket closed during stream_start, stopping streaming")
+                            return
+                        logger.warning("Error sending stream_start", error=str(e))
+                    except Exception as e:
+                        logger.warning("Error sending stream_start", error=str(e))
+                
                 try:
-                    await websocket.send_json({
-                        "type": "stream",
-                        "token": token,
-                        "agent": agent_used
-                    })
+                    if websocket.client_state.name == "CONNECTED":
+                        await websocket.send_json({
+                            "type": "stream",
+                            "token": token,
+                            "agent": "processing"  # Garder "processing" pendant le streaming
+                        })
+                except RuntimeError as e:
+                    if "close message has been sent" in str(e) or "Cannot call" in str(e):
+                        logger.debug("WebSocket closed during streaming, stopping")
+                        return
+                    logger.warning("Error sending stream token", error=str(e))
                 except Exception as e:
                     logger.warning("Error sending stream token", error=str(e))
             
-            # Envoi d'un message de début de streaming
-            await manager.send_message(
-                websocket,
-                {
-                    "type": "stream_start",
-                    "agent": "processing"
-                }
-            )
-            
             # Orchestration de la requête avec streaming
+            # La réponse complète est générée d'abord, puis streamée via le callback
             response = await orchestrator.process_request(
                 message=message,
                 session_id=session_id,
@@ -166,11 +218,43 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                 stream_callback=stream_callback
             )
             
-            # Mise à jour des métadonnées
+            # Mise à jour des métadonnées APRÈS avoir reçu la réponse
             agent_used = response.get("agent", "unknown")
             metadata = response.get("metadata", {})
             
-            # Envoi du message final avec la réponse complète
+            # Vérifier que le WebSocket est toujours connecté avant d'envoyer les messages finaux
+            if websocket.client_state.name != "CONNECTED":
+                logger.warning("WebSocket closed before sending final message", session_id=session_id)
+                # Sauvegarder quand même la réponse dans Supabase
+                await supabase.save_message(
+                    session_id=session_id,
+                    user_id=user_id,
+                    message_type="bot",
+                    content=response["message"],
+                    agent_used=agent_used,
+                    metadata=metadata
+                )
+                return
+            
+            # Si aucun streaming n'a eu lieu (pas de callback), envoyer stream_start puis stream_end
+            if not stream_started:
+                await manager.send_message(
+                    websocket,
+                    {
+                        "type": "stream_start",
+                        "agent": agent_used
+                    }
+                )
+                await manager.send_message(
+                    websocket,
+                    {
+                        "type": "stream",
+                        "token": response["message"],
+                        "agent": agent_used
+                    }
+                )
+            
+            # Envoi du message final avec la réponse complète et le bon agent
             await manager.send_message(
                 websocket,
                 {
@@ -179,6 +263,16 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                     "agent": agent_used,
                     "metadata": metadata
                 }
+            )
+            
+            # Sauvegarder la réponse du bot dans Supabase
+            await supabase.save_message(
+                session_id=session_id,
+                user_id=user_id,
+                message_type="bot",
+                content=response["message"],
+                agent_used=agent_used,
+                metadata=metadata
             )
             
     except WebSocketDisconnect:

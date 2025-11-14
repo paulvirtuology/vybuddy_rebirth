@@ -1,0 +1,386 @@
+Device JSS ID,Hostname,Serial,Username,Is Admin,Is Filevault user,UID,Home Directory
+121,MacBook Pro,J342P32LHC,naomieanferte,FALSE,TRUE,503,/Users/naomieanferte
+121,MacBook Pro,J342P32LHC,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+121,MacBook Pro,J342P32LHC,User,TRUE,FALSE,502,/private/var/User
+121,MacBook Pro,J342P32LHC,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+122,MacBook Pro,M6YQXHDP7F,solene.doquet-chassaing,FALSE,TRUE,503,/Users/solene.doquet-chassaing
+122,MacBook Pro,M6YQXHDP7F,User,TRUE,FALSE,502,/private/var/User
+122,MacBook Pro,M6YQXHDP7F,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+122,MacBook Pro,M6YQXHDP7F,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+135,MacBook Pro,CD6QXK3Q3H,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+135,MacBook Pro,CD6QXK3Q3H,User,TRUE,FALSE,502,/private/var/User
+135,MacBook Pro,CD6QXK3Q3H,DorienBusselot,FALSE,TRUE,503,/Users/DorienBusselot
+135,MacBook Pro,CD6QXK3Q3H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+132,MacBook Pro,L96L37T9VR,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+132,MacBook Pro,L96L37T9VR,User,TRUE,FALSE,502,/private/var/User
+132,MacBook Pro,L96L37T9VR,corentinchentouf,FALSE,TRUE,503,/Users/corentinchentouf
+132,MacBook Pro,L96L37T9VR,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+131,MacBook Pro,J5G2NJMXT2,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+125,MacBook Pro,LWLWWW3V5D,aminekacimi,TRUE,TRUE,504,/Users/aminekacimi
+125,MacBook Pro,LWLWWW3V5D,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+125,MacBook Pro,LWLWWW3V5D,User,TRUE,FALSE,502,/private/var/User
+125,MacBook Pro,LWLWWW3V5D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+125,MacBook Pro,LWLWWW3V5D,vycode,TRUE,TRUE,503,/Users/vycode
+130,MacBook Pro,XF1VVYJKN6,alarsafia,FALSE,TRUE,504,/Users/alarsafia
+130,MacBook Pro,XF1VVYJKN6,User,TRUE,FALSE,502,/private/var/User
+130,MacBook Pro,XF1VVYJKN6,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+130,MacBook Pro,XF1VVYJKN6,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+130,MacBook Pro,XF1VVYJKN6,safia.alaarkabi,FALSE,TRUE,503,/Users/safia.alaarkabi
+129,MacBook Pro,GX0J2XFVWC,HaroldT,FALSE,TRUE,503,/Users/HaroldT
+129,MacBook Pro,GX0J2XFVWC,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+129,MacBook Pro,GX0J2XFVWC,User,TRUE,FALSE,502,/private/var/User
+129,MacBook Pro,GX0J2XFVWC,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+123,MacBook Pro (2),F96GX42M7T,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+123,MacBook Pro (2),F96GX42M7T,User,TRUE,FALSE,502,/private/var/User
+123,MacBook Pro (2),F96GX42M7T,loics,FALSE,TRUE,503,/Users/loics
+123,MacBook Pro (2),F96GX42M7T,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+126,MacBook Pro (2),G3NWX566TD,Youx,TRUE,TRUE,503,/Users/Youx
+126,MacBook Pro (2),G3NWX566TD,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+126,MacBook Pro (2),G3NWX566TD,KACIMI,TRUE,TRUE,505,/Users/KACIMI
+126,MacBook Pro (2),G3NWX566TD,User,TRUE,FALSE,502,/Users/User
+126,MacBook Pro (2),G3NWX566TD,youssef,TRUE,TRUE,506,/Users/youssef
+126,MacBook Pro (2),G3NWX566TD,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+126,MacBook Pro (2),G3NWX566TD,macports,FALSE,TRUE,504,/Users/macports
+127,MacBook Pro de Aymane,LDF66M4DJQ,User,TRUE,FALSE,502,/private/var/User
+127,MacBook Pro de Aymane,LDF66M4DJQ,aymaneazouagh,TRUE,TRUE,501,/Users/aymaneazouagh
+127,MacBook Pro de Aymane,LDF66M4DJQ,tempadmin,TRUE,FALSE,598,/private/var/.hidden/tempadmin
+89,MBP100-VY,FVFGWF10Q05D,LisaDiamant,TRUE,TRUE,502,/Users/LisaDiamant
+89,MBP100-VY,FVFGWF10Q05D,User,TRUE,FALSE,503,/private/var/User
+89,MBP100-VY,FVFGWF10Q05D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+48,MBP101-VY,FVFGWCY3Q05D,mahdibabakhani,FALSE,TRUE,502,/Users/mahdibabakhani
+48,MBP101-VY,FVFGWCY3Q05D,admin,TRUE,TRUE,501,/Users/admin
+48,MBP101-VY,FVFGWCY3Q05D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+48,MBP101-VY,FVFGWCY3Q05D,User,TRUE,FALSE,503,/private/var/User
+48,MBP101-VY,FVFGWCY3Q05D,SuperAdmin,TRUE,TRUE,504,/private/var/temp_admin
+8,MBP102-VY,FVFH14CRQ05F,User,TRUE,FALSE,503,/private/var/User
+8,MBP102-VY,FVFH14CRQ05F,admin,TRUE,FALSE,502,/Users/admin
+8,MBP102-VY,FVFH14CRQ05F,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+8,MBP102-VY,FVFH14CRQ05F,SuperAdmin,TRUE,FALSE,504,/var/private/superadmin
+12,MBP103-VY,FVFGWDW5Q05D,User,TRUE,FALSE,501,/private/var/User
+12,MBP103-VY,FVFGWDW5Q05D,SuperAdmin,TRUE,FALSE,502,/Users/SuperAdmin
+12,MBP103-VY,FVFGWDW5Q05D,camillev,FALSE,TRUE,504,/Users/camillev
+12,MBP103-VY,FVFGWDW5Q05D,admin,TRUE,TRUE,503,/Users/admin
+12,MBP103-VY,FVFGWDW5Q05D,tempadmin,TRUE,FALSE,598,/private/var/.hidden/tempadmin
+21,MBP104-VY,FVFH2409Q05P,User,TRUE,FALSE,504,/private/var/User
+21,MBP104-VY,FVFH2409Q05P,admin,TRUE,TRUE,501,/Users/admin
+21,MBP104-VY,FVFH2409Q05P,luanariviere,FALSE,TRUE,503,/Users/luanariviere
+21,MBP104-VY,FVFH2409Q05P,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+21,MBP104-VY,FVFH2409Q05P,collaborateur,FALSE,TRUE,502,/Users/collaborateur
+21,MBP104-VY,FVFH2409Q05P,SuperAdmin,FALSE,TRUE,505,/Users/superadmin
+72,MBP105-VY,FVFH32SDQ05N,SuperAdmin,TRUE,FALSE,502,/Users/SuperAdmin
+72,MBP105-VY,FVFH32SDQ05N,User,TRUE,FALSE,501,/private/var/User
+72,MBP105-VY,FVFH32SDQ05N,admin,FALSE,TRUE,503,/Users/admin
+72,MBP105-VY,FVFH32SDQ05N,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+72,MBP105-VY,FVFH32SDQ05N,komal_gunga,FALSE,TRUE,504,/users/komal_gunga
+14,MBP106-VY,FVFH14FGQ05F,User,TRUE,FALSE,501,/private/var/User
+14,MBP106-VY,FVFH14FGQ05F,kateboogaerts,FALSE,TRUE,504,/Users/kateboogaerts
+14,MBP106-VY,FVFH14FGQ05F,SuperAdmin,FALSE,FALSE,503,/Users/Thomas
+14,MBP106-VY,FVFH14FGQ05F,admin,TRUE,TRUE,502,/Users/admin
+14,MBP106-VY,FVFH14FGQ05F,tempadmin,TRUE,FALSE,598,/private/var/.hidden/tempadmin
+17,MBP107-VY,FVFH14CNQ05F,User,TRUE,FALSE,504,/private/var/User
+17,MBP107-VY,FVFH14CNQ05F,admin,TRUE,TRUE,501,/Users/admin
+17,MBP107-VY,FVFH14CNQ05F,louise.ovsianniko,FALSE,TRUE,502,/Users/louise.ovsianniko
+17,MBP107-VY,FVFH14CNQ05F,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+33,MBP108-VY,NHF2TVXQLM,admin,TRUE,TRUE,502,/Users/admin
+33,MBP108-VY,NHF2TVXQLM,moisedenage,FALSE,TRUE,501,/Users/moisedenage
+33,MBP108-VY,NHF2TVXQLM,User,TRUE,FALSE,503,/private/var/User
+33,MBP108-VY,NHF2TVXQLM,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+22,MBP109-VY,JL25P7MW9F,tech,FALSE,TRUE,503,/Users/tech
+22,MBP109-VY,JL25P7MW9F,User,TRUE,FALSE,504,/private/var/User
+22,MBP109-VY,JL25P7MW9F,aristidevarzea,FALSE,TRUE,501,/Users/aristidevarzea
+22,MBP109-VY,JL25P7MW9F,admin,TRUE,TRUE,502,/Users/admin
+22,MBP109-VY,JL25P7MW9F,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+61,MBP110-VY,FVFH14A7Q05F,User,TRUE,FALSE,503,/private/var/User
+61,MBP110-VY,FVFH14A7Q05F,florent.damato,FALSE,FALSE,504,/Users/florent.damato
+61,MBP110-VY,FVFH14A7Q05F,admin,TRUE,TRUE,502,/Users/admin
+61,MBP110-VY,FVFH14A7Q05F,fernando.rodriguez,FALSE,TRUE,501,/Users/fernando.rodriguez
+61,MBP110-VY,FVFH14A7Q05F,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+107,MBP112-VY,CDHCV4J2JY,admin,TRUE,TRUE,501,/Users/admin
+107,MBP112-VY,CDHCV4J2JY,User,TRUE,FALSE,502,/private/var/User
+107,MBP112-VY,CDHCV4J2JY,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+119,MBP113-VY,CFK06WG63H,postgres,FALSE,FALSE,504,/Library/PostgreSQL/17
+119,MBP113-VY,CFK06WG63H,admin,TRUE,TRUE,501,/Users/admin
+119,MBP113-VY,CFK06WG63H,User,TRUE,FALSE,502,/private/var/User
+119,MBP113-VY,CFK06WG63H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+83,MBP114-VY,CJV61XDK76,User,TRUE,FALSE,502,/private/var/User
+83,MBP114-VY,CJV61XDK76,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+83,MBP114-VY,CJV61XDK76,souhailaaaliti,TRUE,TRUE,501,/Users/souhailaaaliti
+116,MBP119-VY,H75DFHYPDY,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+116,MBP119-VY,H75DFHYPDY,User,TRUE,FALSE,502,/private/var/User
+116,MBP119-VY,H75DFHYPDY,heloiseb,FALSE,TRUE,503,/Users/heloiseb
+116,MBP119-VY,H75DFHYPDY,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+109,MBP121-VY,PVTXV4K05Q,postgres,FALSE,FALSE,502,/Library/PostgreSQL/15
+109,MBP121-VY,PVTXV4K05Q,User,TRUE,FALSE,503,/private/var/User
+109,MBP121-VY,PVTXV4K05Q,ouqallimeryem,TRUE,TRUE,501,/Users/ouqallimeryem
+109,MBP121-VY,PVTXV4K05Q,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+114,MBP122-VY,GHQGCPQDXG,postgres,FALSE,FALSE,502,/Library/PostgreSQL/14
+114,MBP122-VY,GHQGCPQDXG,hamzadbani,TRUE,TRUE,501,/Users/hamzadbani
+114,MBP122-VY,GHQGCPQDXG,User,TRUE,FALSE,503,/private/var/User
+114,MBP122-VY,GHQGCPQDXG,secuser,FALSE,FALSE,504,/var/private
+64,MBP123-VY,VKP47JHNXG,User,TRUE,FALSE,503,/private/var/User
+64,MBP123-VY,VKP47JHNXG,sophie,TRUE,TRUE,502,/Users/sophie
+64,MBP123-VY,VKP47JHNXG,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+64,MBP123-VY,VKP47JHNXG,admin,TRUE,TRUE,501,/Users/admin
+28,MBP125-VY,TV2W9MH6HY,nakiyakarimjee,FALSE,TRUE,501,/Users/nakiyakarimjee
+28,MBP125-VY,TV2W9MH6HY,admin,TRUE,TRUE,502,/Users/admin
+28,MBP125-VY,TV2W9MH6HY,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+28,MBP125-VY,TV2W9MH6HY,User,TRUE,FALSE,503,/private/var/User
+24,MBP127-VY,FVFH14CGQ05F,User,TRUE,FALSE,503,/private/var/User
+24,MBP127-VY,FVFH14CGQ05F,collaborateur,FALSE,TRUE,501,/Users/collaborateur
+24,MBP127-VY,FVFH14CGQ05F,iantsa.rakotoarison,TRUE,TRUE,504,/Users/iantsa.rakotoarison
+24,MBP127-VY,FVFH14CGQ05F,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+24,MBP127-VY,FVFH14CGQ05F,admin,TRUE,TRUE,502,/Users/admin
+42,MBP129-VY,HDC6J70R6P,administrator,TRUE,TRUE,504,/Users/administrator
+42,MBP129-VY,HDC6J70R6P,User,TRUE,FALSE,501,/private/var/User
+42,MBP129-VY,HDC6J70R6P,collaborateur,FALSE,TRUE,503,/Users/collaborateur
+42,MBP129-VY,HDC6J70R6P,Admin,TRUE,FALSE,502,/Users/Admin
+42,MBP129-VY,HDC6J70R6P,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+102,MBP130-VY,CK9FPL97WM,admin,TRUE,TRUE,504,/Users/admin
+102,MBP130-VY,CK9FPL97WM,User,TRUE,FALSE,502,/private/var/User
+102,MBP130-VY,CK9FPL97WM,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+102,MBP130-VY,CK9FPL97WM,manal.fayed,FALSE,TRUE,501,/Users/manal.fayed
+52,MBP131-VY,W066XL391C,riikkapummi,FALSE,FALSE,501,/Users/riikkapummi
+52,MBP131-VY,W066XL391C,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+52,MBP131-VY,W066XL391C,admin,TRUE,TRUE,505,/Users/admin
+52,MBP131-VY,W066XL391C,User,TRUE,FALSE,502,/private/var/User
+51,MBP132-VY,N09D26JXJ7,User,TRUE,FALSE,501,/private/var/User
+51,MBP132-VY,N09D26JXJ7,admin,TRUE,TRUE,502,/Users/admin
+51,MBP132-VY,N09D26JXJ7,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+51,MBP132-VY,N09D26JXJ7,Nicolas_Lefebvre,FALSE,TRUE,503,/users/Nicolas_Lefebvre
+73,MBP133-VY,LM4QC37523,SuperAdmin,TRUE,FALSE,502,/Users/SuperAdmin
+73,MBP133-VY,LM4QC37523,guillaumeserkissian,TRUE,TRUE,503,/Users/guillaumeserkissian
+73,MBP133-VY,LM4QC37523,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+73,MBP133-VY,LM4QC37523,secuser,FALSE,FALSE,504,/var/private
+73,MBP133-VY,LM4QC37523,User,TRUE,FALSE,501,/private/var/User
+56,MBP135-VY,DN4F62X7MP,SuperAdmin,TRUE,FALSE,502,/Users/SuperAdmin
+56,MBP135-VY,DN4F62X7MP,User,TRUE,FALSE,501,/private/var/User
+56,MBP135-VY,DN4F62X7MP,oliviercroce,TRUE,TRUE,503,/Users/oliviercroce
+56,MBP135-VY,DN4F62X7MP,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+58,MBP136-VY,CM6V41F7QN,SuperAdmin,TRUE,FALSE,502,/Users/SuperAdmin
+58,MBP136-VY,CM6V41F7QN,collaborator,FALSE,TRUE,504,/Users/collaborator
+58,MBP136-VY,CM6V41F7QN,admin,TRUE,TRUE,505,/Users/admin
+58,MBP136-VY,CM6V41F7QN,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+58,MBP136-VY,CM6V41F7QN,User,TRUE,FALSE,501,/private/var/User
+49,MBP137-VY,P07DXWN9HC,User,TRUE,FALSE,501,/private/var/User
+49,MBP137-VY,P07DXWN9HC,admin,TRUE,TRUE,502,/Users/admin
+49,MBP137-VY,P07DXWN9HC,tmp,FALSE,FALSE,505,/users
+49,MBP137-VY,P07DXWN9HC,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+49,MBP137-VY,P07DXWN9HC,aristide.varzea,FALSE,FALSE,503,/Users/aristide.varzea
+85,MBP138-VY,DCX1MVXYF1,ahmed.dehbi,FALSE,FALSE,505,/Users/ahmed.dehbi
+85,MBP138-VY,DCX1MVXYF1,postgres,FALSE,FALSE,504,/Library/PostgreSQL/17
+85,MBP138-VY,DCX1MVXYF1,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+85,MBP138-VY,DCX1MVXYF1,sayfoudinesoumaya,FALSE,FALSE,503,/Users/sayfoudinesoumaya
+85,MBP138-VY,DCX1MVXYF1,User,TRUE,FALSE,502,/private/var/User
+85,MBP138-VY,DCX1MVXYF1,imane,FALSE,FALSE,506,/Users/imane
+85,MBP138-VY,DCX1MVXYF1,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+57,MBP139-VY,DYJYCX47QK,SuperAdmin,TRUE,FALSE,502,/Users/SuperAdmin
+57,MBP139-VY,DYJYCX47QK,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+57,MBP139-VY,DYJYCX47QK,kameliaslila,TRUE,TRUE,503,/Users/kameliaslila
+57,MBP139-VY,DYJYCX47QK,User,TRUE,FALSE,501,/private/var/User
+55,MBP140-VY,MLHVJ9NFQQ,User,TRUE,FALSE,501,/private/var/User
+55,MBP140-VY,MLHVJ9NFQQ,Admin,TRUE,FALSE,502,/Users/Admin
+55,MBP140-VY,MLHVJ9NFQQ,collaborateur,TRUE,TRUE,503,/Users/collaborateur
+55,MBP140-VY,MLHVJ9NFQQ,postgres,FALSE,FALSE,504,/Library/PostgreSQL/15
+55,MBP140-VY,MLHVJ9NFQQ,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+47,MBP141-VY,HYH3WPL47Y,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+47,MBP141-VY,HYH3WPL47Y,tempadmin,TRUE,TRUE,598,/var/.hidden/tempadmin
+47,MBP141-VY,HYH3WPL47Y,User,TRUE,FALSE,502,/private/var/User
+47,MBP141-VY,HYH3WPL47Y,mhammedelgouchi,FALSE,FALSE,503,/Users/mhammedelgouchi
+45,MBP142-VY,NH9JJ77D7D,User,TRUE,FALSE,501,/private/var/User
+45,MBP142-VY,NH9JJ77D7D,Admin,TRUE,FALSE,502,/Users/Admin
+45,MBP142-VY,NH9JJ77D7D,luciepoliart,TRUE,TRUE,503,/Users/luciepoliart
+45,MBP142-VY,NH9JJ77D7D,tempadmin,TRUE,FALSE,598,/private/var/.hidden/tempadmin
+78,MBP144-VY,F6T36X14N4,postgres,FALSE,FALSE,504,/Library/PostgreSQL/15
+78,MBP144-VY,F6T36X14N4,houda,TRUE,TRUE,503,/Users/houda
+78,MBP144-VY,F6T36X14N4,User,TRUE,FALSE,502,/private/var/User
+78,MBP144-VY,F6T36X14N4,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+78,MBP144-VY,F6T36X14N4,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+67,MBP145-VY,VJX7X7DCWQ,elafiayounes,FALSE,TRUE,502,/Users/elafiayounes
+67,MBP145-VY,VJX7X7DCWQ,manalmounir,TRUE,FALSE,503,/Users/manalmounir
+67,MBP145-VY,VJX7X7DCWQ,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+67,MBP145-VY,VJX7X7DCWQ,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+82,MBP146-VY,T4WM93L2N7,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+82,MBP146-VY,T4WM93L2N7,sara.benchekh,TRUE,TRUE,503,/Users/sara.benchekh
+82,MBP146-VY,T4WM93L2N7,User,TRUE,FALSE,502,/private/var/User
+82,MBP146-VY,T4WM93L2N7,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+68,MBP147-VY,K4QYWG25DD,SuperAdmin,TRUE,TRUE,502,/Users/SuperAdmin
+68,MBP147-VY,K4QYWG25DD,Administrateur,TRUE,TRUE,505,/Users/Administrateur
+68,MBP147-VY,K4QYWG25DD,User,TRUE,FALSE,501,/private/var/User
+68,MBP147-VY,K4QYWG25DD,lorenzo,TRUE,TRUE,503,/Users/lorenzo
+68,MBP147-VY,K4QYWG25DD,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+69,MBP149-VY,GVP4QRQKJ6,User,TRUE,FALSE,502,/private/var/User
+69,MBP149-VY,GVP4QRQKJ6,elhichami,TRUE,TRUE,503,/Users/elhichami
+69,MBP149-VY,GVP4QRQKJ6,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+90,MBP150-VY,QX6QNHR22C,User,TRUE,FALSE,503,/private/var/User
+90,MBP150-VY,QX6QNHR22C,kristine,FALSE,TRUE,502,/Users/kristine
+90,MBP150-VY,QX6QNHR22C,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+90,MBP150-VY,QX6QNHR22C,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+10,MBP153-VY,C02DT9YVML7H,admin,TRUE,TRUE,502,/Users/admin
+10,MBP153-VY,C02DT9YVML7H,User,TRUE,FALSE,503,/private/var/User
+10,MBP153-VY,C02DT9YVML7H,aurorezola,FALSE,TRUE,501,/Users/aurorezola
+10,MBP153-VY,C02DT9YVML7H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+32,MBP154-VY,C02CLQF4ML7H,adminvirtuology,TRUE,TRUE,501,/Users/adminvirtuology
+32,MBP154-VY,C02CLQF4ML7H,User,TRUE,FALSE,502,/private/var/User
+99,MBP166-VY,CM6TWL216P,emmanuelleguettre,FALSE,TRUE,503,/Users/emmanuelleguettre
+99,MBP166-VY,CM6TWL216P,superadmin,TRUE,TRUE,501,/Users/superadmin
+99,MBP166-VY,CM6TWL216P,User,TRUE,FALSE,502,/private/var/User
+99,MBP166-VY,CM6TWL216P,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+101,MBP167-VY,KKQ3WWY0FR,jamf,TRUE,FALSE,504,/var/private
+101,MBP167-VY,KKQ3WWY0FR,superadmin,TRUE,TRUE,501,/Users/superadmin
+101,MBP167-VY,KKQ3WWY0FR,martin.gentil,FALSE,FALSE,503,/Users/martin.gentil
+101,MBP167-VY,KKQ3WWY0FR,User,TRUE,FALSE,502,/private/var/User
+101,MBP167-VY,KKQ3WWY0FR,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+142,MBP168-VY,C02CWAVUP3XY,User,TRUE,FALSE,503,/private/var/User
+142,MBP168-VY,C02CWAVUP3XY,admin,TRUE,TRUE,501,/Users/admin
+142,MBP168-VY,C02CWAVUP3XY,adminvirtuology,TRUE,TRUE,502,/Users/adminvirtuology
+142,MBP168-VY,C02CWAVUP3XY,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+138,MBP179-VY,L0V2MDG2VD,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+138,MBP179-VY,L0V2MDG2VD,User,TRUE,FALSE,502,/private/var/User
+138,MBP179-VY,L0V2MDG2VD,valeriane.baudry,FALSE,TRUE,503,/Users/valeriane.baudry
+138,MBP179-VY,L0V2MDG2VD,tempadmin,TRUE,FALSE,598,/private/var/.hidden/tempadmin
+139,MBP260-SMARTELIA,X42R304Y0C,User,TRUE,FALSE,501,/private/var/User
+139,MBP260-SMARTELIA,X42R304Y0C,smartelia,TRUE,TRUE,502,/Users/smartelia
+139,MBP260-SMARTELIA,X42R304Y0C,cassie_smartelia,TRUE,TRUE,503,/Users/cassie_smartelia
+139,MBP260-SMARTELIA,X42R304Y0C,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+117,MBP42-VY,C02Y346SJHD2,User,TRUE,FALSE,502,/private/var/User
+117,MBP42-VY,C02Y346SJHD2,admin,TRUE,TRUE,501,/Users/admin
+117,MBP42-VY,C02Y346SJHD2,camille.brebois,FALSE,TRUE,503,/Users/camille.brebois
+117,MBP42-VY,C02Y346SJHD2,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+40,MBP43-VY,FVFYM1NRHV2H,Harittina,FALSE,FALSE,519,/Users/Harittina
+40,MBP43-VY,FVFYM1NRHV2H,administrator,TRUE,TRUE,502,/Users/admin
+40,MBP43-VY,FVFYM1NRHV2H,User,TRUE,FALSE,503,/private/var/User
+40,MBP43-VY,FVFYM1NRHV2H,jeremym,TRUE,FALSE,501,/Users/jeremym
+40,MBP43-VY,FVFYM1NRHV2H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+25,MBP49-VY,C02CLQHEML7H,sacha_lefebvre,FALSE,TRUE,503,/Users/sacha_lefebvre
+25,MBP49-VY,C02CLQHEML7H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+25,MBP49-VY,C02CLQHEML7H,admin,TRUE,TRUE,502,/Users/admin
+25,MBP49-VY,C02CLQHEML7H,com.malwarebytes.mbam.nobody,FALSE,FALSE,1000,/var/empty
+25,MBP49-VY,C02CLQHEML7H,User,TRUE,FALSE,501,/private/var/User
+88,MBP51-VY,C02XK4YRJG5H,Virtuocode,FALSE,TRUE,502,/Users/Virtuocode
+88,MBP51-VY,C02XK4YRJG5H,User,TRUE,FALSE,504,/private/var/User
+88,MBP51-VY,C02XK4YRJG5H,imanechaouki,FALSE,FALSE,506,/Users/imanechaouki
+88,MBP51-VY,C02XK4YRJG5H,admin,TRUE,TRUE,503,/Users/admin
+88,MBP51-VY,C02XK4YRJG5H,SamuelThissen,FALSE,TRUE,501,/Users/sandytruong
+88,MBP51-VY,C02XK4YRJG5H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+88,MBP51-VY,C02XK4YRJG5H,imane,FALSE,FALSE,505,/Users/imane
+106,MBP53-VY,C02ZW74TMD6M,User,TRUE,FALSE,502,/private/var/User
+106,MBP53-VY,C02ZW74TMD6M,admin,TRUE,TRUE,501,/Users/admin
+105,MBP54-VY,C02ZMD85MD6M,admin,TRUE,TRUE,501,/Users/admin
+105,MBP54-VY,C02ZMD85MD6M,User,TRUE,FALSE,503,/private/var/User
+105,MBP54-VY,C02ZMD85MD6M,postgres,FALSE,FALSE,502,/Library/PostgreSQL/15
+110,MBP55-VY,C02ZW5FVMD6M,aminekacimi,TRUE,TRUE,501,/Users/aminekacimi
+110,MBP55-VY,C02ZW5FVMD6M,User,TRUE,FALSE,502,/private/var/User
+108,MBP57-VY,C02ZW75AMD6M,User,TRUE,FALSE,503,/private/var/User
+108,MBP57-VY,C02ZW75AMD6M,postgres,FALSE,FALSE,502,/Library/PostgreSQL/16
+108,MBP57-VY,C02ZW75AMD6M,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+108,MBP57-VY,C02ZW75AMD6M,vault,FALSE,FALSE,510,/opt/vault
+108,MBP57-VY,C02ZW75AMD6M,virtuocode,TRUE,TRUE,501,/Users/virtuocode
+113,MBP58-VY,C02ZMDKJMD6M,youssef,TRUE,TRUE,503,/Users/youssef
+113,MBP58-VY,C02ZMDKJMD6M,User,TRUE,FALSE,504,/private/var/User
+113,MBP58-VY,C02ZMDKJMD6M,KACIMI,TRUE,TRUE,502,/Users/KACIMI
+113,MBP58-VY,C02ZMDKJMD6M,macports,FALSE,FALSE,501,/opt/local/var/macports/home
+103,MBP61-VY,FVFXM3QXHV29,annelemoine,FALSE,TRUE,503,/Users/annelemoine
+103,MBP61-VY,FVFXM3QXHV29,User,TRUE,FALSE,501,/private/var/User
+103,MBP61-VY,FVFXM3QXHV29,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+103,MBP61-VY,FVFXM3QXHV29,admin,TRUE,TRUE,502,/Users/admin
+16,MBP62-VY,C02CLQ2NML7H,User,TRUE,FALSE,501,/private/var/User
+16,MBP62-VY,C02CLQ2NML7H,admin_temp,TRUE,FALSE,505,/var/private/admin_temp
+16,MBP62-VY,C02CLQ2NML7H,admin,TRUE,TRUE,502,/Users/admin
+16,MBP62-VY,C02CLQ2NML7H,SuperAdmin,FALSE,FALSE,503,/Users/Thomas
+16,MBP62-VY,C02CLQ2NML7H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+16,MBP62-VY,C02CLQ2NML7H,lea.ferlay,FALSE,TRUE,504,/Users/lea.ferlay
+63,MBP64-VY,FVFXV4MPHV29,admin,TRUE,TRUE,501,/Users/admin
+63,MBP64-VY,FVFXV4MPHV29,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+63,MBP64-VY,FVFXV4MPHV29,user,FALSE,TRUE,502,/Users/user
+38,MBP68-VY,C02CWATJP3XY,User,TRUE,FALSE,504,/private/var/User
+38,MBP68-VY,C02CWATJP3XY,Clotilde,FALSE,TRUE,503,/Users/clotilde
+38,MBP68-VY,C02CWATJP3XY,admin,TRUE,TRUE,502,/Users/admin
+53,MBP69-VY,C02CWAYSP3XY,admin,TRUE,TRUE,503,/Users/admin
+53,MBP69-VY,C02CWAYSP3XY,User,TRUE,FALSE,502,/private/var/User
+53,MBP69-VY,C02CWAYSP3XY,raphaelleduchamp,FALSE,TRUE,504,/Users/raphaelleduchamp
+50,MBP75-VY,FVFDT2PMQ05P,User,TRUE,FALSE,502,/private/var/User
+50,MBP75-VY,FVFDT2PMQ05P,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+50,MBP75-VY,FVFDT2PMQ05P,chloejoly,TRUE,TRUE,501,/Users/chloejoly
+30,MBP77-VY,FVFDT2NCQ05P,User,TRUE,FALSE,503,/private/var/User
+30,MBP77-VY,FVFDT2NCQ05P,admin,TRUE,TRUE,502,/Users/admin
+30,MBP77-VY,FVFDT2NCQ05P,riikkapummi,TRUE,TRUE,501,/Users/riikkapummi
+30,MBP77-VY,FVFDT2NCQ05P,tempadmin,TRUE,FALSE,598,/private/var/.hidden/tempadmin
+26,MBP78-VY,FVFDQMFXQ05D,admin,TRUE,TRUE,501,/Users/admin
+26,MBP78-VY,FVFDQMFXQ05D,Temp Admin Bouchra,TRUE,FALSE,504,/Users
+26,MBP78-VY,FVFDQMFXQ05D,User,TRUE,FALSE,503,/private/var/User
+26,MBP78-VY,FVFDQMFXQ05D,andrea.herrerovillar,FALSE,TRUE,505,/Users/andrea.herrerovillar
+26,MBP78-VY,FVFDQMFXQ05D,collaborateur,FALSE,TRUE,502,/Users/collaborateur
+26,MBP78-VY,FVFDQMFXQ05D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+84,MBP79-VY,FVFDT7PLQ05D,nathalieterwingen,FALSE,TRUE,501,/Users/nathalieterwingen
+84,MBP79-VY,FVFDT7PLQ05D,User,TRUE,FALSE,503,/private/var/User
+84,MBP79-VY,FVFDT7PLQ05D,admin,TRUE,TRUE,502,/Users/admin
+84,MBP79-VY,FVFDT7PLQ05D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+65,MBP80-VY,FVFDX0R6Q05P,User,TRUE,FALSE,503,/private/var/User
+65,MBP80-VY,FVFDX0R6Q05P,Admin,TRUE,TRUE,502,/Users/Admin
+65,MBP80-VY,FVFDX0R6Q05P,lauremattrand,FALSE,TRUE,501,/Users/lauremattrand
+65,MBP80-VY,FVFDX0R6Q05P,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+15,MBP81-VY,FVFDVH39Q05D,jamf,TRUE,FALSE,503,/private/var/temp_admin
+15,MBP81-VY,FVFDVH39Q05D,User,TRUE,FALSE,504,/private/var/User
+15,MBP81-VY,FVFDVH39Q05D,Thomas,FALSE,TRUE,502,/Users/Thomas
+15,MBP81-VY,FVFDVH39Q05D,admin,TRUE,TRUE,501,/Users/admin
+15,MBP81-VY,FVFDVH39Q05D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+100,MBP85-VY,C02F5A5UMD6M,secuser,FALSE,FALSE,505,/var/private
+100,MBP85-VY,C02F5A5UMD6M,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+100,MBP85-VY,C02F5A5UMD6M,User,TRUE,FALSE,502,/private/var/User
+100,MBP85-VY,C02F5A5UMD6M,mathieuh,FALSE,TRUE,504,/Users/mathieuh
+100,MBP85-VY,C02F5A5UMD6M,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+100,MBP85-VY,C02F5A5UMD6M,collaborateur,FALSE,TRUE,503,/Users/collaborateur
+43,MBP87-VY,FVFF76ZBQ05N,ad,TRUE,TRUE,501,/Users/admin
+43,MBP87-VY,FVFF76ZBQ05N,Sadmin,TRUE,FALSE,504,/private/var
+43,MBP87-VY,FVFF76ZBQ05N,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+43,MBP87-VY,FVFF76ZBQ05N,User,TRUE,FALSE,503,/private/var/User
+43,MBP87-VY,FVFF76ZBQ05N,christinamenga,FALSE,TRUE,502,/Users/christinamenga
+80,MBP88-VY,C02F5A68MD6M,aymane.azouagh,FALSE,TRUE,501,/Users/aymane.azouagh
+80,MBP88-VY,C02F5A68MD6M,secuser,FALSE,FALSE,502,/var/private
+80,MBP88-VY,C02F5A68MD6M,jamf,TRUE,FALSE,505,/private/var/temp_admin
+80,MBP88-VY,C02F5A68MD6M,manal.mounir,FALSE,TRUE,504,/Users/manal.mounir
+80,MBP88-VY,C02F5A68MD6M,User,TRUE,FALSE,503,/private/var/User
+87,MBP89-VY,C02F51N7MD6P,SuperAdmin,TRUE,FALSE,501,/Users/SuperAdmin
+87,MBP89-VY,C02F51N7MD6P,sayfoudinesoumaya,FALSE,TRUE,502,/Users/sayfoudinesoumaya
+35,MBP94-VY,FVFFVBN3Q05D,User,TRUE,FALSE,503,/private/var/User
+35,MBP94-VY,FVFFVBN3Q05D,frederic,FALSE,TRUE,504,/Users/frederic
+35,MBP94-VY,FVFFVBN3Q05D,admin,TRUE,TRUE,502,/Users/admin
+35,MBP94-VY,FVFFVBN3Q05D,marianne,TRUE,TRUE,501,/Users/collaborateur
+35,MBP94-VY,FVFFVBN3Q05D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+35,MBP94-VY,FVFFVBN3Q05D,com.malwarebytes.mbam.nobody,FALSE,FALSE,1000,/var/empty
+70,MBP95-VY,FVFG72Y8Q05D,SuperAdmin,TRUE,FALSE,502,/Users/SuperAdmin
+70,MBP95-VY,FVFG72Y8Q05D,User,TRUE,FALSE,501,/private/var/User
+70,MBP95-VY,FVFG72Y8Q05D,manondehepcee,TRUE,TRUE,503,/Users/manondehepcee
+70,MBP95-VY,FVFG72Y8Q05D,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+13,MBP96-VY,L17FY2TTV6,admin,TRUE,TRUE,501,/Users/admin
+13,MBP96-VY,L17FY2TTV6,User,TRUE,FALSE,503,/private/var/User
+13,MBP96-VY,L17FY2TTV6,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+13,MBP96-VY,L17FY2TTV6,elyselaboure,FALSE,TRUE,502,/Users/elyselaboure
+41,MBP97-VY,N4C402G9DW,admin,TRUE,TRUE,501,/Users/admin
+41,MBP97-VY,N4C402G9DW,ahmed_dehbi,FALSE,TRUE,503,/Users/ahmed_dehbi
+41,MBP97-VY,N4C402G9DW,User,TRUE,FALSE,504,/private/var/User
+41,MBP97-VY,N4C402G9DW,collaborateur,FALSE,TRUE,502,/Users/collaborateur
+41,MBP97-VY,N4C402G9DW,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+37,MBP98-VY,FVFH34QYQ05N,admin,TRUE,TRUE,501,/Users/admin
+37,MBP98-VY,FVFH34QYQ05N,collaborateur,FALSE,TRUE,502,/Users/collaborateur
+37,MBP98-VY,FVFH34QYQ05N,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+37,MBP98-VY,FVFH34QYQ05N,User,TRUE,FALSE,503,/private/var/User
+37,MBP98-VY,FVFH34QYQ05N,ludivine.santos,FALSE,TRUE,504,/Users/ludivine.santos
+62,MBP99-VY,FVFH148KQ05F,User,TRUE,FALSE,503,/private/var/User
+62,MBP99-VY,FVFH148KQ05F,admin,TRUE,TRUE,502,/Users/admin
+62,MBP99-VY,FVFH148KQ05F,Collaborateur,FALSE,TRUE,501,/Users/collaborateur
+62,MBP99-VY,FVFH148KQ05F,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+62,MBP99-VY,FVFH148KQ05F,marieroux,FALSE,TRUE,504,/Users/marieroux
+134,Nelly Hyvernaud,C02DT9Z1ML7H,User,TRUE,FALSE,504,/private/var/User
+134,Nelly Hyvernaud,C02DT9Z1ML7H,nellyhyvernaud,FALSE,TRUE,503,/Users/nellyhyvernaud
+134,Nelly Hyvernaud,C02DT9Z1ML7H,admin,TRUE,TRUE,501,/Users/admin
+134,Nelly Hyvernaud,C02DT9Z1ML7H,collaborateur,FALSE,TRUE,502,/Users/collaborateur
+134,Nelly Hyvernaud,C02DT9Z1ML7H,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin
+136,Patrick's MacBook Pro,KF24GYDT23,SuperAdmin,TRUE,TRUE,501,/Users/SuperAdmin
+136,Patrick's MacBook Pro,KF24GYDT23,tempadmin,TRUE,TRUE,598,/private/var/.hidden/tempadmin
+136,Patrick's MacBook Pro,KF24GYDT23,User,TRUE,FALSE,502,/private/var/User
+136,Patrick's MacBook Pro,KF24GYDT23,patrickkohnen,FALSE,TRUE,503,/Users/patrickkohnen
+141,Samir’s MacBook Pro,JW1Y2GK9YY,samirelhozemri,TRUE,TRUE,501,/Users/samirelhozemri
+141,Samir’s MacBook Pro,JW1Y2GK9YY,adminvirtuology,TRUE,TRUE,503,/Users/adminvirtuology
+141,Samir’s MacBook Pro,JW1Y2GK9YY,User,TRUE,FALSE,502,/private/var/User
+141,Samir’s MacBook Pro,JW1Y2GK9YY,tempadmin,TRUE,FALSE,598,/var/.hidden/tempadmin

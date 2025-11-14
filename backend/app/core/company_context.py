@@ -37,7 +37,10 @@ COMPANY_CONTEXT = {
             "1. Rappeler que l'utilisateur n'est pas administrateur",
             "2. Les installations nécessitent une intervention IT",
             "3. Les paramètres système sont gérés par Jamf",
-            "4. Vérifier les profils de configuration Jamf si problème de permissions"
+            "4. L'utilisateur NE PEUT PAS modifier: Réglages système, Login Items, paramètres de sécurité, installations",
+            "5. L'utilisateur PEUT: redémarrer, redémarrer Finder, vider le cache Safari, fermer/rouvrir des apps",
+            "6. Si problème nécessite modifications système → Proposer IMMÉDIATEMENT un ticket",
+            "7. Vérifier les profils de configuration Jamf si problème de permissions"
         ]
     }
 }

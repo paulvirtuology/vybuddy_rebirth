@@ -25,6 +25,209 @@ class SupabaseClient:
             self.supabase = create_client(self.url, self.key)
         return self.supabase
     
+    async def create_or_update_conversation(
+        self,
+        session_id: str,
+        user_id: str,
+        title: str = "Nouveau chat"
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Crée ou met à jour une conversation
+        
+        Args:
+            session_id: ID de la session
+            user_id: ID de l'utilisateur
+            title: Titre de la conversation
+            
+        Returns:
+            Données de la conversation créée/mise à jour
+        """
+        try:
+            client = self._get_client()
+            
+            # Vérifier si la conversation existe
+            existing = client.table("conversations")\
+                .select("*")\
+                .eq("session_id", session_id)\
+                .eq("user_id", user_id)\
+                .execute()
+            
+            if existing.data and len(existing.data) > 0:
+                # Mettre à jour
+                result = client.table("conversations")\
+                    .update({
+                        "title": title,
+                        "updated_at": datetime.utcnow().isoformat()
+                    })\
+                    .eq("session_id", session_id)\
+                    .eq("user_id", user_id)\
+                    .execute()
+                return result.data[0] if result.data else None
+            else:
+                # Créer
+                data = {
+                    "session_id": session_id,
+                    "user_id": user_id,
+                    "title": title,
+                    "created_at": datetime.utcnow().isoformat(),
+                    "updated_at": datetime.utcnow().isoformat()
+                }
+                result = client.table("conversations").insert(data).execute()
+                return result.data[0] if result.data else None
+                
+        except Exception as e:
+            logger.error(
+                "Error creating/updating conversation",
+                error=str(e),
+                exc_info=True
+            )
+            return None
+    
+    async def get_user_conversations(
+        self,
+        user_id: str,
+        limit: int = 50
+    ) -> list:
+        """
+        Récupère toutes les conversations d'un utilisateur
+        
+        Args:
+            user_id: ID de l'utilisateur
+            limit: Nombre maximum de conversations
+            
+        Returns:
+            Liste des conversations triées par date de mise à jour (plus récentes en premier)
+        """
+        try:
+            client = self._get_client()
+            
+            result = client.table("conversations")\
+                .select("*")\
+                .eq("user_id", user_id)\
+                .order("updated_at", desc=True)\
+                .limit(limit)\
+                .execute()
+            
+            return result.data or []
+            
+        except Exception as e:
+            logger.error(
+                "Error getting user conversations",
+                error=str(e),
+                exc_info=True
+            )
+            return []
+    
+    async def save_message(
+        self,
+        session_id: str,
+        user_id: str,
+        message_type: str,
+        content: str,
+        agent_used: Optional[str] = None,
+        metadata: Dict[str, Any] = None
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Sauvegarde un message dans une conversation
+        
+        Args:
+            session_id: ID de la session
+            user_id: ID de l'utilisateur
+            message_type: Type de message ('user' ou 'bot')
+            content: Contenu du message
+            agent_used: Agent utilisé (pour les messages bot)
+            metadata: Métadonnées supplémentaires
+            
+        Returns:
+            Données du message sauvegardé
+        """
+        try:
+            client = self._get_client()
+            
+            data = {
+                "session_id": session_id,
+                "user_id": user_id,
+                "message_type": message_type,
+                "content": content,
+                "agent_used": agent_used,
+                "metadata": metadata or {},
+                "created_at": datetime.utcnow().isoformat()
+            }
+            
+            result = client.table("interactions").insert(data).execute()
+            
+            # Mettre à jour la date de mise à jour de la conversation
+            await self.create_or_update_conversation(session_id, user_id)
+            
+            logger.debug(
+                "Message saved to Supabase",
+                session_id=session_id,
+                message_type=message_type
+            )
+            
+            return result.data[0] if result.data else None
+            
+        except Exception as e:
+            logger.error(
+                "Error saving message to Supabase",
+                error=str(e),
+                exc_info=True
+            )
+            return None
+    
+    async def get_conversation_messages(
+        self,
+        session_id: str,
+        user_id: str,
+        limit: int = 100
+    ) -> list:
+        """
+        Récupère tous les messages d'une conversation
+        
+        Args:
+            session_id: ID de la session
+            user_id: ID de l'utilisateur (pour vérifier l'accès)
+            limit: Nombre maximum de messages
+            
+        Returns:
+            Liste des messages triés par date de création (plus anciens en premier)
+        """
+        try:
+            client = self._get_client()
+            
+            # Vérifier que la conversation appartient à l'utilisateur
+            conv_check = client.table("conversations")\
+                .select("id")\
+                .eq("session_id", session_id)\
+                .eq("user_id", user_id)\
+                .execute()
+            
+            if not conv_check.data or len(conv_check.data) == 0:
+                logger.warning(
+                    "Conversation access denied",
+                    session_id=session_id,
+                    user_id=user_id
+                )
+                return []
+            
+            result = client.table("interactions")\
+                .select("*")\
+                .eq("session_id", session_id)\
+                .eq("user_id", user_id)\
+                .order("created_at", desc=False)\
+                .limit(limit)\
+                .execute()
+            
+            return result.data or []
+            
+        except Exception as e:
+            logger.error(
+                "Error getting conversation messages",
+                error=str(e),
+                exc_info=True
+            )
+            return []
+    
     async def log_interaction(
         self,
         session_id: str,
@@ -35,7 +238,7 @@ class SupabaseClient:
         metadata: Dict[str, Any] = None
     ):
         """
-        Enregistre une interaction dans Supabase
+        Enregistre une interaction dans Supabase (méthode legacy, utilise save_message)
         
         Args:
             session_id: ID de la session
@@ -46,27 +249,29 @@ class SupabaseClient:
             metadata: Métadonnées supplémentaires
         """
         try:
-            client = self._get_client()
+            # Sauvegarder le message utilisateur
+            await self.save_message(
+                session_id=session_id,
+                user_id=user_id,
+                message_type="user",
+                content=user_message
+            )
             
-            data = {
-                "session_id": session_id,
-                "user_id": user_id,
-                "user_message": user_message,
-                "bot_response": bot_response,
-                "agent_used": agent_used,
-                "metadata": metadata or {},
-                "created_at": datetime.utcnow().isoformat()
-            }
-            
-            result = client.table("interactions").insert(data).execute()
+            # Sauvegarder la réponse du bot
+            await self.save_message(
+                session_id=session_id,
+                user_id=user_id,
+                message_type="bot",
+                content=bot_response,
+                agent_used=agent_used,
+                metadata=metadata
+            )
             
             logger.info(
                 "Interaction logged to Supabase",
                 session_id=session_id,
                 agent_used=agent_used
             )
-            
-            return result.data
             
         except Exception as e:
             logger.error(
@@ -78,36 +283,26 @@ class SupabaseClient:
     async def get_interaction_history(
         self,
         session_id: str,
+        user_id: str = None,
         limit: int = 50
     ) -> list:
         """
-        Récupère l'historique des interactions pour une session
+        Récupère l'historique des interactions pour une session (méthode legacy)
+        Utilise maintenant get_conversation_messages
         
         Args:
             session_id: ID de la session
+            user_id: ID de l'utilisateur (requis pour la sécurité)
             limit: Nombre maximum d'interactions
             
         Returns:
             Liste des interactions
         """
-        try:
-            client = self._get_client()
-            
-            result = client.table("interactions")\
-                .select("*")\
-                .eq("session_id", session_id)\
-                .order("created_at", desc=True)\
-                .limit(limit)\
-                .execute()
-            
-            return result.data or []
-            
-        except Exception as e:
-            logger.error(
-                "Error getting interaction history",
-                error=str(e)
-            )
+        if not user_id:
+            logger.warning("get_interaction_history called without user_id")
             return []
+        
+        return await self.get_conversation_messages(session_id, user_id, limit)
     
     async def log_ticket_creation(
         self,

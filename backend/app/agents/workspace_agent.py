@@ -76,9 +76,9 @@ Soyez humain, chaleureux mais CONCIS. Évitez les répétitions et les phrases t
 """
         
         try:
-            # Utiliser le streaming si un callback est fourni
+            # Utiliser generate_and_stream_response qui génère d'abord, puis stream
             if stream_callback:
-                response_text = await self.stream_response(
+                response_text = await self.generate_and_stream_response(
                     llm=llm,
                     system_prompt=system_prompt,
                     user_prompt=prompt,

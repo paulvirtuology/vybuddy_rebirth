@@ -1,0 +1,3 @@
+"""
+Middleware pour l'authentification
+"""

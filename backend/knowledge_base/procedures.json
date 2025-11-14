@@ -1,0 +1,622 @@
+[
+  {
+    "title": "Procédure de Support pour Problèmes macOS",
+    "category": "macos_issues",
+    "description": "Procédure standardisée pour diagnostiquer et résoudre les problèmes courants sur macOS.",
+    "diagnostic_questions": [
+      "Quel est le modèle et l'année de votre Mac?",
+      "Avez-vous récemment installé une mise à jour ou un nouveau logiciel?",
+      "Pouvez-vous décrire le problème en détail?",
+      "Avez-vous redémarré votre Mac depuis l'apparition du problème?",
+      "Le problème est-il lié à une application spécifique?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier les mises à jour macOS",
+        "details": "Accédez à Préférences Système > Mise à jour de logiciels et installez les mises à jour disponibles.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Redémarrer le Mac",
+        "details": "Demandez à l'utilisateur de redémarrer le Mac pour voir si le problème persiste.",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Réinitialiser la NVRAM",
+        "details": "Éteignez le Mac, puis rallumez-le en maintenant les touches Option + Command + P + R pendant environ 20 secondes.",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Vérifier les autorisations des fichiers",
+        "details": "Utilisez l'Utilitaire de disque pour réparer les autorisations des fichiers.",
+        "requires_admin": true
+      },
+      {
+        "step": 5,
+        "action": "Réinstaller l'application problématique",
+        "details": "Si le problème est lié à une application spécifique, désinstallez et réinstallez l'application.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème persiste après avoir suivi toutes les étapes de résolution",
+      "required_fields": {
+        "title": "Problème macOS - [Description courte du problème]",
+        "description": "Inclure le modèle du Mac, la version de macOS, les étapes déjà suivies et les résultats obtenus.",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Problèmes de mise à jour macOS",
+      "Problèmes de connexion réseau",
+      "Applications qui ne répondent pas",
+      "Problèmes de démarrage"
+    ],
+    "source_tickets_count": 8
+  },
+  {
+    "title": "Procédure de Gestion des Comptes Email",
+    "category": "email_accounts",
+    "description": "Procédure standardisée pour traiter les demandes liées aux comptes email.",
+    "diagnostic_questions": [
+      "Quel est le problème spécifique rencontré avec le compte email?",
+      "L'utilisateur a-t-il déjà essayé de se reconnecter ou de redémarrer son client de messagerie?",
+      "Le problème concerne-t-il l'envoi, la réception ou les deux?",
+      "Y a-t-il un message d'erreur spécifique affiché?",
+      "Le problème est-il récurrent ou s'est-il produit pour la première fois?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier la connectivité Internet de l'utilisateur",
+        "details": "S'assurer que l'utilisateur est connecté à Internet.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Demander à l'utilisateur de redémarrer le client de messagerie",
+        "details": "Fermer et rouvrir l'application de messagerie.",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Vérifier les paramètres du serveur de messagerie",
+        "details": "S'assurer que les paramètres SMTP/IMAP sont corrects.",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Vérifier les filtres et règles de messagerie",
+        "details": "S'assurer qu'aucun filtre ou règle ne bloque les emails.",
+        "requires_admin": false
+      },
+      {
+        "step": 5,
+        "action": "Créer ou modifier un compte email",
+        "details": "Suivre les procédures internes pour la création ou modification de comptes.",
+        "requires_admin": true
+      },
+      {
+        "step": 6,
+        "action": "Ajouter une bannière à la signature email",
+        "details": "Utiliser les outils de gestion de signature pour ajouter la bannière.",
+        "requires_admin": true
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème persiste après les étapes de résolution ou nécessite une intervention administrative",
+      "required_fields": {
+        "title": "[Email Issue] Description courte du problème",
+        "description": "Détails du problème, étapes de résolution tentées, et tout message d'erreur",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Problèmes de connexion au compte email",
+      "Erreurs de livraison des emails",
+      "Demandes de création ou suppression de comptes",
+      "Ajout de bannières ou signatures"
+    ],
+    "source_tickets_count": 30
+  },
+  {
+    "title": "Procédure d'accès et de résolution des problèmes Google Drive",
+    "category": "drive_access",
+    "description": "Procédure pour diagnostiquer et résoudre les problèmes d'accès et de gestion des fichiers sur Google Drive.",
+    "diagnostic_questions": [
+      "L'utilisateur a-t-il déjà eu accès au Drive ou est-ce une nouvelle demande?",
+      "Quel est le message d'erreur exact rencontré par l'utilisateur?",
+      "L'utilisateur a-t-il essayé d'accéder au Drive depuis un autre navigateur ou appareil?",
+      "L'utilisateur a-t-il récemment changé de compte Google ou de droits d'accès?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier les droits d'accès de l'utilisateur sur le Drive concerné.",
+        "details": "Accéder aux paramètres de partage du Drive et confirmer que l'utilisateur a les autorisations nécessaires.",
+        "requires_admin": true
+      },
+      {
+        "step": 2,
+        "action": "Demander à l'utilisateur de vider le cache et les cookies de son navigateur.",
+        "details": "Fournir des instructions spécifiques pour le navigateur utilisé par l'utilisateur.",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Vérifier si le fichier ou le dossier a été déplacé ou supprimé.",
+        "details": "Consulter l'historique des modifications du Drive pour identifier les actions récentes.",
+        "requires_admin": true
+      },
+      {
+        "step": 4,
+        "action": "Restaurer les fichiers supprimés si nécessaire.",
+        "details": "Utiliser la fonctionnalité de restauration de Google Drive pour récupérer les fichiers.",
+        "requires_admin": true
+      }
+    ],
+    "ticket_creation": {
+      "when": "Créer un ticket Odoo si le problème persiste après les étapes de résolution ou si une intervention technique avancée est nécessaire.",
+      "required_fields": {
+        "title": "Accès Drive - [Nom de l'utilisateur] - [Problème spécifique]",
+        "description": "Inclure les détails du problème, les étapes de diagnostic effectuées, et les résultats obtenus.",
+        "priority": "Haute si l'accès est bloqué pour des opérations critiques, sinon Moyenne."
+      }
+    },
+    "common_issues": [
+      "Problème d'accès dû à des droits insuffisants.",
+      "Fichiers déplacés ou supprimés par erreur.",
+      "Problèmes de cache ou de cookies du navigateur."
+    ],
+    "source_tickets_count": 18
+  },
+  {
+    "title": "Procédure de Gestion des Demandes Diverses",
+    "category": "other",
+    "description": "Procédure standardisée pour traiter les demandes diverses et variées.",
+    "diagnostic_questions": [
+      "Quel est le problème ou la demande spécifique?",
+      "Depuis quand ce problème se produit-il?",
+      "Y a-t-il eu des changements récents dans le système ou l'application?",
+      "L'utilisateur a-t-il déjà essayé de résoudre le problème? Si oui, comment?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier le type de demande",
+        "details": "Vérifier si la demande concerne une application spécifique, un accès, une facturation, etc.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Poser les questions de diagnostic",
+        "details": "Utiliser les questions de diagnostic pour mieux comprendre le problème.",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Vérifier les paramètres de base",
+        "details": "S'assurer que les paramètres de base (connexion, accès, configuration) sont corrects.",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Appliquer les solutions courantes",
+        "details": "Essayer des solutions courantes comme redémarrer l'application, vérifier les mises à jour, etc.",
+        "requires_admin": false
+      },
+      {
+        "step": 5,
+        "action": "Escalader si nécessaire",
+        "details": "Si le problème persiste, escalader au niveau supérieur avec toutes les informations collectées.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Créer un ticket Odoo si le problème ne peut pas être résolu immédiatement ou nécessite une intervention de niveau supérieur.",
+      "required_fields": {
+        "title": "[Catégorie] - Brève description du problème",
+        "description": "Inclure les détails du problème, les étapes de diagnostic effectuées, et toute information pertinente.",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Problèmes de redirection ou d'accès",
+      "Demandes de mise à jour ou de modification de paramètres",
+      "Problèmes de facturation ou de compte",
+      "Erreurs de connexion ou de service"
+    ],
+    "source_tickets_count": 30
+  },
+  {
+    "title": "Procédure de Gestion des Outils de Travail",
+    "category": "workspace_tools",
+    "description": "Procédure pour gérer les demandes d'accès et de configuration des outils de travail.",
+    "diagnostic_questions": [
+      "Quel outil ou service nécessite une assistance?",
+      "L'utilisateur a-t-il déjà un compte ou un accès partiel?",
+      "Y a-t-il un message d'erreur spécifique rencontré?",
+      "L'utilisateur a-t-il récemment changé de rôle ou de département?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier l'accès actuel de l'utilisateur",
+        "details": "Consulter le profil de l'utilisateur dans le système pour vérifier les accès existants.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Fournir ou mettre à jour l'accès requis",
+        "details": "Ajouter l'utilisateur aux groupes ou services nécessaires via l'interface d'administration.",
+        "requires_admin": true
+      },
+      {
+        "step": 3,
+        "action": "Confirmer avec l'utilisateur",
+        "details": "Demander à l'utilisateur de vérifier l'accès et de confirmer que le problème est résolu.",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Documenter la résolution",
+        "details": "Mettre à jour le ticket avec les actions entreprises et la confirmation de l'utilisateur.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème persiste après les étapes de résolution ou nécessite une intervention technique avancée.",
+      "required_fields": {
+        "title": "Demande d'accès ou de configuration - [Nom de l'outil] - [Nom de l'utilisateur]",
+        "description": "Inclure les détails de la demande, les étapes de diagnostic effectuées, et toute erreur rencontrée.",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Accès refusé ou non configuré",
+      "Problèmes de connexion avec des identifiants incorrects",
+      "Mise à jour nécessaire des informations de compte"
+    ],
+    "source_tickets_count": 30
+  },
+  {
+    "title": "Procédure de Résolution des Problèmes de Connexion Wi-Fi",
+    "category": "network_wifi",
+    "description": "Procédure standardisée pour diagnostiquer et résoudre les problèmes de connexion Wi-Fi.",
+    "diagnostic_questions": [
+      "Le problème concerne-t-il un réseau Wi-Fi spécifique ? Si oui, lequel ?",
+      "Avez-vous redémarré votre routeur/modem récemment ?",
+      "D'autres appareils peuvent-ils se connecter au réseau Wi-Fi ?",
+      "Le problème persiste-t-il après avoir redémarré votre ordinateur ?",
+      "Pouvez-vous voir le réseau Wi-Fi dans la liste des réseaux disponibles ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier la visibilité du réseau Wi-Fi",
+        "details": "Demandez à l'utilisateur de vérifier si le réseau Wi-Fi est visible dans la liste des réseaux disponibles.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Redémarrer le routeur/modem",
+        "details": "Demandez à l'utilisateur de redémarrer son routeur/modem et d'attendre 2 minutes avant de réessayer de se connecter.",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Redémarrer l'ordinateur",
+        "details": "Demandez à l'utilisateur de redémarrer son ordinateur pour réinitialiser les paramètres réseau.",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Exécuter une commande Flush DNS",
+        "details": "Demandez à l'utilisateur d'ouvrir l'invite de commande et d'exécuter 'ipconfig /flushdns'.",
+        "requires_admin": false
+      },
+      {
+        "step": 5,
+        "action": "Vérifier les paramètres de l'adaptateur réseau",
+        "details": "Assurez-vous que l'adaptateur réseau est activé et que les paramètres IP sont configurés pour obtenir automatiquement une adresse IP.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème persiste après avoir suivi toutes les étapes de résolution.",
+      "required_fields": {
+        "title": "Problème de connexion Wi-Fi - [Nom de l'utilisateur]",
+        "description": "Inclure les détails des étapes suivies, les réponses aux questions de diagnostic, et toute erreur ou message observé.",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Réseau Wi-Fi non visible",
+      "Connexion intermittente",
+      "Erreur d'authentification Wi-Fi",
+      "Problème de configuration de l'adaptateur réseau"
+    ],
+    "source_tickets_count": 20
+  },
+  {
+    "title": "Gestion des Licences Logiciels",
+    "category": "licenses",
+    "description": "Procédure pour gérer les demandes de licences logicielles, y compris l'achat, le renouvellement, et la suppression.",
+    "diagnostic_questions": [
+      "Quel logiciel nécessite une licence ?",
+      "S'agit-il d'une nouvelle licence, d'un renouvellement ou d'une suppression ?",
+      "Quel est le nombre de licences nécessaires ?",
+      "Quel est le compte utilisateur ou l'adresse email associée ?",
+      "Y a-t-il une date limite pour cette demande ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier l'existence d'une licence actuelle",
+        "details": "Consulter le système de gestion des licences pour vérifier si une licence est déjà attribuée à l'utilisateur.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Procéder à l'achat ou au renouvellement de la licence",
+        "details": "Utiliser le portail d'achat de l'entreprise pour acheter ou renouveler la licence nécessaire.",
+        "requires_admin": true
+      },
+      {
+        "step": 3,
+        "action": "Attribuer la licence à l'utilisateur",
+        "details": "Associer la licence à l'utilisateur dans le système de gestion des licences.",
+        "requires_admin": true
+      },
+      {
+        "step": 4,
+        "action": "Confirmer la mise à jour avec l'utilisateur",
+        "details": "Envoyer un email de confirmation à l'utilisateur avec les détails de la licence.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si la demande ne peut être résolue immédiatement ou nécessite une approbation spéciale",
+      "required_fields": {
+        "title": "[Licence] Demande pour [Nom du logiciel] - [Nouvelle/Renouvellement/Suppression]",
+        "description": "Inclure le nom du logiciel, le type de demande, le nombre de licences, l'utilisateur concerné, et toute date limite.",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Licence expirée",
+      "Erreur lors de l'attribution de la licence",
+      "Problèmes de paiement pour le renouvellement"
+    ],
+    "source_tickets_count": 30
+  },
+  {
+    "title": "Procédure d'accès et de résolution des problèmes sur Monday",
+    "category": "monday_access",
+    "description": "Procédure pour diagnostiquer et résoudre les problèmes d'accès et de fonctionnalités sur Monday.",
+    "diagnostic_questions": [
+      "L'utilisateur a-t-il déjà un compte sur Monday ?",
+      "Quel type d'accès ou de fonctionnalité est requis (ex: accès à un board spécifique, ajout de membre, etc.) ?",
+      "L'utilisateur rencontre-t-il un message d'erreur spécifique ?",
+      "Le problème est-il survenu après une modification récente (ex: ajout d'un nouveau membre, changement de droits) ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier l'existence du compte utilisateur sur Monday",
+        "details": "Accéder à l'interface d'administration de Monday et rechercher l'utilisateur.",
+        "requires_admin": true
+      },
+      {
+        "step": 2,
+        "action": "Assurer que l'utilisateur a les droits d'accès appropriés",
+        "details": "Vérifier et ajuster les permissions sur les boards ou les dossiers concernés.",
+        "requires_admin": true
+      },
+      {
+        "step": 3,
+        "action": "Réinitialiser les droits d'accès si nécessaire",
+        "details": "Supprimer et réattribuer les droits d'accès pour résoudre les problèmes de permissions.",
+        "requires_admin": true
+      },
+      {
+        "step": 4,
+        "action": "Vérifier la connectivité et les paramètres réseau",
+        "details": "S'assurer que l'utilisateur peut se connecter à Internet et que les paramètres de pare-feu ne bloquent pas Monday.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème persiste après les étapes de résolution ou nécessite une intervention technique avancée.",
+      "required_fields": {
+        "title": "[Monday Access] - Problème d'accès pour [Nom de l'utilisateur]",
+        "description": "Inclure les détails de l'utilisateur, les étapes de diagnostic effectuées, et toute erreur rencontrée.",
+        "priority": "Haute si l'accès est bloquant pour le travail de l'utilisateur."
+      }
+    },
+    "common_issues": [
+      "Accès refusé à un board spécifique",
+      "Problème de permissions après ajout d'un nouveau membre",
+      "Erreur lors de la tentative de taguer un utilisateur",
+      "Problèmes de vue ou de chargement des dashboards"
+    ],
+    "source_tickets_count": 30
+  },
+  {
+    "title": "Procédure de Support pour les Systèmes de Réservation de Salles",
+    "category": "meeting_rooms",
+    "description": "Procédure pour diagnostiquer et résoudre les problèmes liés aux systèmes de réservation de salles de réunion.",
+    "diagnostic_questions": [
+      "Quel est le problème spécifique rencontré avec le système de réservation?",
+      "L'utilisateur a-t-il déjà utilisé le système de réservation auparavant?",
+      "Le problème concerne-t-il une salle spécifique ou toutes les salles?",
+      "L'utilisateur a-t-il reçu un message d'erreur? Si oui, lequel?",
+      "L'utilisateur a-t-il essayé de redémarrer l'application ou le système?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier l'accès utilisateur",
+        "details": "Assurez-vous que l'utilisateur a les droits d'accès nécessaires pour réserver des salles.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Vérifier la configuration du système de réservation",
+        "details": "Confirmez que le système de réservation est correctement configuré pour l'utilisateur et la salle concernée.",
+        "requires_admin": true
+      },
+      {
+        "step": 3,
+        "action": "Tester la réservation",
+        "details": "Effectuez un test de réservation pour vérifier si le problème persiste.",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Redémarrer le système",
+        "details": "Demandez à l'utilisateur de redémarrer l'application de réservation ou le système.",
+        "requires_admin": false
+      },
+      {
+        "step": 5,
+        "action": "Escalader au support N2",
+        "details": "Si le problème persiste après les étapes précédentes, escalader au support N2.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Créer un ticket Odoo si le problème n'est pas résolu après les étapes de résolution ou si une intervention administrative est nécessaire.",
+      "required_fields": {
+        "title": "Problème de réservation de salle - [Nom de l'utilisateur] - [Date]",
+        "description": "Inclure une description détaillée du problème, les étapes de diagnostic effectuées, et toute capture d'écran pertinente.",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Problème d'accès au système de réservation",
+      "Erreur lors de la tentative de réservation",
+      "Salle non disponible malgré la disponibilité affichée",
+      "Problème de synchronisation avec le calendrier"
+    ],
+    "source_tickets_count": 14
+  },
+  {
+    "title": "Procédure d'installation et de mise à jour de logiciels",
+    "category": "software_installation",
+    "description": "Procédure standard pour l'installation et la mise à jour de logiciels sur les ordinateurs des utilisateurs.",
+    "diagnostic_questions": [
+      "Quel est le nom du logiciel à installer ou mettre à jour ?",
+      "Sur quel système d'exploitation l'installation doit-elle être effectuée (Windows, macOS, etc.) ?",
+      "L'utilisateur a-t-il déjà une version antérieure du logiciel installée ?",
+      "Y a-t-il des messages d'erreur lors de l'installation ou de la mise à jour ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier la compatibilité du logiciel",
+        "details": "Assurez-vous que le logiciel est compatible avec le système d'exploitation de l'utilisateur.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Télécharger le logiciel depuis une source officielle",
+        "details": "Accédez au site officiel du logiciel ou à un store d'applications approuvé pour télécharger le programme d'installation.",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Exécuter le programme d'installation",
+        "details": "Lancez le programme d'installation et suivez les instructions à l'écran pour installer le logiciel.",
+        "requires_admin": true
+      },
+      {
+        "step": 4,
+        "action": "Vérifier l'installation",
+        "details": "Ouvrez le logiciel pour vous assurer qu'il fonctionne correctement et qu'il est à jour.",
+        "requires_admin": false
+      },
+      {
+        "step": 5,
+        "action": "Configurer le logiciel si nécessaire",
+        "details": "Effectuez les configurations initiales requises pour le bon fonctionnement du logiciel.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si l'installation échoue ou si des erreurs persistent après l'installation.",
+      "required_fields": {
+        "title": "Installation échouée: [Nom du logiciel]",
+        "description": "Inclure le nom du logiciel, le système d'exploitation, les messages d'erreur rencontrés, et les étapes déjà tentées.",
+        "priority": "High"
+      }
+    },
+    "common_issues": [
+      "Problème de compatibilité avec le système d'exploitation",
+      "Erreur de téléchargement ou fichier corrompu"
+    ],
+    "source_tickets_count": 30
+  },
+  {
+    "title": "Procédure de Support pour Timesheet",
+    "category": "timesheet",
+    "description": "Procédure standardisée pour résoudre les problèmes liés aux timesheets.",
+    "diagnostic_questions": [
+      "Quel est le problème spécifique avec la timesheet ?",
+      "Pouvez-vous accéder à la timesheet et voir les entrées existantes ?",
+      "Y a-t-il des clients ou des tâches manquants dans la liste déroulante ?",
+      "Avez-vous essayé de redémarrer l'application ou le navigateur ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Vérifier l'accès à la timesheet",
+        "details": "S'assurer que l'utilisateur peut accéder à la timesheet et qu'il n'y a pas de problème de connexion.",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Vérifier les permissions utilisateur",
+        "details": "Confirmer que l'utilisateur a les permissions nécessaires pour modifier la timesheet.",
+        "requires_admin": true
+      },
+      {
+        "step": 3,
+        "action": "Ajouter les clients ou tâches manquants",
+        "details": "Si des clients ou tâches sont manquants, les ajouter via le panneau d'administration.",
+        "requires_admin": true
+      },
+      {
+        "step": 4,
+        "action": "Corriger les entrées de temps erronées",
+        "details": "Modifier les entrées de temps incorrectes ou manquantes selon les informations fournies par l'utilisateur.",
+        "requires_admin": false
+      },
+      {
+        "step": 5,
+        "action": "Redémarrer l'application ou le navigateur",
+        "details": "Demander à l'utilisateur de redémarrer l'application ou le navigateur pour voir si le problème persiste.",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème persiste après les étapes de résolution ou nécessite une intervention technique avancée.",
+      "required_fields": {
+        "title": "Timesheet - [Problème spécifique]",
+        "description": "Décrire le problème, les étapes de résolution tentées, et toute information pertinente.",
+        "priority": "Moyenne"
+      }
+    },
+    "common_issues": [
+      "Saisie de dates impossible",
+      "Clients ou tâches manquants",
+      "Entrées de temps erronées",
+      "Problèmes d'accès à la timesheet"
+    ],
+    "source_tickets_count": 30
+  }
+]

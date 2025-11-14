@@ -57,7 +57,7 @@ class BaseAgent(ABC):
             ])
         return context
     
-    async def stream_response(
+    async def generate_and_stream_response(
         self,
         llm,
         system_prompt: str,
@@ -65,13 +65,13 @@ class BaseAgent(ABC):
         stream_callback: Optional[Callable[[str], None]] = None
     ) -> str:
         """
-        Stream une réponse du LLM et appelle le callback pour chaque token
+        Génère d'abord la réponse complète, puis la stream au frontend pour l'effet visuel
         
         Args:
             llm: Le LLM à utiliser
             system_prompt: Le prompt système
             user_prompt: Le prompt utilisateur
-            stream_callback: Callback appelé pour chaque token reçu
+            stream_callback: Callback appelé pour chaque token streamé (après génération)
             
         Returns:
             La réponse complète
@@ -81,25 +81,43 @@ class BaseAgent(ABC):
             HumanMessage(content=user_prompt)
         ]
         
-        full_response = ""
-        
+        # Étape 1: Générer la réponse complète d'abord (sans streaming)
         try:
-            async for chunk in llm.astream(messages):
-                if hasattr(chunk, 'content') and chunk.content:
-                    token = chunk.content
-                    full_response += token
-                    if stream_callback:
-                        await stream_callback(token)
-        except Exception as e:
-            # Si le streaming échoue, essayer avec ainvoke en fallback
-            logger.warning("Streaming failed, falling back to ainvoke", error=str(e))
             response = await llm.ainvoke(messages)
             full_response = response.content
+            
+            # Étape 2: Si un callback est fourni, streamer la réponse complète token par token
+            if stream_callback and full_response:
+                import asyncio
+                # Streamer la réponse mot par mot pour un effet visuel fluide
+                words = full_response.split(' ')
+                for i, word in enumerate(words):
+                    token = word + (' ' if i < len(words) - 1 else '')
+                    await stream_callback(token)
+                    # Petit délai pour l'effet visuel (peut être ajusté)
+                    await asyncio.sleep(0.02)  # 20ms entre les mots
+            
+            return full_response
+            
+        except Exception as e:
+            logger.error("Error generating response", error=str(e), exc_info=True)
+            # En cas d'erreur, retourner un message d'erreur
+            error_message = "Je rencontre un problème technique. Veuillez réessayer."
             if stream_callback:
-                # Envoyer la réponse complète d'un coup
-                await stream_callback(full_response)
-        
-        return full_response
+                await stream_callback(error_message)
+            return error_message
+    
+    async def stream_response(
+        self,
+        llm,
+        system_prompt: str,
+        user_prompt: str,
+        stream_callback: Optional[Callable[[str], None]] = None
+    ) -> str:
+        """
+        Méthode legacy - utilise maintenant generate_and_stream_response
+        """
+        return await self.generate_and_stream_response(llm, system_prompt, user_prompt, stream_callback)
     
     @abstractmethod
     async def process(

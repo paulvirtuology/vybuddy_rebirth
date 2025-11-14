@@ -1,0 +1,434 @@
+[
+  {
+    "title": "Demande accès dossier google drive partagé",
+    "category": "drive_access",
+    "description": "Procédure standard pour demande accès dossier google drive partagé",
+    "diagnostic_questions": [
+      "Quel/Quelle est la personne ?",
+      "Quel/Quelle est la criticité du dossier en question ?",
+      "la raison de la demande d’accès ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier la personne",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Identifier la criticité du dossier en question",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Demander la raison de la demande d’accès",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Envoyer ticket avec les détails vers odoo",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Demande de création de nouvelle adresse email",
+    "category": "email_accounts",
+    "description": "Procédure standard pour demande de création de nouvelle adresse email",
+    "diagnostic_questions": [
+      "les détails: Nom, société/bench, pays, fonction ?",
+      "les détails: Nom, société, personnes à inclure dans la boucle ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Demander les détails: Nom, société/bench, pays, fonction",
+        "details": "- Si nouvelle recrue: Il est impératif que c'est MyHR qui envoie la demande. Si non, rediriger la personne vers myhr (Service RH)",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Envoyer ticket avec les détails vers odoo",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Demander les détails: Nom, société, personnes à inclure dans la boucle",
+        "details": "- Si création boucle:",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Envoyer ticket avec les détails vers odoo",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Demande de licence pour un outil",
+    "category": "licenses",
+    "description": "Procédure standard pour demande de licence pour un outil",
+    "diagnostic_questions": [
+      "Quel/Quelle est la personne ?",
+      "Quel/Quelle est l’outil: ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier la personne",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Identifier l’outil:",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Microsoft Office: Demande validation N+1, Identifier la personne, envoi ticket vers odoo",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "OpenAI: Demande validation N+1, Identifier la personne, envoi ticket vers odoo",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Détails complets de la demande et informations collectées",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Problèmes de macbook",
+    "category": "macos_issues",
+    "description": "Procédure standard pour problèmes de macbook",
+    "diagnostic_questions": [
+      "Quel est le problème exact ?",
+      "Depuis quand le problème existe-t-il ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Premier diagnostic pour identifier si c’est un problème matériel ou logiciel ou infrastructure (Réseau, 2eme écran etc)",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Procédures standards de résolution de problèmes N1",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Si non résolu, ne pas insister et envoyer un ticket vers odoo avec les détails et les étapes déjà fait",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème n'est pas résolu après les tentatives de diagnostic",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Demande d’accès aux salles de réunion",
+    "category": "other",
+    "description": "Procédure standard pour demande d’accès aux salles de réunion",
+    "diagnostic_questions": [
+      "Quel/Quelle est la salle de réunion ?",
+      "Quel/Quelle est la personne ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier la salle de réunion",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Identifier la personne",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Créer un ticket vers odoo avec les détails",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Informer l’utilisateur sur la marche à suivre après la mise en place des droits d’accès aux salles: Ajout des liens vers les salles sur google calendar etc",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Demande de création de compte monday",
+    "category": "monday_access",
+    "description": "Procédure standard pour demande de création de compte monday",
+    "diagnostic_questions": [
+      "Quel/Quelle est la personne ?",
+      "et Analyser si c’est possible d’accorder un compte sans licence (Invité, observateur etc) ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier la personne",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Demander et Analyser si c’est possible d’accorder un compte sans licence (Invité, observateur etc)",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Si besoin de licence, demander si validation N+1",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Création de ticket vers odoo avec les détails",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Demande d’accès à un board monday",
+    "category": "other",
+    "description": "Procédure standard pour demande d’accès à un board monday",
+    "diagnostic_questions": [
+      "Quel/Quelle est la personne + board ?",
+      "Pouvez-vous analyser la criticité et la pertinence ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier la personne + Board",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Analyser la criticité et la pertinence",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Créer ticket odoo avec les détails",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Problème de connexion wifi",
+    "category": "network_wifi",
+    "description": "Procédure standard pour problème de connexion wifi",
+    "diagnostic_questions": [
+      "Quel est le problème exact ?",
+      "Depuis quand le problème existe-t-il ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Procédure de diagnostic et résolution standard",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Si toujours en échec, ne pas insister et créer un ticket odoo avec les détails (étapes déjà fait, pré diag etc)",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Si le problème n'est pas résolu après les tentatives de diagnostic",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Demande installation de logiciels",
+    "category": "software_installation",
+    "description": "Procédure standard pour demande installation de logiciels",
+    "diagnostic_questions": [
+      "Quel/Quelle est la personne ?",
+      "Quel/Quelle est le macbook de la personne ?",
+      "Pouvez-vous vérifier si macbook jamfé (base de données à jour): ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier la personne",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Identifier le macbook de la personne",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Vérifier si macbook jamfé (Base de données à jour):",
+        "details": "",
+        "requires_admin": true
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Détails complets de la demande et informations collectées",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  },
+  {
+    "title": "Problème de timesheet",
+    "category": "timesheet",
+    "description": "Procédure standard pour problème de timesheet",
+    "diagnostic_questions": [
+      "Quel/Quelle est la personne ?",
+      "Quel/Quelle est la problématique ?"
+    ],
+    "resolution_steps": [
+      {
+        "step": 1,
+        "action": "Identifier la personne",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 2,
+        "action": "Identifier la problématique",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 3,
+        "action": "Envoi de ticket vers odoo avec les détails",
+        "details": "",
+        "requires_admin": false
+      },
+      {
+        "step": 4,
+        "action": "Problème de google workspace",
+        "details": "",
+        "requires_admin": false
+      }
+    ],
+    "ticket_creation": {
+      "when": "Après avoir collecté toutes les informations nécessaires",
+      "required_fields": {
+        "title": "Résumé de la demande",
+        "description": "Tous les détails collectés, étapes déjà effectuées, et informations de diagnostic",
+        "priority": "Normal"
+      }
+    },
+    "common_issues": [],
+    "source_tickets_count": 0,
+    "is_standard": true
+  }
+]

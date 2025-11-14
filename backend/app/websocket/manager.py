@@ -29,10 +29,25 @@ class ConnectionManager:
     async def send_message(self, websocket: WebSocket, message: dict):
         """Envoie un message via WebSocket"""
         try:
+            # Vérifier l'état de la connexion avant d'envoyer
+            if websocket.client_state.name != "CONNECTED":
+                logger.warning(
+                    "WebSocket not connected, skipping message",
+                    state=websocket.client_state.name
+                )
+                return
+            
             await websocket.send_json(message)
+        except RuntimeError as e:
+            # Erreur si le WebSocket est fermé
+            if "close message has been sent" in str(e) or "Cannot call" in str(e):
+                logger.warning("WebSocket closed, cannot send message", error=str(e))
+                return
+            raise
         except Exception as e:
             logger.error("Error sending message", error=str(e))
-            raise
+            # Ne pas lever l'exception pour éviter de casser le flux
+            return
     
     async def broadcast(self, session_id: str, message: dict):
         """Diffuse un message à une session spécifique"""
