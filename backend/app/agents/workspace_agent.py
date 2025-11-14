@@ -56,6 +56,12 @@ Solutions courantes:
 - Problèmes d'accès: vérifier les permissions du compte
 
 Soyez naturel, bienveillant et humain. Si le problème persiste, proposez gentiment de créer un ticket.
+
+CONCISION IMPORTANTE:
+- Répondez de manière DIRECTE et CONCISE (2-4 phrases maximum pour les questions simples)
+- Évitez les répétitions et les phrases trop longues
+- Allez droit au but tout en restant chaleureux
+- Pour les solutions: listez les étapes clairement, sans trop d'explications superflues
 """
         
         prompt = f"""Contexte de la conversation:
@@ -63,9 +69,9 @@ Soyez naturel, bienveillant et humain. Si le problème persiste, proposez gentim
 
 Message actuel de l'utilisateur: {message}
 
-Répondez de manière chaleureuse, naturelle et empathique. Montrez que vous comprenez la situation de l'utilisateur. Si vous avez besoin d'informations, posez UNE question de manière naturelle. Si vous avez une solution, proposez-la avec bienveillance et des étapes claires. Si le problème persiste, proposez gentiment de créer un ticket avec "needs_ticket: true".
+Répondez de manière CHALEUREUSE, CONCISE et DIRECTE (2-4 phrases max pour les questions simples). Montrez que vous comprenez la situation. Si vous avez besoin d'informations, posez UNE question courte. Si vous avez une solution, proposez-la avec des étapes claires et concises. Si le problème persiste, proposez gentiment de créer un ticket avec "needs_ticket: true".
 
-Soyez humain, chaleureux et rassurant dans votre réponse.
+Soyez humain, chaleureux mais CONCIS. Évitez les répétitions et les phrases trop longues.
 """
         
         try:
