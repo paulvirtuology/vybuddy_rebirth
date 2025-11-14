@@ -72,12 +72,14 @@ class LangGraphSwarm:
     async def _network_node(self, state: dict) -> dict:
         """Nœud Network Agent"""
         try:
+            stream_callback = state.get("stream_callback")
             response = await self.network_agent.process(
                 message=state["message"],
                 session_id=state["session_id"],
                 user_id=state["user_id"],
                 history=state.get("history", []),
-                llm_provider=state["routing_decision"]["llm"]
+                llm_provider=state["routing_decision"]["llm"],
+                stream_callback=stream_callback
             )
             state["response"] = response
             state["agent_used"] = "network"
@@ -90,12 +92,14 @@ class LangGraphSwarm:
     async def _macos_node(self, state: dict) -> dict:
         """Nœud MacOS Agent"""
         try:
+            stream_callback = state.get("stream_callback")
             response = await self.macos_agent.process(
                 message=state["message"],
                 session_id=state["session_id"],
                 user_id=state["user_id"],
                 history=state.get("history", []),
-                llm_provider=state["routing_decision"]["llm"]
+                llm_provider=state["routing_decision"]["llm"],
+                stream_callback=stream_callback
             )
             state["response"] = response
             state["agent_used"] = "macos"
@@ -108,12 +112,14 @@ class LangGraphSwarm:
     async def _workspace_node(self, state: dict) -> dict:
         """Nœud Workspace Agent"""
         try:
+            stream_callback = state.get("stream_callback")
             response = await self.workspace_agent.process(
                 message=state["message"],
                 session_id=state["session_id"],
                 user_id=state["user_id"],
                 history=state.get("history", []),
-                llm_provider=state["routing_decision"]["llm"]
+                llm_provider=state["routing_decision"]["llm"],
+                stream_callback=stream_callback
             )
             state["response"] = response
             state["agent_used"] = "workspace"
@@ -126,12 +132,14 @@ class LangGraphSwarm:
     async def _knowledge_node(self, state: dict) -> dict:
         """Nœud Knowledge Agent"""
         try:
+            stream_callback = state.get("stream_callback")
             response = await self.knowledge_agent.process(
                 message=state["message"],
                 session_id=state["session_id"],
                 user_id=state["user_id"],
                 history=state.get("history", []),
-                llm_provider=state["routing_decision"]["llm"]
+                llm_provider=state["routing_decision"]["llm"],
+                stream_callback=stream_callback
             )
             state["response"] = response
             state["agent_used"] = "knowledge"
@@ -195,7 +203,8 @@ class LangGraphSwarm:
         session_id: str,
         user_id: str,
         routing_decision: Dict[str, Any],
-        history: List[Dict[str, str]] = None
+        history: List[Dict[str, str]] = None,
+        stream_callback = None
     ) -> Dict[str, Any]:
         """
         Traite une requête via le swarm d'agents
@@ -219,7 +228,8 @@ class LangGraphSwarm:
             "history": history or [],
             "response": {},
             "agent_used": None,
-            "ticket_created": False
+            "ticket_created": False,
+            "stream_callback": stream_callback
         }
         
         # Exécution du graphe

@@ -26,7 +26,8 @@ class OrchestratorService:
         self,
         message: str,
         session_id: str,
-        user_id: str
+        user_id: str,
+        stream_callback = None
     ) -> Dict[str, Any]:
         """
         Traite une requête utilisateur complète
@@ -115,7 +116,8 @@ class OrchestratorService:
                 session_id=session_id,
                 user_id=user_id,
                 routing_decision=routing_decision,
-                history=history
+                history=history,
+                stream_callback=stream_callback
             )
             
             # Sauvegarde de l'historique

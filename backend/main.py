@@ -111,7 +111,7 @@ async def health():
 @app.websocket("/ws/{session_id}")
 async def websocket_endpoint(websocket: WebSocket, session_id: str):
     """
-    Endpoint WebSocket pour le chat en temps réel
+    Endpoint WebSocket pour le chat en temps réel avec streaming
     """
     await manager.connect(websocket, session_id)
     logger.info("WebSocket connection established", session_id=session_id)
@@ -130,21 +130,54 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                 message_preview=message[:50]
             )
             
-            # Orchestration de la requête
-            response = await orchestrator.process_request(
-                message=message,
-                session_id=session_id,
-                user_id=user_id
-            )
+            # Variable pour accumuler la réponse complète
+            full_response = ""
+            agent_used = "processing"
+            metadata = {}
             
-            # Envoi de la réponse
+            # Callback pour le streaming
+            async def stream_callback(token: str):
+                """Envoie chaque token au client via WebSocket"""
+                nonlocal full_response, agent_used
+                full_response += token
+                try:
+                    await websocket.send_json({
+                        "type": "stream",
+                        "token": token,
+                        "agent": agent_used
+                    })
+                except Exception as e:
+                    logger.warning("Error sending stream token", error=str(e))
+            
+            # Envoi d'un message de début de streaming
             await manager.send_message(
                 websocket,
                 {
-                    "type": "response",
+                    "type": "stream_start",
+                    "agent": "processing"
+                }
+            )
+            
+            # Orchestration de la requête avec streaming
+            response = await orchestrator.process_request(
+                message=message,
+                session_id=session_id,
+                user_id=user_id,
+                stream_callback=stream_callback
+            )
+            
+            # Mise à jour des métadonnées
+            agent_used = response.get("agent", "unknown")
+            metadata = response.get("metadata", {})
+            
+            # Envoi du message final avec la réponse complète
+            await manager.send_message(
+                websocket,
+                {
+                    "type": "stream_end",
                     "message": response["message"],
-                    "agent": response.get("agent"),
-                    "metadata": response.get("metadata", {})
+                    "agent": agent_used,
+                    "metadata": metadata
                 }
             )
             
@@ -158,13 +191,16 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             error=str(e),
             exc_info=True
         )
-        await manager.send_message(
-            websocket,
-            {
-                "type": "error",
-                "message": "Une erreur est survenue. Veuillez réessayer."
-            }
-        )
+        try:
+            await manager.send_message(
+                websocket,
+                {
+                    "type": "error",
+                    "message": "Une erreur est survenue. Veuillez réessayer."
+                }
+            )
+        except:
+            pass
 
 
 if __name__ == "__main__":

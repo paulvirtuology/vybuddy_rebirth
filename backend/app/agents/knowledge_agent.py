@@ -24,7 +24,8 @@ class KnowledgeAgent(BaseAgent):
         session_id: str,
         user_id: str,
         history: List[Dict[str, str]] = None,
-        llm_provider: str = "anthropic"
+        llm_provider: str = "anthropic",
+        stream_callback = None
     ) -> Dict[str, Any]:
         """
         Traite une demande de connaissances/procédures avec RAG
@@ -87,8 +88,23 @@ Soyez humain, chaleureux mais CONCIS. Évitez les répétitions, les phrases tro
 """
         
         try:
-            response = await llm.ainvoke(prompt)
-            response_text = response.content
+            # Utiliser le streaming si un callback est fourni
+            if stream_callback:
+                response_text = await self.stream_response(
+                    llm=llm,
+                    system_prompt=system_prompt,
+                    user_prompt=prompt,
+                    stream_callback=stream_callback
+                )
+            else:
+                # Fallback vers ainvoke si pas de streaming
+                from langchain_core.messages import HumanMessage, SystemMessage
+                messages = [
+                    SystemMessage(content=system_prompt),
+                    HumanMessage(content=prompt)
+                ]
+                response = await llm.ainvoke(messages)
+                response_text = response.content
             
             # Ne pas créer de ticket pour des messages trop courts ou des salutations
             is_simple_message = len(message.strip().split()) <= 3

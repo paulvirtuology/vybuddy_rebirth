@@ -29,6 +29,7 @@ export default function ChatInterface({
   const [isConnected, setIsConnected] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const welcomeMessageSentRef = useRef(false)
+  const streamingMessageRef = useRef<string | null>(null)
 
   const wsUrl = `${process.env.NEXT_PUBLIC_API_URL?.replace('http', 'ws') || 'ws://localhost:8000'}/ws/${sessionId}`
   const { sendMessage, lastMessage, connectionStatus } = useWebSocket(wsUrl)
@@ -69,16 +70,70 @@ export default function ChatInterface({
       try {
         const data = JSON.parse(lastMessage.data)
 
-        if (data.type === 'response') {
-          // Éviter les doublons : vérifier si le message n'existe pas déjà
+        if (data.type === 'stream_start') {
+          // Début du streaming : créer un nouveau message vide
           setMessages((prev) => {
-            // Vérifier si ce message existe déjà (basé sur le contenu et l'agent)
+            const botMessage: Message = {
+              id: `msg-streaming-${Date.now()}`,
+              type: 'bot',
+              content: '',
+              timestamp: new Date(),
+              agent: data.agent || 'processing',
+              metadata: {},
+            }
+            streamingMessageRef.current = botMessage.id
+            return [...prev, botMessage]
+          })
+        } else if (data.type === 'stream') {
+          // Token reçu : ajouter au message en cours
+          setMessages((prev) => {
+            return prev.map((msg) => {
+              if (msg.id === streamingMessageRef.current) {
+                return {
+                  ...msg,
+                  content: msg.content + data.token,
+                  agent: data.agent || msg.agent,
+                }
+              }
+              return msg
+            })
+          })
+        } else if (data.type === 'stream_end') {
+          // Fin du streaming : finaliser le message
+          setMessages((prev) => {
+            const updatedMessages = prev.map((msg) => {
+              if (msg.id === streamingMessageRef.current) {
+                return {
+                  ...msg,
+                  content: data.message || msg.content,
+                  agent: data.agent || msg.agent,
+                  metadata: data.metadata || {},
+                }
+              }
+              return msg
+            })
+            
+            // Mettre à jour le titre du chat avec le premier message utilisateur
+            const firstUserMessage = updatedMessages.find((msg) => msg.type === 'user')
+            if (firstUserMessage && onTitleUpdate) {
+              const title = firstUserMessage.content.length > 30
+                ? firstUserMessage.content.substring(0, 30) + '...'
+                : firstUserMessage.content
+              onTitleUpdate(title)
+            }
+            
+            streamingMessageRef.current = null
+            return updatedMessages
+          })
+        } else if (data.type === 'response') {
+          // Fallback pour les réponses non-streamées (compatibilité)
+          setMessages((prev) => {
             const isDuplicate = prev.some(
               (msg) => msg.content === data.message && msg.agent === data.agent
             )
             
             if (isDuplicate) {
-              return prev // Ne pas ajouter de doublon
+              return prev
             }
 
             const botMessage: Message = {
@@ -90,7 +145,6 @@ export default function ChatInterface({
               metadata: data.metadata,
             }
 
-            // Mettre à jour le titre du chat avec le premier message utilisateur
             const updatedMessages = [...prev, botMessage]
             const firstUserMessage = updatedMessages.find((msg) => msg.type === 'user')
             if (firstUserMessage && onTitleUpdate) {
@@ -117,7 +171,7 @@ export default function ChatInterface({
         console.error('Error parsing WebSocket message:', e)
       }
     }
-  }, [lastMessage, onTitleUpdate]) // Retirer messages des dépendances
+  }, [lastMessage, onTitleUpdate])
 
   const handleSendMessage = (content: string) => {
     if (!content.trim() || !isConnected) return

@@ -19,7 +19,8 @@ class WorkspaceAgent(BaseAgent):
         session_id: str,
         user_id: str,
         history: List[Dict[str, str]] = None,
-        llm_provider: str = "gemini"
+        llm_provider: str = "gemini",
+        stream_callback = None
     ) -> Dict[str, Any]:
         """
         Traite une demande liée à Google Workspace
@@ -75,8 +76,23 @@ Soyez humain, chaleureux mais CONCIS. Évitez les répétitions et les phrases t
 """
         
         try:
-            response = await llm.ainvoke(prompt)
-            response_text = response.content
+            # Utiliser le streaming si un callback est fourni
+            if stream_callback:
+                response_text = await self.stream_response(
+                    llm=llm,
+                    system_prompt=system_prompt,
+                    user_prompt=prompt,
+                    stream_callback=stream_callback
+                )
+            else:
+                # Fallback vers ainvoke si pas de streaming
+                from langchain_core.messages import HumanMessage, SystemMessage
+                messages = [
+                    SystemMessage(content=system_prompt),
+                    HumanMessage(content=prompt)
+                ]
+                response = await llm.ainvoke(messages)
+                response_text = response.content
             
             needs_ticket = (
                 "needs_ticket: true" in response_text.lower() or
