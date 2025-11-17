@@ -46,12 +46,16 @@ class OrchestratorService:
             if identity_response:
                 # Pour les réponses système, on peut streamer si un callback est fourni
                 if stream_callback:
-                    # Streamer la réponse mot par mot pour un effet visuel fluide
+                    # Streamer la réponse rapidement par petits morceaux
                     import asyncio
-                    words = identity_response.split(' ')
-                    for i, word in enumerate(words):
-                        await stream_callback(word + (' ' if i < len(words) - 1 else ''))
-                        await asyncio.sleep(0.03)  # Petit délai pour l'effet visuel
+                    chunk_size = 15  # Environ 15 caractères à la fois
+                    for i in range(0, len(identity_response), chunk_size):
+                        token = identity_response[i:i+chunk_size]
+                        try:
+                            await stream_callback(token)
+                        except Exception:
+                            break  # WebSocket fermé, arrêter
+                        await asyncio.sleep(0.01)  # Délai réduit à 10ms
                 
                 # Sauvegarde de l'historique
                 await self.redis.add_to_session_history(
@@ -81,12 +85,16 @@ class OrchestratorService:
             if greeting_response:
                 # Pour les réponses système, on peut streamer si un callback est fourni
                 if stream_callback:
-                    # Streamer la réponse mot par mot pour un effet visuel fluide
+                    # Streamer la réponse rapidement par petits morceaux
                     import asyncio
-                    words = greeting_response.split(' ')
-                    for i, word in enumerate(words):
-                        await stream_callback(word + (' ' if i < len(words) - 1 else ''))
-                        await asyncio.sleep(0.03)  # Petit délai pour l'effet visuel
+                    chunk_size = 15  # Environ 15 caractères à la fois
+                    for i in range(0, len(greeting_response), chunk_size):
+                        token = greeting_response[i:i+chunk_size]
+                        try:
+                            await stream_callback(token)
+                        except Exception:
+                            break  # WebSocket fermé, arrêter
+                        await asyncio.sleep(0.01)  # Délai réduit à 10ms
                 
                 # Sauvegarde de l'historique
                 await self.redis.add_to_session_history(

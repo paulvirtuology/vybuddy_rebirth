@@ -148,6 +148,8 @@ INSTRUCTIONS CRITIQUES POUR LES PROCÉDURES:
 Répondez de manière CHALEUREUSE, PERSONNELLE, CONCISE et DIRECTE (2-4 phrases max). Montrez que vous comprenez. Utilisez la documentation pour fournir une réponse claire et bienveillante. Si vous devez poser des questions, posez UNE SEULE question à la fois, de manière conversationnelle. Si la documentation ne contient pas la réponse, expliquez gentiment et proposez de créer un ticket avec "needs_ticket: true".
 
 Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les phrases trop longues, les formules trop formelles et surtout les listes numérotées de questions.
+
+⚠️ IMPORTANT : Répondez UNIQUEMENT en texte naturel. NE JAMAIS retourner de JSON, de code, de formatage technique ou de structures de données. Votre réponse doit être du texte conversationnel pur, comme si vous parliez à un collègue.
 """
         
         try:
@@ -168,6 +170,8 @@ Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les 
                 ]
                 response = await llm.ainvoke(messages)
                 response_text = response.content
+                # Nettoyer la réponse pour enlever tout JSON
+                response_text = self.clean_response(response_text)
             
             # Ne pas créer de ticket pour des messages trop courts ou des salutations
             is_simple_message = len(message.strip().split()) <= 3
@@ -181,7 +185,8 @@ Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les 
                 )
             )
             
-            response_text = response_text.replace("needs_ticket: true", "").strip()
+            # Enlever "needs_ticket: true" si présent (déjà fait dans clean_response mais on double la vérification)
+            response_text = response_text.replace("needs_ticket: true", "").replace("needs_ticket:true", "").strip()
             
             logger.info(
                 "Knowledge agent response",

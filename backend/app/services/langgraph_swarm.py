@@ -175,7 +175,13 @@ class LangGraphSwarm:
                 
                 state["ticket_created"] = True
                 state["ticket_id"] = ticket.get("id")
-                state["response"]["message"] += f"\n\nUn ticket a été créé dans Odoo (ID: {ticket.get('id')}). Notre équipe va vous contacter prochainement."
+                
+                # Ne pas modifier le message après streaming - utiliser les métadonnées à la place
+                # Le frontend affichera l'info du ticket via les métadonnées
+                if "metadata" not in state["response"]:
+                    state["response"]["metadata"] = {}
+                state["response"]["metadata"]["ticket_created"] = True
+                state["response"]["metadata"]["ticket_id"] = ticket.get("id")
                 
                 logger.info(
                     "Ticket created after validation",
@@ -186,7 +192,10 @@ class LangGraphSwarm:
                 
             except Exception as e:
                 logger.error("Ticket creation error", error=str(e))
-                state["response"]["message"] += "\n\nUne erreur est survenue lors de la création du ticket. Veuillez contacter le support directement."
+                # En cas d'erreur, on peut ajouter un message d'erreur dans les métadonnées
+                if "metadata" not in state["response"]:
+                    state["response"]["metadata"] = {}
+                state["response"]["metadata"]["ticket_error"] = True
         else:
             logger.info(
                 "Ticket not created after validation",

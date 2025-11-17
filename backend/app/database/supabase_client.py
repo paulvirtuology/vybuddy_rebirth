@@ -346,4 +346,309 @@ class SupabaseClient:
                 "Error logging ticket creation",
                 error=str(e)
             )
+    
+    async def create_feedback(
+        self,
+        user_id: str,
+        session_id: str,
+        feedback_type: str,
+        content: str,
+        title: Optional[str] = None,
+        rating: Optional[int] = None
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Crée un feedback général
+        
+        Args:
+            user_id: ID de l'utilisateur
+            session_id: ID de la session
+            feedback_type: Type de feedback ('general', 'bug', 'suggestion', etc.)
+            content: Contenu du feedback
+            title: Titre du feedback (optionnel)
+            rating: Note de 1 à 5 (optionnel)
+            
+        Returns:
+            Données du feedback créé
+        """
+        try:
+            client = self._get_client()
+            
+            data = {
+                "user_id": user_id,
+                "session_id": session_id,
+                "feedback_type": feedback_type,
+                "content": content,
+                "title": title,
+                "rating": rating,
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+            
+            result = client.table("feedbacks").insert(data).execute()
+            
+            logger.info(
+                "Feedback created",
+                user_id=user_id,
+                feedback_type=feedback_type
+            )
+            
+            return result.data[0] if result.data else None
+            
+        except Exception as e:
+            logger.error(
+                "Error creating feedback",
+                error=str(e),
+                exc_info=True
+            )
+            return None
+    
+    async def create_message_feedback(
+        self,
+        interaction_id: str,
+        user_id: str,
+        session_id: str,
+        bot_message: str,
+        reaction: Optional[str] = None,
+        comment: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Crée un feedback sur un message du bot (like/dislike + commentaire)
+        
+        Args:
+            interaction_id: ID de l'interaction (message du bot)
+            user_id: ID de l'utilisateur
+            session_id: ID de la session
+            bot_message: Contenu du message du bot
+            reaction: Réaction ('like' ou 'dislike', optionnel)
+            comment: Commentaire (optionnel)
+            
+        Returns:
+            Données du feedback créé ou mis à jour
+        """
+        try:
+            client = self._get_client()
+            
+            # Vérifier si un feedback existe déjà pour cet utilisateur et cette interaction
+            existing = client.table("message_feedbacks")\
+                .select("*")\
+                .eq("interaction_id", interaction_id)\
+                .eq("user_id", user_id)\
+                .execute()
+            
+            data = {
+                "user_id": user_id,
+                "session_id": session_id,
+                "bot_message": bot_message,
+                "reaction": reaction,
+                "comment": comment,
+                "updated_at": datetime.utcnow().isoformat()
+            }
+            
+            if existing.data and len(existing.data) > 0:
+                # Mettre à jour le feedback existant
+                result = client.table("message_feedbacks")\
+                    .update(data)\
+                    .eq("interaction_id", interaction_id)\
+                    .eq("user_id", user_id)\
+                    .execute()
+                
+                logger.info(
+                    "Message feedback updated",
+                    interaction_id=interaction_id,
+                    user_id=user_id
+                )
+            else:
+                # Créer un nouveau feedback
+                data["interaction_id"] = interaction_id
+                data["created_at"] = datetime.utcnow().isoformat()
+                
+                result = client.table("message_feedbacks").insert(data).execute()
+                
+                logger.info(
+                    "Message feedback created",
+                    interaction_id=interaction_id,
+                    user_id=user_id
+                )
+            
+            return result.data[0] if result.data else None
+            
+        except Exception as e:
+            logger.error(
+                "Error creating/updating message feedback",
+                error=str(e),
+                exc_info=True
+            )
+            return None
+    
+    async def get_user_message_feedback(
+        self,
+        interaction_id: str,
+        user_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Récupère le feedback d'un utilisateur pour un message spécifique
+        
+        Args:
+            interaction_id: ID de l'interaction
+            user_id: ID de l'utilisateur
+            
+        Returns:
+            Données du feedback ou None
+        """
+        try:
+            client = self._get_client()
+            
+            result = client.table("message_feedbacks")\
+                .select("*")\
+                .eq("interaction_id", interaction_id)\
+                .eq("user_id", user_id)\
+                .execute()
+            
+            return result.data[0] if result.data and len(result.data) > 0 else None
+            
+        except Exception as e:
+            logger.error(
+                "Error getting user message feedback",
+                error=str(e)
+            )
+            return None
+    
+    async def get_user_message_feedbacks_batch(
+        self,
+        interaction_ids: list[str],
+        user_id: str
+    ) -> Dict[str, Dict[str, Any]]:
+        """
+        Récupère les feedbacks d'un utilisateur pour plusieurs messages en une seule requête
+        
+        Args:
+            interaction_ids: Liste des IDs d'interactions
+            user_id: ID de l'utilisateur
+            
+        Returns:
+            Dictionnaire {interaction_id: feedback_data} ou {} si aucun feedback
+        """
+        try:
+            if not interaction_ids:
+                return {}
+            
+            client = self._get_client()
+            
+            # Récupérer tous les feedbacks pour ces interactions et cet utilisateur
+            result = client.table("message_feedbacks")\
+                .select("*")\
+                .in_("interaction_id", interaction_ids)\
+                .eq("user_id", user_id)\
+                .execute()
+            
+            # Retourner un dictionnaire {interaction_id: feedback_data}
+            feedbacks = {}
+            if result.data:
+                for feedback in result.data:
+                    feedbacks[feedback.get("interaction_id")] = feedback
+            
+            return feedbacks
+            
+        except Exception as e:
+            logger.error(
+                "Error getting user message feedbacks batch",
+                error=str(e),
+                exc_info=True
+            )
+            return {}
+    
+    async def is_user_admin(self, user_email: str) -> bool:
+        """
+        Vérifie si un utilisateur est admin
+        
+        Args:
+            user_email: Email de l'utilisateur
+            
+        Returns:
+            True si l'utilisateur est admin
+        """
+        try:
+            client = self._get_client()
+            
+            result = client.rpc("is_admin_user", {"user_email": user_email}).execute()
+            
+            return result.data if result.data else False
+            
+        except Exception as e:
+            logger.error(
+                "Error checking admin status",
+                error=str(e)
+            )
+            return False
+    
+    async def get_all_feedbacks(self, limit: int = 100) -> list:
+        """
+        Récupère tous les feedbacks généraux (admin uniquement)
+        
+        Args:
+            limit: Nombre maximum de feedbacks
+            
+        Returns:
+            Liste des feedbacks
+        """
+        try:
+            client = self._get_client()
+            
+            result = client.rpc("get_all_feedbacks", {"limit_count": limit}).execute()
+            
+            return result.data or []
+            
+        except Exception as e:
+            logger.error(
+                "Error getting all feedbacks",
+                error=str(e),
+                exc_info=True
+            )
+            return []
+    
+    async def get_all_message_feedbacks(self, limit: int = 100) -> list:
+        """
+        Récupère tous les feedbacks sur messages (admin uniquement)
+        
+        Args:
+            limit: Nombre maximum de feedbacks
+            
+        Returns:
+            Liste des feedbacks sur messages
+        """
+        try:
+            client = self._get_client()
+            
+            result = client.rpc("get_all_message_feedbacks", {"limit_count": limit}).execute()
+            
+            return result.data or []
+            
+        except Exception as e:
+            logger.error(
+                "Error getting all message feedbacks",
+                error=str(e),
+                exc_info=True
+            )
+            return []
+    
+    async def get_feedback_stats(self) -> Optional[Dict[str, Any]]:
+        """
+        Récupère les statistiques des feedbacks (admin uniquement)
+        
+        Returns:
+            Statistiques des feedbacks
+        """
+        try:
+            client = self._get_client()
+            
+            result = client.rpc("get_feedback_stats").execute()
+            
+            return result.data[0] if result.data and len(result.data) > 0 else None
+            
+        except Exception as e:
+            logger.error(
+                "Error getting feedback stats",
+                error=str(e)
+            )
+            return None
 

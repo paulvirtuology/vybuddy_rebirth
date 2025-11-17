@@ -8,9 +8,11 @@ from typing import Optional
 import structlog
 
 from app.services.auth_service import AuthService
+from app.database.supabase_client import SupabaseClient
 
 logger = structlog.get_logger()
 security = HTTPBearer()
+supabase = SupabaseClient()
 
 
 async def verify_token(request: Request) -> Optional[dict]:
@@ -68,6 +70,40 @@ async def get_current_user(request: Request) -> dict:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Non authentifié. Token invalide ou manquant.",
             headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    return user_info
+
+
+async def get_current_admin(request: Request) -> dict:
+    """
+    Récupère l'utilisateur actuel et vérifie qu'il est admin
+    
+    Args:
+        request: Requête FastAPI
+        
+    Returns:
+        Informations utilisateur
+        
+    Raises:
+        HTTPException: Si non authentifié ou non admin
+    """
+    user_info = await get_current_user(request)
+    user_email = user_info.get("email")
+    
+    if not user_email:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email non trouvé dans le token.",
+        )
+    
+    # Vérifier si l'utilisateur est admin
+    is_admin = await supabase.is_user_admin(user_email)
+    
+    if not is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Accès refusé. Admin uniquement.",
         )
     
     return user_info

@@ -52,12 +52,16 @@ class RedisClient:
         """
         Récupère l'historique d'une session
         
+        IMPORTANT: Chaque session_id a son propre historique isolé via la clé Redis
+        `session:{session_id}:history`. Cette méthode garantit que seul l'historique
+        de cette session spécifique est retourné.
+        
         Args:
-            session_id: ID de la session
+            session_id: ID de la session (doit être unique pour chaque conversation)
             max_items: Nombre maximum d'éléments à récupérer
             
         Returns:
-            Liste des échanges (user, bot)
+            Liste des échanges (user, bot) pour cette session uniquement
         """
         if not self.client:
             await self.connect()
@@ -73,10 +77,17 @@ class RedisClient:
                 except json.JSONDecodeError:
                     continue
             
+            logger.debug(
+                "Session history retrieved",
+                session_id=session_id,
+                items_count=len(history),
+                redis_key=key
+            )
+            
             return list(reversed(history))  # Plus récent en premier
             
         except Exception as e:
-            logger.error("Error getting session history", error=str(e))
+            logger.error("Error getting session history", error=str(e), session_id=session_id)
             return []
     
     async def add_to_session_history(
@@ -88,8 +99,12 @@ class RedisClient:
         """
         Ajoute un échange à l'historique de la session
         
+        IMPORTANT: Chaque session_id a son propre historique isolé via la clé Redis
+        `session:{session_id}:history`. Les échanges ne sont ajoutés qu'à l'historique
+        de cette session spécifique, garantissant l'isolation entre les conversations.
+        
         Args:
-            session_id: ID de la session
+            session_id: ID de la session (doit être unique pour chaque conversation)
             user_message: Message de l'utilisateur
             bot_response: Réponse du bot
         """
@@ -107,8 +122,31 @@ class RedisClient:
             await self.client.ltrim(key, 0, 99)  # Garder max 100 échanges
             await self.client.expire(key, 86400 * 7)  # Expire après 7 jours
             
+            logger.debug(
+                "Exchange added to session history",
+                session_id=session_id,
+                redis_key=key
+            )
+            
         except Exception as e:
-            logger.error("Error adding to session history", error=str(e))
+            logger.error("Error adding to session history", error=str(e), session_id=session_id)
+    
+    async def clear_session_history(self, session_id: str):
+        """
+        Nettoie l'historique Redis d'une session
+        
+        Args:
+            session_id: ID de la session à nettoyer
+        """
+        if not self.client:
+            await self.connect()
+        
+        try:
+            key = f"session:{session_id}:history"
+            await self.client.delete(key)
+            logger.info("Session history cleared", session_id=session_id)
+        except Exception as e:
+            logger.error("Error clearing session history", error=str(e), session_id=session_id)
     
     async def set_session_data(
         self,

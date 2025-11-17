@@ -27,11 +27,11 @@ class ConnectionManager:
             logger.info("Connection closed", session_id=session_id)
     
     async def send_message(self, websocket: WebSocket, message: dict):
-        """Envoie un message via WebSocket"""
+        """Envoie un message via WebSocket avec gestion robuste des erreurs"""
         try:
             # Vérifier l'état de la connexion avant d'envoyer
             if websocket.client_state.name != "CONNECTED":
-                logger.warning(
+                logger.debug(
                     "WebSocket not connected, skipping message",
                     state=websocket.client_state.name
                 )
@@ -39,14 +39,25 @@ class ConnectionManager:
             
             await websocket.send_json(message)
         except RuntimeError as e:
-            # Erreur si le WebSocket est fermé
-            if "close message has been sent" in str(e) or "Cannot call" in str(e):
-                logger.warning("WebSocket closed, cannot send message", error=str(e))
+            # Erreur si le WebSocket est fermé (plusieurs variations possibles)
+            error_str = str(e).lower()
+            if any(keyword in error_str for keyword in [
+                "close message has been sent",
+                "cannot call",
+                "websocket is not connected",
+                "need to call \"accept\" first"
+            ]):
+                logger.debug("WebSocket closed, cannot send message", error=str(e))
                 return
+            # Autre RuntimeError, lever l'exception
             raise
+        except (ConnectionError, BrokenPipeError, OSError) as e:
+            # Erreurs de connexion réseau
+            logger.debug("WebSocket connection error", error=str(e))
+            return
         except Exception as e:
-            logger.error("Error sending message", error=str(e))
-            # Ne pas lever l'exception pour éviter de casser le flux
+            # Autres erreurs - logger mais ne pas lever pour éviter de casser le flux
+            logger.debug("Error sending message", error=str(e))
             return
     
     async def broadcast(self, session_id: str, message: dict):

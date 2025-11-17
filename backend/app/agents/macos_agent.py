@@ -162,6 +162,8 @@ INSTRUCTIONS CRITIQUES:
 Si vous avez besoin d'informations, posez UNE question courte et conversationnelle. Si le problème nécessite des modifications système, expliquez gentiment que l'utilisateur n'a pas les droits et proposez IMMÉDIATEMENT de créer un ticket avec "needs_ticket: true".
 
 Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les phrases trop longues et surtout les listes numérotées de questions. UNIQUEMENT des solutions MacBook Pro. JAMAIS de modifications système. JAMAIS de mention de "Jamf" dans vos réponses.
+
+⚠️ IMPORTANT : Répondez UNIQUEMENT en texte naturel. NE JAMAIS retourner de JSON, de code, de formatage technique ou de structures de données. Votre réponse doit être du texte conversationnel pur, comme si vous parliez à un collègue.
 """
         
         try:
@@ -182,6 +184,8 @@ Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les 
                 ]
                 response = await llm.ainvoke(messages)
                 response_text = response.content
+                # Nettoyer la réponse pour enlever tout JSON
+                response_text = self.clean_response(response_text)
             
             needs_ticket = (
                 "needs_ticket: true" in response_text.lower() or
@@ -189,7 +193,8 @@ Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les 
                 "ticket sera créé" in response_text.lower()
             )
             
-            response_text = response_text.replace("needs_ticket: true", "").strip()
+            # Enlever "needs_ticket: true" si présent (déjà fait dans clean_response mais on double la vérification)
+            response_text = response_text.replace("needs_ticket: true", "").replace("needs_ticket:true", "").strip()
             
             logger.info(
                 "MacOS agent response",

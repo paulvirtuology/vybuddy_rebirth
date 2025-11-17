@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useAdmin } from '@/hooks/useAdmin'
 
 interface ChatHistory {
   id: string
@@ -22,6 +24,9 @@ export default function Sidebar({
   onSelectChat,
   chatHistory,
 }: SidebarProps) {
+  const router = useRouter()
+  const { isAdmin } = useAdmin()
+  
   const handleSignOut = async () => {
     await signOut({ 
       redirect: true,
@@ -110,6 +115,27 @@ export default function Sidebar({
 
       {/* Footer avec Support téléphonique, Paramètres et Déconnexion */}
       <div className="p-4 border-t border-vert-profond-light space-y-2">
+        {isAdmin && (
+          <button
+            onClick={() => router.push('/admin/feedbacks')}
+            className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-indigo-600 hover:text-white transition-colors flex items-center gap-3"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Administration - Feedbacks
+          </button>
+        )}
         <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-vert-profond-light hover:text-white transition-colors flex items-center gap-3">
           <svg
             className="w-5 h-5"

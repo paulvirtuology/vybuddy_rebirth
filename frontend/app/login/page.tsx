@@ -81,18 +81,18 @@ export default function LoginPage() {
       </Suspense>
       <div className="max-w-md w-full bg-blanc rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <div className="inline-block mb-4">
+          <div className="inline-block mb-6">
             <img 
-              src="/favicon.png" 
+              src="/logo.png" 
               alt="VyBuddy" 
-              className="w-16 h-16 mx-auto"
+              className="w-24 h-24 mx-auto object-contain"
             />
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            VyBuddy Support IT
+            VyBuddy Support
           </h1>
           <p className="text-gray-600">
-            Connectez-vous pour accéder à l'assistant de support
+            Connectez-vous pour accéder au support Vygeek
           </p>
         </div>
 
@@ -161,7 +161,7 @@ export default function LoginPage() {
 
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-500">
-            Accès réservé aux utilisateurs autorisés de l'entreprise
+            Accès réservé aux utilisateurs de Virtuology
           </p>
         </div>
       </div>

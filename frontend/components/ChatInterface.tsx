@@ -29,6 +29,7 @@ export default function ChatInterface({
 }: ChatInterfaceProps) {
   const { data: session } = useSession()
   const [messages, setMessages] = useState<Message[]>([])
+  const [feedbacks, setFeedbacks] = useState<Record<string, { reaction?: 'like' | 'dislike'; comment?: string }>>({})
   const [isConnected, setIsConnected] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingMessages, setIsLoadingMessages] = useState(true)
@@ -54,7 +55,29 @@ export default function ChatInterface({
   const loadingRef = useRef(false)
   const loadedSessionIdRef = useRef<string | null>(null)
   
+  // Réinitialiser l'état AVANT de charger les messages quand la session change
+  useEffect(() => {
+    // Réinitialiser complètement l'état pour une nouvelle session
+    setMessages([]) // Vider les messages immédiatement
+    setFeedbacks({}) // Vider les feedbacks
+    welcomeMessageSentRef.current = false
+    streamingMessageRef.current = null
+    streamBufferRef.current = ''
+    processedMessagesRef.current.clear() // Nettoyer les messages traités
+    lastProcessedMessageRef.current = null // Réinitialiser le dernier message traité
+    setIsLoading(false) // Réinitialiser le loading
+    loadingRef.current = false // Réinitialiser le flag de chargement
+    loadedSessionIdRef.current = null // Réinitialiser la session chargée pour permettre le rechargement
+    if (streamUpdateTimeoutRef.current) {
+      clearTimeout(streamUpdateTimeoutRef.current)
+      streamUpdateTimeoutRef.current = null
+    }
+    // Note: Le WebSocket se reconnectera automatiquement via useWebSocket
+    // car l'URL change avec le sessionId
+  }, [sessionId])
+  
   // Charger les messages depuis Supabase UNIQUEMENT au changement de session
+  // IMPORTANT: Ce useEffect s'exécute APRÈS la réinitialisation ci-dessus
   useEffect(() => {
     if (!sessionId || !token) return
     
@@ -85,53 +108,86 @@ export default function ChatInterface({
           metadata: msg.metadata || {}
         }))
         
-        setMessages(loadedMessages)
-        
-        // Si des messages existent, ne pas afficher le message de bienvenue
-        if (loadedMessages.length > 0) {
-          welcomeMessageSentRef.current = true
-        }
-        
-        // Si c'est le premier message utilisateur, mettre à jour le titre
-        const firstUserMessage = loadedMessages.find(m => m.type === 'user')
-        if (firstUserMessage && onTitleUpdate) {
-          const title = firstUserMessage.content.length > 30 
-            ? firstUserMessage.content.substring(0, 30) + '...' 
-            : firstUserMessage.content
-          onTitleUpdate(title)
+        // Vérifier que nous sommes toujours sur la même session avant de mettre à jour
+        if (loadedSessionIdRef.current === sessionId) {
+          setMessages(loadedMessages)
+          
+          // Charger tous les feedbacks en batch pour les messages bots avec UUID valides
+          const isValidUUID = (id: string): boolean => {
+            const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+            return uuidRegex.test(id)
+          }
+          
+          const botMessageIds = loadedMessages
+            .filter(msg => msg.type === 'bot' && msg.id && isValidUUID(msg.id))
+            .map(msg => msg.id)
+          
+          if (botMessageIds.length > 0 && token) {
+            try {
+              const feedbackResponse = await axios.post(
+                `${apiUrl}/api/v1/feedbacks/messages/batch`,
+                { interaction_ids: botMessageIds },
+                {
+                  headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+                }
+              )
+              
+              // Vérifier à nouveau que nous sommes toujours sur la même session
+              if (loadedSessionIdRef.current === sessionId) {
+                // Convertir en format {id: {reaction, comment}}
+                const feedbacksMap: Record<string, { reaction?: 'like' | 'dislike'; comment?: string }> = {}
+                const feedbacksData = feedbackResponse.data.feedbacks || {}
+                
+                for (const [id, feedback] of Object.entries(feedbacksData)) {
+                  const fb = feedback as any
+                  feedbacksMap[id] = {
+                    reaction: fb.reaction || undefined,
+                    comment: fb.comment || undefined
+                  }
+                }
+                
+                setFeedbacks(feedbacksMap)
+              }
+            } catch (error) {
+              console.error('Error loading feedbacks batch:', error)
+              // En cas d'erreur, continuer sans feedbacks
+            }
+          }
+          
+          // Si des messages existent, ne pas afficher le message de bienvenue
+          if (loadedMessages.length > 0) {
+            welcomeMessageSentRef.current = true
+          }
+          
+          // Si c'est le premier message utilisateur, mettre à jour le titre
+          const firstUserMessage = loadedMessages.find(m => m.type === 'user')
+          if (firstUserMessage && onTitleUpdate) {
+            const title = firstUserMessage.content.length > 30 
+              ? firstUserMessage.content.substring(0, 30) + '...' 
+              : firstUserMessage.content
+            onTitleUpdate(title)
+          }
         }
       } catch (error) {
         console.error('Error loading messages:', error)
         // En cas d'erreur, on continue avec un historique vide
-        setMessages([])
+        // Vérifier que nous sommes toujours sur la même session
+        if (loadedSessionIdRef.current === sessionId) {
+          setMessages([])
+        }
       } finally {
-        setIsLoadingMessages(false)
-        loadingRef.current = false
+        // Vérifier que nous sommes toujours sur la même session avant de réinitialiser
+        if (loadedSessionIdRef.current === sessionId) {
+          setIsLoadingMessages(false)
+          loadingRef.current = false
+        }
       }
     }
     
     loadMessages()
-  }, [sessionId]) // UNIQUEMENT sessionId - ne pas recharger si token ou apiUrl change
-
-  // Réinitialiser les messages et le flag de bienvenue quand la session change
-  useEffect(() => {
-    // Réinitialiser complètement l'état pour une nouvelle session
-    setMessages([]) // Vider les messages immédiatement
-    welcomeMessageSentRef.current = false
-    streamingMessageRef.current = null
-    streamBufferRef.current = ''
-    processedMessagesRef.current.clear() // Nettoyer les messages traités
-    lastProcessedMessageRef.current = null // Réinitialiser le dernier message traité
-    setIsLoading(false) // Réinitialiser le loading
-    loadingRef.current = false // Réinitialiser le flag de chargement
-    loadedSessionIdRef.current = null // Réinitialiser la session chargée pour permettre le rechargement
-    if (streamUpdateTimeoutRef.current) {
-      clearTimeout(streamUpdateTimeoutRef.current)
-      streamUpdateTimeoutRef.current = null
-    }
-    // Note: Le WebSocket se reconnectera automatiquement via useWebSocket
-    // car l'URL change avec le sessionId
-  }, [sessionId])
+  }, [sessionId, token, apiUrl]) // Inclure token et apiUrl pour éviter les warnings
   
   // Nettoyage au démontage
   useEffect(() => {
@@ -310,11 +366,19 @@ export default function ChatInterface({
             
             // Si le message en streaming existe, le remplacer complètement
             if (streamingMsg) {
+              // Utiliser l'ID du message sauvegardé si disponible (UUID de Supabase)
+              const messageId = (data.id || streamingMessageRef.current || streamingMsg.id) as string
+              const isValidUUID = (id: string): boolean => {
+                const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+                return uuidRegex.test(id)
+              }
+              
               const updatedMessages = prev.map((msg) => {
                 if (msg.id === streamingMessageRef.current) {
-                  // Remplacer complètement le message streamé par le message final
+                  // Remplacer complètement le message streamé par le message final avec le bon ID
                   return {
                     ...msg,
+                    id: messageId, // Utiliser l'ID UUID si disponible
                     content: finalMessage,
                     agent: data.agent || 'unknown',
                     metadata: data.metadata || {},
@@ -322,6 +386,33 @@ export default function ChatInterface({
                 }
                 return msg
               })
+              
+              // Charger le feedback pour ce nouveau message bot si l'ID est un UUID valide (de manière asynchrone)
+              if (isValidUUID(messageId) && token) {
+                axios.post(
+                  `${apiUrl}/api/v1/feedbacks/messages/batch`,
+                  { interaction_ids: [messageId] },
+                  {
+                    headers: {
+                      'Authorization': `Bearer ${token}`
+                    }
+                  }
+                ).then(feedbackResponse => {
+                  const feedbacksData = feedbackResponse.data.feedbacks || {}
+                  if (feedbacksData[messageId]) {
+                    const fb = feedbacksData[messageId] as any
+                    setFeedbacks(prev => ({
+                      ...prev,
+                      [messageId]: {
+                        reaction: fb.reaction || undefined,
+                        comment: fb.comment || undefined
+                      }
+                    }))
+                  }
+                }).catch(() => {
+                  // Pas de feedback existant, c'est normal
+                })
+              }
               
               // Mettre à jour le titre du chat avec le premier message utilisateur
               const firstUserMessage = updatedMessages.find((msg) => msg.type === 'user')
@@ -355,8 +446,15 @@ export default function ChatInterface({
             }
             
             // Créer un nouveau message si aucun n'existe
+            // Utiliser l'ID du message sauvegardé si disponible (UUID de Supabase)
+            const messageId = (data.id || streamingMessageRef.current || `msg-${Date.now()}`) as string
+            const isValidUUID = (id: string): boolean => {
+              const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+              return uuidRegex.test(id)
+            }
+            
             const newMessage: Message = {
-              id: streamingMessageRef.current || `msg-${Date.now()}`,
+              id: messageId,
               type: 'bot',
               content: finalMessage,
               timestamp: new Date(),
@@ -365,6 +463,33 @@ export default function ChatInterface({
             }
             
             const updatedMessages = [...prev, newMessage]
+            
+            // Charger le feedback pour ce nouveau message bot si l'ID est un UUID valide (de manière asynchrone)
+            if (isValidUUID(messageId) && token) {
+              axios.post(
+                `${apiUrl}/api/v1/feedbacks/messages/batch`,
+                { interaction_ids: [messageId] },
+                {
+                  headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+                }
+              ).then(feedbackResponse => {
+                const feedbacksData = feedbackResponse.data.feedbacks || {}
+                if (feedbacksData[messageId]) {
+                  const fb = feedbacksData[messageId] as any
+                  setFeedbacks(prev => ({
+                    ...prev,
+                    [messageId]: {
+                      reaction: fb.reaction || undefined,
+                      comment: fb.comment || undefined
+                    }
+                  }))
+                }
+              }).catch(() => {
+                // Pas de feedback existant, c'est normal
+              })
+            }
             
             // Mettre à jour le titre du chat avec le premier message utilisateur
             const firstUserMessage = updatedMessages.find((msg) => msg.type === 'user')
@@ -484,7 +609,7 @@ export default function ChatInterface({
       <div className="px-6 py-4 border-b border-gray-200">
         <div>
           <h2 className="text-lg font-bold text-gray-900">Chat Support</h2>
-          <p className="text-sm text-gray-500">Assistant IA - Temps réel</p>
+          <p className="text-sm text-gray-500">Assistant IA</p>
         </div>
       </div>
 
@@ -520,7 +645,7 @@ export default function ChatInterface({
                 </div>
               </div>
             ) : (
-              <MessageList messages={messages} />
+              <MessageList messages={messages} sessionId={sessionId} feedbacks={feedbacks} setFeedbacks={setFeedbacks} />
             )}
         {/* Indicateur de chargement */}
         {isLoading && (
