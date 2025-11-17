@@ -118,14 +118,17 @@ class ProcedureService:
     def format_procedure_for_prompt(self, procedure: Dict[str, Any]) -> str:
         """
         Formate une procédure pour l'inclure dans un prompt
+        Les questions sont listées mais doivent être posées UNE PAR UNE de manière conversationnelle
         """
         formatted = f"""PROCÉDURE: {procedure['title']}
 Description: {procedure.get('description', '')}
 
-QUESTIONS DE DIAGNOSTIC À POSER:
+QUESTIONS DE DIAGNOSTIC À POSER (UNE PAR UNE, dans l'ordre, de manière conversationnelle):
 """
         for i, question in enumerate(procedure.get("diagnostic_questions", []), 1):
-            formatted += f"{i}. {question}\n"
+            # Reformuler les questions pour qu'elles soient plus conversationnelles
+            conversational_question = self._make_question_conversational(question)
+            formatted += f"{i}. {conversational_question}\n"
         
         formatted += "\nÉTAPES DE RÉSOLUTION:\n"
         for step in procedure.get("resolution_steps", []):
@@ -150,4 +153,67 @@ QUESTIONS DE DIAGNOSTIC À POSER:
                 formatted += f"- {issue}\n"
         
         return formatted
+    
+    def _make_question_conversational(self, question: str) -> str:
+        """
+        Reformule une question de procédure pour qu'elle soit plus conversationnelle
+        """
+        question_lower = question.lower().strip()
+        original = question.strip()
+        
+        # Cas spécifiques de reformulation
+        if "identifier la personne" in question_lower:
+            return "Quel est le nom de la personne ?"
+        
+        if "identifier la personne + board" in question_lower or "identifier la personne + board" in question_lower:
+            return "Quel est le nom de la personne et quel board Monday exactement ?"
+        
+        if "demander les détails" in question_lower:
+            if "nom" in question_lower and "société" in question_lower:
+                return "J'aurais besoin de son nom complet, sa société/bench, son pays et sa fonction. Vous avez ces infos ?"
+            return "J'aurais besoin de quelques infos supplémentaires. Vous les avez sous la main ?"
+        
+        if "demander la raison" in question_lower or "raison de la demande" in question_lower:
+            return "Pourriez-vous me dire pourquoi vous avez besoin d'accéder à ce dossier ? Ça m'aiderait à comprendre la situation."
+        
+        if "identifier la criticité" in question_lower:
+            return "À quel point c'est urgent pour vous ?"
+        
+        if "analyser si c'est possible" in question_lower or "analyser" in question_lower and "licence" in question_lower:
+            return "Est-ce qu'il pourrait avoir un accès sans licence (invité/observateur) ou il lui faut une licence complète ?"
+        
+        if "demander si validation n+1" in question_lower or "validation n+1" in question_lower:
+            return "Avez-vous la validation de son N+1 pour cette licence ?"
+        
+        if "identifier le macbook" in question_lower:
+            return "Quel est le numéro de série de votre MacBook ? (vous le trouvez dans À propos de ce Mac)"
+        
+        if "vérifier si macbook jamfé" in question_lower:
+            return "Votre MacBook est-il géré par l'équipe IT ? (normalement oui si c'est un MacBook de l'entreprise)"
+        
+        # Remplacements génériques
+        if original.startswith("Identifier"):
+            rest = original.replace("Identifier ", "").replace("identifier ", "")
+            if "personne" in rest.lower():
+                return f"Quel est le nom de {rest.lower()} ?"
+            return f"Quel est {rest.lower()} ?"
+        
+        if original.startswith("Demander"):
+            rest = original.replace("Demander ", "").replace("demander ", "")
+            return f"J'aurais besoin de {rest.lower()}. Vous avez ça ?"
+        
+        if original.startswith("Analyser"):
+            rest = original.replace("Analyser ", "").replace("analyser ", "")
+            return f"Pourriez-vous me dire {rest.lower()} ?"
+        
+        if original.startswith("Vérifier"):
+            rest = original.replace("Vérifier ", "").replace("vérifier ", "")
+            return f"Est-ce que {rest.lower()} ?"
+        
+        # Si la question est déjà bien formulée, la retourner telle quelle
+        if original.endswith("?") or "?" in original:
+            return original
+        
+        # Sinon, ajouter un point d'interrogation
+        return original + " ?"
 

@@ -49,14 +49,12 @@ class TicketValidator:
                 for h in history[-5:]
             ])
         
-        # Cas où on ne crée PAS de ticket
+        # Cas où on ne crée PAS de ticket (seulement si c'est une simple salutation/merci sans contexte)
         exclusion_keywords = [
             "salutation",
             "bonjour",
             "hello",
             "hi",
-            "merci",
-            "thanks",
             "au revoir",
             "goodbye",
             "question simple",
@@ -65,21 +63,33 @@ class TicketValidator:
             "problème résolu",
             "ça fonctionne",
             "c'est bon",
-            "ok",
-            "parfait"
+            "ok"
         ]
         
         message_lower = message.lower()
         response_lower = agent_response.lower()
         
-        # Vérifier les exclusions évidentes
+        # Vérifier les exclusions évidentes (mais pas "merci" ou "parfait" car ils peuvent être dans un contexte de création de ticket)
         for keyword in exclusion_keywords:
+            # Ne pas exclure si le message contient des mots-clés de demande (création, accès, etc.)
             if keyword in message_lower or keyword in response_lower:
-                return {
-                    "should_create": False,
-                    "reason": f"Message exclu: {keyword}",
-                    "confidence": 0.9
-                }
+                # Si c'est juste une salutation simple sans contexte, exclure
+                if keyword in ["salutation", "bonjour", "hello", "hi"] and len(message.split()) <= 2:
+                    return {
+                        "should_create": False,
+                        "reason": f"Message exclu: {keyword}",
+                        "confidence": 0.9
+                    }
+                # Pour les autres mots, vérifier s'il y a un contexte de demande
+                if keyword not in ["salutation", "bonjour", "hello", "hi"]:
+                    # Ne pas exclure si l'agent indique qu'il va créer/faire quelque chose
+                    action_indicators = ["je m'occupe", "je vais créer", "je vais faire", "je crée", "je fais", "création", "créer", "faire"]
+                    if not any(action in response_lower for action in action_indicators):
+                        return {
+                            "should_create": False,
+                            "reason": f"Message exclu: {keyword}",
+                            "confidence": 0.9
+                        }
         
         # Si le message est très court et n'est pas un problème technique
         if len(message.split()) <= 3 and not any(tech_word in message_lower for tech_word in ["wifi", "réseau", "connexion", "problème", "erreur", "bug"]):
@@ -89,23 +99,77 @@ class TicketValidator:
                 "confidence": 0.8
             }
         
+        # Vérifier si l'agent pose encore des questions (ne pas créer de ticket si c'est le cas)
+        question_indicators = [
+            "?", "pouvez-vous", "pourriez-vous", "auriez-vous", "avez-vous", "j'aurais besoin",
+            "quel est", "quelle est", "quels sont", "quelles sont", "comment", "où", "quand",
+            "pouvez vous", "pourriez vous", "auriez vous", "avez vous", "j aurais besoin",
+            "vous avez", "vous les avez", "vous pouvez", "vous pourriez", "me donner",
+            "me dire", "me confirmer", "me préciser", "me renseigner", "me fournir"
+        ]
+        
+        agent_response_lower = agent_response.lower()
+        is_asking_question = any(indicator in agent_response_lower for indicator in question_indicators)
+        
+        # Vérifier si l'agent indique qu'il va créer/faire quelque chose (signe que toutes les infos sont collectées)
+        action_indicators = [
+            "je m'occupe", "je vais créer", "je vais faire", "je crée", "je fais",
+            "création", "créer", "faire", "je vous confirme", "je confirme",
+            "notre équipe", "l'équipe va", "on va créer", "on va faire",
+            "un ticket va être créé", "je vais créer un ticket", "créer un ticket",
+            "ticket sera créé", "ticket va être créé", "notre équipe s'en occupe"
+        ]
+        is_taking_action = any(indicator in agent_response_lower for indicator in action_indicators)
+        
+        # Si l'agent pose une question ET ne prend pas d'action, ne PAS créer de ticket
+        if is_asking_question and not is_taking_action:
+            return {
+                "should_create": False,
+                "reason": "L'agent pose encore des questions pour obtenir les informations nécessaires. Attendre la réponse de l'utilisateur avant de créer un ticket.",
+                "confidence": 0.95
+            }
+        
+        # Si l'agent indique qu'il va créer/faire quelque chose, c'est un signe fort qu'un ticket doit être créé
+        # (car le système ne peut pas créer ces choses lui-même)
+        if is_taking_action and not is_asking_question:
+            # Vérifier si c'est une demande qui nécessite une intervention humaine
+            human_intervention_keywords = [
+                "créer", "boucle", "adresse email", "compte", "accès", "licence",
+                "installation", "logiciel", "ticket", "odoo"
+            ]
+            if any(keyword in agent_response_lower or keyword in message_lower for keyword in human_intervention_keywords):
+                return {
+                    "should_create": True,
+                    "reason": "L'agent indique qu'il va créer/faire quelque chose qui nécessite une intervention humaine. Toutes les informations semblent collectées. Un ticket doit être créé.",
+                    "confidence": 0.9
+                }
+        
         # Prompt pour l'évaluation LLM
         evaluation_prompt = f"""Vous êtes un validateur de tickets de support IT. Votre rôle est de déterminer si un ticket doit être créé dans Odoo.
 
-Règles de validation:
-1. Créer un ticket SEULEMENT si:
-   - Le problème technique n'a pas pu être résolu après diagnostic
+Règles de validation CRITIQUES:
+1. Créer un ticket OBLIGATOIREMENT si:
+   - L'agent dit qu'il va "créer", "faire", "s'occuper de" quelque chose qui nécessite une intervention humaine (ex: "Je m'occupe de créer la boucle", "Je vais créer le compte", "Je crée le ticket")
+   - TOUTES les informations nécessaires ont été collectées ET l'agent confirme qu'il va procéder
+   - Le problème nécessite une intervention humaine (création de compte, boucle email, accès, permissions, matériel, installation logiciel)
    - L'utilisateur demande explicitement un ticket
-   - Le problème nécessite une intervention humaine (ex: accès, permissions, matériel)
+   - Le problème technique n'a pas pu être résolu après diagnostic
    - Le problème est complexe et nécessite une escalade
    - L'agent a épuisé toutes les solutions possibles
 
 2. NE PAS créer de ticket si:
    - Le problème a été résolu
    - C'est une simple question d'information
-   - C'est une salutation ou un message court
+   - C'est une salutation ou un message court (sans contexte de demande)
    - L'utilisateur demande juste des informations générales
    - Le problème peut être résolu par l'utilisateur avec les instructions données
+   - L'agent pose encore des questions pour obtenir des informations (sans indiquer qu'il va créer/faire quelque chose)
+   - Des informations essentielles manquent (nom, email, détails du problème, etc.)
+
+CAS SPÉCIFIQUES IMPORTANTS:
+- Si l'agent dit "Je m'occupe de créer...", "Je vais créer...", "Je crée..." → CRÉER UN TICKET (le système ne peut pas créer ces choses lui-même)
+- Si l'agent dit "Parfait" ou "Merci" APRÈS avoir collecté toutes les infos et indiqué qu'il va créer quelque chose → CRÉER UN TICKET
+- Si l'agent dit "Parfait" ou "Merci" SANS contexte de création/action → NE PAS créer de ticket
 
 Message utilisateur: {message}
 
@@ -115,6 +179,10 @@ Historique récent:
 {history_context if history_context else "Aucun historique"}
 
 L'agent a-t-il suggéré un ticket? {needs_ticket_suggested}
+
+IMPORTANT: 
+- Si l'agent indique qu'il va créer/faire quelque chose (ex: "Je m'occupe de créer..."), CRÉER UN TICKET car le système ne peut pas faire ces actions lui-même.
+- Si l'agent pose encore des questions SANS indiquer qu'il va créer/faire quelque chose, NE PAS créer de ticket.
 
 Analysez la situation et répondez au format JSON:
 {{

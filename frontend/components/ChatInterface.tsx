@@ -115,8 +115,8 @@ export default function ChatInterface({
 
   // Réinitialiser les messages et le flag de bienvenue quand la session change
   useEffect(() => {
-    // Ne pas réinitialiser si on charge les messages depuis Supabase
-    // Les messages seront chargés par le useEffect de loadMessages
+    // Réinitialiser complètement l'état pour une nouvelle session
+    setMessages([]) // Vider les messages immédiatement
     welcomeMessageSentRef.current = false
     streamingMessageRef.current = null
     streamBufferRef.current = ''
@@ -266,30 +266,18 @@ export default function ChatInterface({
           }, delay)
         } else if (data.type === 'stream_end') {
           // Fin du streaming : nettoyer le buffer et finaliser le message
-          // Créer un identifiant unique basé UNIQUEMENT sur le contenu (ignorer l'agent pour éviter les doublons)
           const finalMessage = data.message || ''
-          const contentHash = finalMessage.substring(0, 150).trim() // Utiliser les 150 premiers caractères comme identifiant
-          const streamEndId = `stream_end-${contentHash}`
           
-          // Vérifier si un message avec le même contenu existe déjà (peu importe l'agent)
-          const existingDuplicate = messages.find((msg) => 
-            msg.type === 'bot' &&
-            msg.content.trim() === finalMessage.trim() &&
-            finalMessage.length > 0
-          )
-          
-          if (existingDuplicate) {
-            // Le message existe déjà, ne pas le dupliquer
-            console.log('Ignoring duplicate message (same content)', contentHash.substring(0, 50))
-            streamBufferRef.current = ''
-            streamingMessageRef.current = null
-            setIsLoading(false)
-            return
-          }
+          // Vérifier si ce stream_end a déjà été traité (utiliser un identifiant unique basé sur le contenu)
+          const contentHash = finalMessage.substring(0, 200).trim()
+          const streamEndId = `stream_end-${contentHash.substring(0, 100)}`
           
           // Vérifier si ce stream_end a déjà été traité
           if (processedMessagesRef.current.has(streamEndId)) {
             console.log('Ignoring duplicate stream_end', contentHash.substring(0, 50))
+            streamBufferRef.current = ''
+            streamingMessageRef.current = null
+            setIsLoading(false)
             return // Ignorer les doublons
           }
           
@@ -301,6 +289,22 @@ export default function ChatInterface({
           }
           
           setMessages((prev) => {
+            // Vérifier si un message avec le même contenu existe déjà (peu importe l'agent)
+            const existingDuplicate = prev.find((msg) => 
+              msg.type === 'bot' &&
+              msg.content.trim() === finalMessage.trim() &&
+              finalMessage.length > 10 // Seulement pour les messages significatifs
+            )
+            
+            if (existingDuplicate) {
+              // Le message existe déjà, ne pas le dupliquer
+              console.log('Ignoring duplicate message (same content)', contentHash.substring(0, 50))
+              streamBufferRef.current = ''
+              streamingMessageRef.current = null
+              setIsLoading(false)
+              return prev
+            }
+            
             // Trouver le message en streaming
             const streamingMsg = prev.find((msg) => msg.id === streamingMessageRef.current)
             
@@ -549,7 +553,7 @@ export default function ChatInterface({
       <div className="px-6 py-4 border-t border-gray-200 bg-sable-lighter">
         <MessageInput onSend={handleSendMessage} disabled={!isConnected} />
         <p className="text-xs text-gray-500 mt-2 text-center">
-          VyBuddy répondra dans les meilleurs délais. Temps moyen: 2 minutes
+          VyBuddy répondra dans les meilleurs délais. Temps moyen: 1 minute
         </p>
       </div>
     </div>

@@ -1,14 +1,29 @@
 "use client"
 
 import { signIn } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
+
+// Composant séparé pour gérer les erreurs depuis les search params
+function ErrorHandler({ onError }: { onError: (error: string | null) => void }) {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const errorParam = searchParams.get("error")
+    if (errorParam === "AccessDenied" || errorParam === "Configuration") {
+      onError("Accès refusé. Votre compte n'est pas autorisé à accéder à cette application. Veuillez contacter le support IT si vous pensez que c'est une erreur.")
+    } else if (errorParam) {
+      onError("Une erreur est survenue lors de la connexion. Veuillez réessayer.")
+    }
+  }, [searchParams, onError])
+
+  return null
+}
 
 export default function LoginPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -17,16 +32,6 @@ export default function LoginPage() {
       router.push("/")
     }
   }, [status, router])
-
-  // Vérifier s'il y a une erreur dans l'URL (depuis le callback NextAuth)
-  useEffect(() => {
-    const errorParam = searchParams.get("error")
-    if (errorParam === "AccessDenied" || errorParam === "Configuration") {
-      setError("Accès refusé. Votre compte n'est pas autorisé à accéder à cette application. Veuillez contacter le support IT si vous pensez que c'est une erreur.")
-    } else if (errorParam) {
-      setError("Une erreur est survenue lors de la connexion. Veuillez réessayer.")
-    }
-  }, [searchParams])
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
@@ -71,6 +76,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-sable-lighter px-4">
+      <Suspense fallback={null}>
+        <ErrorHandler onError={setError} />
+      </Suspense>
       <div className="max-w-md w-full bg-blanc rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="inline-block mb-4">
