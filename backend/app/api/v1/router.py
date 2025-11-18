@@ -5,7 +5,10 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+from pathlib import Path
 import structlog
+import os
+import asyncio
 
 from app.services.orchestrator import OrchestratorService
 from app.database.supabase_client import SupabaseClient
@@ -454,4 +457,245 @@ async def get_feedback_stats(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# Endpoints admin pour la base de connaissances
+class KnowledgeBaseFileRequest(BaseModel):
+    """Requête pour créer/modifier un fichier de la base de connaissances"""
+    content: str
+
+
+@api_router.get("/admin/knowledge-base/files")
+async def list_knowledge_base_files(
+    current_user: dict = Depends(get_current_admin)
+):
+    """
+    Liste tous les fichiers de la base de connaissances (admin uniquement)
+    """
+    try:
+        # Chemin vers la base de connaissances
+        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
+        
+        if not knowledge_dir.exists():
+            return {"files": []}
+        
+        files = []
+        
+        # Lister les fichiers .md dans le répertoire principal
+        for md_file in knowledge_dir.glob("*.md"):
+            if md_file.name != "README.md":
+                files.append({
+                    "path": md_file.name,
+                    "name": md_file.name,
+                    "type": "file",
+                    "size": md_file.stat().st_size,
+                    "modified": datetime.fromtimestamp(md_file.stat().st_mtime).isoformat()
+                })
+        
+        # Lister les fichiers .md dans le répertoire procedures
+        procedures_dir = knowledge_dir / "procedures"
+        if procedures_dir.exists():
+            for md_file in procedures_dir.glob("*.md"):
+                files.append({
+                    "path": f"procedures/{md_file.name}",
+                    "name": md_file.name,
+                    "type": "file",
+                    "category": "procedures",
+                    "size": md_file.stat().st_size,
+                    "modified": datetime.fromtimestamp(md_file.stat().st_mtime).isoformat()
+                })
+        
+        # Trier par nom
+        files.sort(key=lambda x: x["path"])
+        
+        return {"files": files}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error listing knowledge base files", error=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/admin/knowledge-base/files/{file_path:path}")
+async def get_knowledge_base_file(
+    file_path: str,
+    current_user: dict = Depends(get_current_admin)
+):
+    """
+    Récupère le contenu d'un fichier de la base de connaissances (admin uniquement)
+    """
+    try:
+        # Sécuriser le chemin pour éviter les path traversal attacks
+        if ".." in file_path or file_path.startswith("/"):
+            raise HTTPException(status_code=400, detail="Invalid file path")
+        
+        # Chemin vers la base de connaissances
+        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
+        file_path_obj = knowledge_dir / file_path
+        
+        # Vérifier que le fichier est bien dans le répertoire de la base de connaissances
+        try:
+            file_path_obj.resolve().relative_to(knowledge_dir.resolve())
+        except ValueError:
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        # Vérifier que c'est un fichier .md
+        if not file_path_obj.suffix == ".md":
+            raise HTTPException(status_code=400, detail="Only .md files are allowed")
+        
+        if not file_path_obj.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Lire le contenu
+        with open(file_path_obj, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        return {
+            "path": file_path,
+            "name": file_path_obj.name,
+            "content": content,
+            "size": file_path_obj.stat().st_size,
+            "modified": datetime.fromtimestamp(file_path_obj.stat().st_mtime).isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error reading knowledge base file", error=str(e), file_path=file_path)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.put("/admin/knowledge-base/files/{file_path:path}")
+async def update_knowledge_base_file(
+    file_path: str,
+    request: KnowledgeBaseFileRequest,
+    current_user: dict = Depends(get_current_admin)
+):
+    """
+    Crée ou modifie un fichier de la base de connaissances (admin uniquement)
+    """
+    try:
+        # Sécuriser le chemin pour éviter les path traversal attacks
+        if ".." in file_path or file_path.startswith("/"):
+            raise HTTPException(status_code=400, detail="Invalid file path")
+        
+        # Chemin vers la base de connaissances
+        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
+        file_path_obj = knowledge_dir / file_path
+        
+        # Vérifier que le fichier est bien dans le répertoire de la base de connaissances
+        try:
+            file_path_obj.resolve().relative_to(knowledge_dir.resolve())
+        except ValueError:
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        # Vérifier que c'est un fichier .md
+        if not file_path_obj.suffix == ".md":
+            raise HTTPException(status_code=400, detail="Only .md files are allowed")
+        
+        # Créer le répertoire parent s'il n'existe pas
+        file_path_obj.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Écrire le contenu
+        with open(file_path_obj, 'w', encoding='utf-8') as f:
+            f.write(request.content)
+        
+        logger.info("Knowledge base file updated", file_path=file_path, user=current_user.get("email"))
+        
+        return {
+            "path": file_path,
+            "name": file_path_obj.name,
+            "size": file_path_obj.stat().st_size,
+            "modified": datetime.fromtimestamp(file_path_obj.stat().st_mtime).isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error updating knowledge base file", error=str(e), file_path=file_path)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.delete("/admin/knowledge-base/files/{file_path:path}")
+async def delete_knowledge_base_file(
+    file_path: str,
+    current_user: dict = Depends(get_current_admin)
+):
+    """
+    Supprime un fichier de la base de connaissances (admin uniquement)
+    """
+    try:
+        # Sécuriser le chemin pour éviter les path traversal attacks
+        if ".." in file_path or file_path.startswith("/"):
+            raise HTTPException(status_code=400, detail="Invalid file path")
+        
+        # Ne pas permettre la suppression de README.md
+        if file_path.endswith("README.md") or file_path == "README.md":
+            raise HTTPException(status_code=400, detail="Cannot delete README.md")
+        
+        # Chemin vers la base de connaissances
+        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
+        file_path_obj = knowledge_dir / file_path
+        
+        # Vérifier que le fichier est bien dans le répertoire de la base de connaissances
+        try:
+            file_path_obj.resolve().relative_to(knowledge_dir.resolve())
+        except ValueError:
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        # Vérifier que c'est un fichier .md
+        if not file_path_obj.suffix == ".md":
+            raise HTTPException(status_code=400, detail="Only .md files are allowed")
+        
+        if not file_path_obj.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Supprimer le fichier
+        file_path_obj.unlink()
+        
+        logger.info("Knowledge base file deleted", file_path=file_path, user=current_user.get("email"))
+        
+        return {"message": "File deleted successfully", "path": file_path}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error deleting knowledge base file", error=str(e), file_path=file_path)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/admin/knowledge-base/reindex")
+async def reindex_knowledge_base(
+    current_user: dict = Depends(get_current_admin)
+):
+    """
+    Re-indexe la base de connaissances dans Pinecone (admin uniquement)
+    """
+    try:
+        # Importer et exécuter le script de chargement
+        import sys
+        
+        # Ajouter le chemin du backend au sys.path
+        backend_dir = Path(__file__).parent.parent.parent.parent
+        scripts_dir = backend_dir / "scripts"
+        
+        if str(backend_dir) not in sys.path:
+            sys.path.insert(0, str(backend_dir))
+        
+        # Importer la fonction de chargement
+        from scripts.load_knowledge_base import load_knowledge_base
+        
+        # Exécuter le chargement de manière asynchrone
+        await load_knowledge_base()
+        
+        logger.info("Knowledge base reindexed", user=current_user.get("email"))
+        
+        return {"message": "Knowledge base reindexed successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error reindexing knowledge base", error=str(e))
+        raise HTTPException(status_code=500, detail=f"Error reindexing: {str(e)}")
 

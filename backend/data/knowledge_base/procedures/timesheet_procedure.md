@@ -1,53 +1,106 @@
 # Procédure de Support pour Timesheet
 
 **Catégorie:** timesheet
-**Description:** Procédure standardisée pour résoudre les problèmes liés aux timesheets.
+**Description:** Procédure standardisée pour résoudre les problèmes liés aux timesheets (application web).
+
+**⚠️ IMPORTANT:** La timesheet est une **application web**, pas un problème MacBook. Ne pas poser de questions sur le MacBook ou le numéro de série.
+
+## URLs par équipe
+
+La timesheet est une application web dont l'URL dépend de l'équipe :
+- **Skeelz:** https://timesheet.skeelz.com/
+- **eTail:** https://timesheet.etail-agency.com/
+- **The Creatives:** https://timesheet.thecreative-s.com/
+- **Vymar:** Board Monday spécial (demander accès au board Monday)
+- **Smartelia:** Tableau Sheet (demander accès au tableau)
 
 ## Questions de diagnostic
 
 - Quel est le problème spécifique avec la timesheet ?
-- Pouvez-vous accéder à la timesheet et voir les entrées existantes ?
-- Y a-t-il des clients ou des tâches manquants dans la liste déroulante ?
-- Avez-vous essayé de redémarrer l'application ou le navigateur ?
+- À quelle équipe appartenez-vous ? (pour vérifier l'URL correcte)
+- Pouvez-vous accéder à la timesheet ?
+- Le problème concerne-t-il des données manquantes ou une modification nécessaire ?
+- Le problème concerne-t-il l'accès à la timesheet ?
 
 ## Étapes de résolution
 
-### Étape 1: Vérifier l'accès à la timesheet
+### Scénario 1: Données manquantes ou modification nécessaire
 
-S'assurer que l'utilisateur peut accéder à la timesheet et qu'il n'y a pas de problème de connexion.
+Si l'utilisateur a besoin de modifier des données ou qu'il manque des informations dans la timesheet :
 
-### Étape 2: Vérifier les permissions utilisateur (nécessite droits admin)
+#### Étape 1.1: Identifier la personne
+Confirmer l'identité de la personne concernée.
 
-Confirmer que l'utilisateur a les permissions nécessaires pour modifier la timesheet.
+#### Étape 1.2: Collecter les informations nécessaires
+Demander les détails suivants :
+- Dates concernées
+- Clients concernés
+- Projets/tâches concernés
+- Description de la modification ou des données manquantes
 
-### Étape 3: Ajouter les clients ou tâches manquants (nécessite droits admin)
+#### Étape 1.3: Créer un ticket Odoo
+Créer immédiatement un ticket avec toutes les informations collectées.
 
-Si des clients ou tâches sont manquants, les ajouter via le panneau d'administration.
+**Champs requis pour le ticket:**
+- **title:** Timesheet - Modification/Données manquantes - [Nom de la personne]
+- **description:** 
+  - Nom de la personne
+  - Dates concernées
+  - Clients concernés
+  - Projets/tâches concernés
+  - Description détaillée de la modification ou des données manquantes
+- **priority:** Moyenne
 
-### Étape 4: Corriger les entrées de temps erronées
+### Scénario 2: Problèmes d'accès à la timesheet
 
-Modifier les entrées de temps incorrectes ou manquantes selon les informations fournies par l'utilisateur.
+Si l'utilisateur ne peut pas accéder à la timesheet :
 
-### Étape 5: Redémarrer l'application ou le navigateur
+#### Étape 2.1: Identifier l'équipe et vérifier l'URL
+Demander à l'utilisateur à quelle équipe il appartient (Skeelz, eTail, The Creatives, Vymar, ou Smartelia).
+- Vérifier que l'utilisateur utilise la bonne URL selon son équipe :
+  - **Skeelz:** https://timesheet.skeelz.com/
+  - **eTail:** https://timesheet.etail-agency.com/
+  - **The Creatives:** https://timesheet.thecreative-s.com/
+  - **Vymar:** Board Monday spécial (demander accès au board Monday)
+  - **Smartelia:** Tableau Sheet (demander accès au tableau)
 
-Demander à l'utilisateur de redémarrer l'application ou le navigateur pour voir si le problème persiste.
+#### Étape 2.2: Test en navigation privée
+Demander à l'utilisateur d'essayer d'accéder à la timesheet en navigation privée (mode incognito) :
+- Sur Chrome/Safari: Cmd+Shift+N
+- Vérifier si le problème persiste en navigation privée
 
+#### Étape 2.3: Analyser le message d'erreur
+Si un message d'erreur apparaît :
+- Demander à l'utilisateur le message d'erreur exact
+- Notez toutes les informations affichées (code d'erreur, description, etc.)
+
+#### Étape 2.4: Créer un ticket Odoo
+Créer un ticket avec toutes les informations de diagnostic.
+
+**Champs requis pour le ticket:**
+- **title:** Timesheet - Problème d'accès - [Nom de la personne]
+- **description:**
+  - Nom de la personne
+  - Équipe (Skeelz/eTail/The Creatives/Vymar/Smartelia)
+  - URL utilisée ou attendue selon l'équipe
+  - Résultat du test en navigation privée (fonctionne ou non)
+  - Message d'erreur complet (s'il y en a un)
+  - Navigateur utilisé
+  - Étapes de diagnostic déjà effectuées
+- **priority:** Moyenne
 
 ## Création de ticket Odoo
 
-**Quand créer un ticket:** Si le problème persiste après les étapes de résolution ou nécessite une intervention technique avancée.
-
-**Champs requis:**
-- **title:** Timesheet - [Problème spécifique]
-- **description:** Décrire le problème, les étapes de résolution tentées, et toute information pertinente.
-- **priority:** Moyenne
+**Quand créer un ticket:**
+- **Immédiatement** pour les données manquantes ou modifications nécessaires
+- **Après diagnostic** pour les problèmes d'accès (si test navigation privée + analyse erreur n'ont pas résolu le problème)
 
 ## Problèmes fréquents
 
-- Saisie de dates impossible
-- Clients ou tâches manquants
-- Entrées de temps erronées
-- Problèmes d'accès à la timesheet
+- Données manquantes dans la timesheet
+- Modification de données existantes
+- Problèmes d'accès à la timesheet (erreurs de connexion, permissions)
+- Messages d'erreur lors de l'accès
 
 ---
-*Procédure générée à partir de 30 tickets résolus*
+*Procédure mise à jour selon les standards actuels*

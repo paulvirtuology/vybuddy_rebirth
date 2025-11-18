@@ -67,8 +67,11 @@ Règles de routage:
 - Problèmes WiFi/Réseau → Network Agent avec Anthropic (raisonnement diagnostique)
 - Problèmes MacOS → MacOS Agent avec OpenAI (connaissance technique)
 - Problèmes Google Workspace → Workspace Agent avec Gemini (intégration Google)
+- Problèmes Timesheet (application web) → Knowledge Agent avec Anthropic (procédure)
 - Questions procédures/connaissances → Knowledge Agent avec Anthropic (RAG)
 - Autres → Knowledge Agent avec OpenAI (général, fallback)
+
+IMPORTANT: Les problèmes de timesheet sont des problèmes d'application web, PAS des problèmes MacBook. Router vers Knowledge Agent, jamais vers MacOS Agent.
 
 Message utilisateur: {message}
 
@@ -124,13 +127,23 @@ Répondez au format JSON:
                 "agent": "network",
                 "confidence": 0.7
             }
-        elif any(word in message_lower for word in ["mac", "macbook", "macos", "safari", "finder"]):
+        elif any(word in message_lower for word in ["timesheet", "feuille de temps", "temps de travail"]):
+            # Timesheet = application web, router vers Knowledge Agent (pas MacOS)
             return {
-                "intent": "macos",
-                "llm": "openai",
-                "agent": "macos",
-                "confidence": 0.7
+                "intent": "knowledge",
+                "llm": "anthropic",
+                "agent": "knowledge",
+                "confidence": 0.8
             }
+        elif any(word in message_lower for word in ["mac", "macbook", "macos", "safari", "finder"]):
+            # Exclure timesheet des problèmes MacOS (timesheet = web app)
+            if "timesheet" not in message_lower:
+                return {
+                    "intent": "macos",
+                    "llm": "openai",
+                    "agent": "macos",
+                    "confidence": 0.7
+                }
         elif any(word in message_lower for word in ["google", "workspace", "gmail", "drive", "calendar"]):
             return {
                 "intent": "workspace",

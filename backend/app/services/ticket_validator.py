@@ -54,6 +54,11 @@ class TicketValidator:
             "keywords": ["wifi", "wifi", "connexion", "réseau", "internet", "pas de connexion"],
             "required": ["diagnostic", "étapes"],
             "optional": []
+        },
+        "probleme_timesheet": {
+            "keywords": ["timesheet", "timesheet", "feuille de temps", "temps de travail"],
+            "required": ["personne"],  # Minimum requis
+            "optional": ["dates", "clients", "projets", "url", "erreur", "équipe", "equipe", "skeelz", "etail", "creatives", "vymar", "smartelia"]
         }
     }
     
@@ -119,6 +124,18 @@ class TicketValidator:
                 found = any(term in full_context for term in ["criticité", "critique", "urgent", "important", "priorité"])
             elif info == "validation" or info == "n+1":
                 found = any(term in full_context for term in ["validation", "n+1", "manager", "superviseur", "validé", "approuvé"])
+            elif info == "dates":
+                found = any(term in full_context for term in ["date", "dates", "jour", "jours", "semaine", "mois", "période"])
+            elif info == "clients":
+                found = any(term in full_context for term in ["client", "clients", "client", "customer"])
+            elif info == "projets":
+                found = any(term in full_context for term in ["projet", "projets", "tâche", "tâches", "task", "project"])
+            elif info == "url":
+                found = any(term in full_context for term in ["url", "lien", "adresse", "http", "https", "www"])
+            elif info == "erreur":
+                found = any(term in full_context for term in ["erreur", "error", "message d'erreur", "code erreur", "ne fonctionne pas", "ne marche pas"])
+            elif info == "équipe" or info == "equipe":
+                found = any(term in full_context for term in ["équipe", "equipe", "skeelz", "etail", "creatives", "vymar", "smartelia", "the creatives", "e-tail"])
             else:
                 # Recherche générique
                 found = info.lower() in full_context

@@ -125,6 +125,11 @@ Documentation pertinente:
 
 Message actuel de l'utilisateur: {message}
 
+⚠️ RÈGLE IMPORTANTE - TIMESHEET:
+- Si le problème concerne la timesheet (application web), NE JAMAIS poser de questions sur le MacBook, le numéro de série, ou le système d'exploitation
+- La timesheet est une application web, pas un problème MacBook
+- Pour les problèmes timesheet, demander uniquement : équipe (pour l'URL), dates, clients, projets, ou message d'erreur selon le type de problème
+
 INSTRUCTIONS CRITIQUES POUR LES PROCÉDURES:
 1. Si une procédure est fournie avec des questions de diagnostic :
    - Analysez l'historique de la conversation pour voir quelles questions ont déjà été posées
