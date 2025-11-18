@@ -24,15 +24,18 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
-            echo "🚀 Starting deployment..."
+            echo "🚀 Starting backend deployment..."
             
-            # Navigate to backend directory
-            cd /home/paul_smartelia/vybuddy_rebirth/backend
+            # Navigate to repo directory
+            cd /home/paul_smartelia/vybuddy_rebirth
             
             # Pull latest changes
             echo "📥 Pulling latest changes from main branch..."
             git pull origin main
             
+            # Navigate to backendo directory
+            cd backend
+
             # Stop and remove containers
             echo "🛑 Stopping existing containers..."
             sudo docker-compose down --remove-orphans
