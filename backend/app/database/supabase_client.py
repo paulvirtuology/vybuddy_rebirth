@@ -157,7 +157,29 @@ class SupabaseClient:
             result = client.table("interactions").insert(data).execute()
             
             # Mettre à jour la date de mise à jour de la conversation
-            await self.create_or_update_conversation(session_id, user_id)
+            # Optimisation: vérifier si la conversation existe d'abord pour éviter des appels inutiles
+            try:
+                existing_conv = client.table("conversations")\
+                    .select("id")\
+                    .eq("session_id", session_id)\
+                    .eq("user_id", user_id)\
+                    .execute()
+                
+                if not existing_conv.data or len(existing_conv.data) == 0:
+                    # La conversation n'existe pas, la créer
+                    await self.create_or_update_conversation(session_id, user_id)
+                else:
+                    # La conversation existe déjà, mettre à jour seulement updated_at
+                    # sans refaire un SELECT complet (optimisation)
+                    client.table("conversations")\
+                        .update({"updated_at": datetime.utcnow().isoformat()})\
+                        .eq("session_id", session_id)\
+                        .eq("user_id", user_id)\
+                        .execute()
+            except Exception as e:
+                # En cas d'erreur, fallback vers la méthode complète
+                logger.debug("Error updating conversation, using full create_or_update", error=str(e))
+                await self.create_or_update_conversation(session_id, user_id)
             
             logger.debug(
                 "Message saved to Supabase",

@@ -40,6 +40,7 @@ export default function ChatInterface({
   // Buffer pour batching des tokens de streaming
   const streamBufferRef = useRef<string>('')
   const streamUpdateTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const loadingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   
   // Track des messages déjà traités pour éviter les doublons
   const processedMessagesRef = useRef<Set<string>>(new Set())
@@ -334,6 +335,11 @@ export default function ChatInterface({
             streamBufferRef.current = ''
             streamingMessageRef.current = null
             setIsLoading(false)
+            // Annuler le timeout de sécurité s'il existe
+            if (loadingTimeoutRef.current) {
+              clearTimeout(loadingTimeoutRef.current)
+              loadingTimeoutRef.current = null
+            }
             return // Ignorer les doublons
           }
           
@@ -344,27 +350,19 @@ export default function ChatInterface({
             streamUpdateTimeoutRef.current = null
           }
           
+          // Annuler le timeout de sécurité
+          if (loadingTimeoutRef.current) {
+            clearTimeout(loadingTimeoutRef.current)
+            loadingTimeoutRef.current = null
+          }
+          
           setMessages((prev) => {
-            // Vérifier si un message avec le même contenu existe déjà (peu importe l'agent)
-            const existingDuplicate = prev.find((msg) => 
-              msg.type === 'bot' &&
-              msg.content.trim() === finalMessage.trim() &&
-              finalMessage.length > 10 // Seulement pour les messages significatifs
-            )
-            
-            if (existingDuplicate) {
-              // Le message existe déjà, ne pas le dupliquer
-              console.log('Ignoring duplicate message (same content)', contentHash.substring(0, 50))
-              streamBufferRef.current = ''
-              streamingMessageRef.current = null
-              setIsLoading(false)
-              return prev
-            }
-            
+            // PRIORITÉ 1: Toujours remplacer le message en streaming s'il existe
             // Trouver le message en streaming
             const streamingMsg = prev.find((msg) => msg.id === streamingMessageRef.current)
             
-            // Si le message en streaming existe, le remplacer complètement
+            // Si le message en streaming existe, TOUJOURS le remplacer (même si le contenu est similaire)
+            // C'est le message "processing" qui doit être remplacé par le message final avec le bon agent
             if (streamingMsg) {
               // Utiliser l'ID du message sauvegardé si disponible (UUID de Supabase)
               const messageId = (data.id || streamingMessageRef.current || streamingMsg.id) as string
@@ -373,14 +371,37 @@ export default function ChatInterface({
                 return uuidRegex.test(id)
               }
               
-              const updatedMessages = prev.map((msg) => {
+              // Supprimer tous les messages "processing" et les doublons SAUF celui qu'on va remplacer
+              // Cela évite les doublons si le streaming a créé plusieurs messages
+              const messagesWithoutDuplicates = prev.filter((msg) => {
+                // Garder le message en streaming (il sera remplacé)
                 if (msg.id === streamingMessageRef.current) {
-                  // Remplacer complètement le message streamé par le message final avec le bon ID
+                  return true
+                }
+                // CRITIQUE: Supprimer TOUS les messages avec agent="processing" car ils seront remplacés
+                // Même si le contenu est différent (ex: message avec faute)
+                if (msg.type === 'bot' && msg.agent === 'processing') {
+                  console.log('Removing processing message before replacement', msg.id)
+                  return false
+                }
+                // Supprimer les autres messages bot avec le même contenu (doublons exacts)
+                if (msg.type === 'bot' && 
+                    msg.content.trim() === finalMessage.trim() && 
+                    finalMessage.length > 10) {
+                  console.log('Removing duplicate message before replacement', msg.id)
+                  return false
+                }
+                return true
+              })
+              
+              const updatedMessages = messagesWithoutDuplicates.map((msg) => {
+                if (msg.id === streamingMessageRef.current) {
+                  // Remplacer complètement le message streamé par le message final avec le bon ID et agent
                   return {
                     ...msg,
                     id: messageId, // Utiliser l'ID UUID si disponible
                     content: finalMessage,
-                    agent: data.agent || 'unknown',
+                    agent: data.agent || 'unknown', // Utiliser le vrai agent (pas "processing")
                     metadata: data.metadata || {},
                   }
                 }
@@ -427,25 +448,53 @@ export default function ChatInterface({
               streamBufferRef.current = ''
               streamingMessageRef.current = null
               setIsLoading(false) // Désactiver le loading à la fin du streaming
+              
+              // Annuler le timeout de sécurité
+              if (loadingTimeoutRef.current) {
+                clearTimeout(loadingTimeoutRef.current)
+                loadingTimeoutRef.current = null
+              }
+              
               return updatedMessages
             }
             
-            // Si le message en streaming n'existe pas, vérifier s'il y a déjà un message avec le même contenu
+            // PRIORITÉ 2: Si le message en streaming n'existe pas, vérifier s'il y a déjà un message avec le même contenu
+            // Cela peut arriver si stream_end arrive avant stream_start (cas rare)
             const existingMessage = prev.find((msg) => 
               msg.type === 'bot' &&
               msg.content.trim() === finalMessage.trim() &&
-              finalMessage.length > 0
+              finalMessage.length > 10 // Seulement pour les messages significatifs
             )
             
             if (existingMessage) {
-              // Le message existe déjà, ne pas le dupliquer
+              // Le message existe déjà, mettre à jour son agent si c'est "processing"
+              if (existingMessage.agent === 'processing') {
+                // Remplacer l'agent "processing" par le vrai agent
+                const updatedMessages = prev.map((msg) => {
+                  if (msg.id === existingMessage.id) {
+                    return {
+                      ...msg,
+                      agent: data.agent || 'unknown',
+                      metadata: data.metadata || msg.metadata || {},
+                      id: (data.id || msg.id) as string // Utiliser l'ID UUID si disponible
+                    }
+                  }
+                  return msg
+                })
+                streamBufferRef.current = ''
+                streamingMessageRef.current = null
+                setIsLoading(false)
+                return updatedMessages
+              }
+              
+              // Le message existe déjà avec le bon agent, ne pas le dupliquer
               streamBufferRef.current = ''
               streamingMessageRef.current = null
               setIsLoading(false)
               return prev
             }
             
-            // Créer un nouveau message si aucun n'existe
+            // PRIORITÉ 3: Créer un nouveau message si aucun n'existe
             // Utiliser l'ID du message sauvegardé si disponible (UUID de Supabase)
             const messageId = (data.id || streamingMessageRef.current || `msg-${Date.now()}`) as string
             const isValidUUID = (id: string): boolean => {
@@ -577,6 +626,20 @@ export default function ChatInterface({
 
     // Activer le loading avant l'envoi
     setIsLoading(true)
+
+    // Annuler le timeout précédent s'il existe
+    if (loadingTimeoutRef.current) {
+      clearTimeout(loadingTimeoutRef.current)
+    }
+
+    // Timeout de sécurité : désactiver le loading après 60 secondes si pas de réponse
+    loadingTimeoutRef.current = setTimeout(() => {
+      console.warn('Loading timeout - disabling loading state after 60s')
+      setIsLoading(false)
+      streamBufferRef.current = ''
+      streamingMessageRef.current = null
+      loadingTimeoutRef.current = null
+    }, 60000) // 60 secondes
 
     // Envoi via WebSocket
     sendMessage({

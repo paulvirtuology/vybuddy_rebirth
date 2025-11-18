@@ -4,6 +4,7 @@ Routes API REST
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
 import structlog
 
 from app.services.orchestrator import OrchestratorService
@@ -180,11 +181,25 @@ async def update_conversation_title(
                 user_id=user_id
             )
         
-        conversation = await supabase.create_or_update_conversation(
-            session_id=session_id,
-            user_id=user_id,
-            title=title
-        )
+        # Optimisation: réutiliser le résultat du SELECT au lieu de refaire un SELECT dans create_or_update_conversation
+        if existing_conv.data and len(existing_conv.data) > 0:
+            # Mettre à jour la conversation existante directement
+            result = client.table("conversations")\
+                .update({
+                    "title": title,
+                    "updated_at": datetime.utcnow().isoformat()
+                })\
+                .eq("session_id", session_id)\
+                .eq("user_id", user_id)\
+                .execute()
+            conversation = result.data[0] if result.data else None
+        else:
+            # Créer la nouvelle conversation
+            conversation = await supabase.create_or_update_conversation(
+                session_id=session_id,
+                user_id=user_id,
+                title=title
+            )
         
         if not conversation:
             raise HTTPException(status_code=404, detail="Conversation not found")

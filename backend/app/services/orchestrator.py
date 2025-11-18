@@ -153,15 +153,9 @@ class OrchestratorService:
                 bot_response=response["message"]
             )
             
-            # Logging dans Supabase
-            await self.supabase.log_interaction(
-                session_id=session_id,
-                user_id=user_id,
-                user_message=message,
-                bot_response=response["message"],
-                agent_used=routing_decision["agent"],
-                metadata=response.get("metadata", {})
-            )
+            # NOTE: Ne plus appeler log_interaction ici car les messages sont déjà sauvegardés
+            # dans main.py via save_message. Cela évite la double sauvegarde et réduit les requêtes.
+            # Les messages user et bot sont sauvegardés séparément dans main.py pour avoir leur UUID.
             
             return response
             

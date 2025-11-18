@@ -217,11 +217,10 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             agent_used = response.get("agent", "unknown")
             metadata = response.get("metadata", {})
             
-            # Vérifier que le WebSocket est toujours connecté avant d'envoyer les messages finaux
-            if websocket.client_state.name != "CONNECTED":
-                logger.debug("WebSocket closed before sending final message", session_id=session_id)
-                # Sauvegarder quand même la réponse dans Supabase
-                await supabase.save_message(
+            # S'assurer que stream_end est TOUJOURS envoyé, même en cas d'erreur
+            try:
+                # Sauvegarder la réponse du bot dans Supabase AVANT d'envoyer stream_end pour avoir l'ID
+                saved_message = await supabase.save_message(
                     session_id=session_id,
                     user_id=user_id,
                     message_type="bot",
@@ -229,47 +228,40 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                     agent_used=agent_used,
                     metadata=metadata
                 )
-                return
-            
-            # Si aucun streaming n'a eu lieu (pas de callback), envoyer stream_start puis stream_end
-            if not stream_started:
-                await manager.send_message(
-                    websocket,
-                    {
-                        "type": "stream_start",
-                        "agent": agent_used
-                    }
-                )
-                await manager.send_message(
-                    websocket,
-                    {
-                        "type": "stream",
-                        "token": response["message"],
-                        "agent": agent_used
-                    }
-                )
-            
-            # Sauvegarder la réponse du bot dans Supabase AVANT d'envoyer stream_end pour avoir l'ID
-            saved_message = await supabase.save_message(
-                session_id=session_id,
-                user_id=user_id,
-                message_type="bot",
-                content=response["message"],
-                agent_used=agent_used,
-                metadata=metadata
-            )
-            
-            # Ajouter l'ID du message sauvegardé dans les métadonnées pour que le frontend puisse charger le feedback
-            if saved_message and saved_message.get("id"):
-                if not metadata:
-                    metadata = {}
-                else:
-                    metadata = metadata.copy()  # Copier pour ne pas modifier l'original
-                metadata["message_id"] = saved_message["id"]
-            
-            # Envoi du message final avec la réponse complète, le bon agent et l'ID du message
-            # Vérifier à nouveau l'état avant d'envoyer stream_end
-            if websocket.client_state.name == "CONNECTED":
+                
+                # Ajouter l'ID du message sauvegardé dans les métadonnées pour que le frontend puisse charger le feedback
+                if saved_message and saved_message.get("id"):
+                    if not metadata:
+                        metadata = {}
+                    else:
+                        metadata = metadata.copy()  # Copier pour ne pas modifier l'original
+                    metadata["message_id"] = saved_message["id"]
+                
+                # Vérifier que le WebSocket est toujours connecté avant d'envoyer les messages finaux
+                if websocket.client_state.name != "CONNECTED":
+                    logger.debug("WebSocket closed before sending final message", session_id=session_id)
+                    return
+                
+                # Si aucun streaming n'a eu lieu (pas de callback), envoyer stream_start puis stream_end
+                if not stream_started:
+                    await manager.send_message(
+                        websocket,
+                        {
+                            "type": "stream_start",
+                            "agent": agent_used
+                        }
+                    )
+                    await manager.send_message(
+                        websocket,
+                        {
+                            "type": "stream",
+                            "token": response["message"],
+                            "agent": agent_used
+                        }
+                    )
+                
+                # Envoi du message final avec la réponse complète, le bon agent et l'ID du message
+                # IMPORTANT: Toujours envoyer stream_end pour que le frontend arrête le loading
                 stream_end_data = {
                     "type": "stream_end",
                     "message": response["message"],
@@ -281,6 +273,27 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                     stream_end_data["id"] = saved_message["id"]
                 
                 await manager.send_message(websocket, stream_end_data)
+                
+            except Exception as final_error:
+                # Même en cas d'erreur, essayer d'envoyer stream_end pour éviter le loading infini
+                logger.error(
+                    "Error in final message handling, attempting to send stream_end anyway",
+                    error=str(final_error),
+                    session_id=session_id
+                )
+                try:
+                    if websocket.client_state.name == "CONNECTED":
+                        await manager.send_message(
+                            websocket,
+                            {
+                                "type": "stream_end",
+                                "message": response.get("message", ""),
+                                "agent": agent_used,
+                                "metadata": metadata
+                            }
+                        )
+                except Exception:
+                    pass  # Si on ne peut pas envoyer stream_end, le frontend utilisera le timeout
             
     except WebSocketDisconnect:
         manager.disconnect(session_id)

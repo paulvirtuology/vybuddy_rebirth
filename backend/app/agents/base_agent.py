@@ -172,13 +172,19 @@ class BaseAgent(ABC):
         stream_callback: Optional[Callable[[str], None]] = None
     ) -> str:
         """
-        Génère et stream la réponse en temps réel avec le streaming natif des LLMs
+        Génère la réponse complète, puis la stream vers le frontend pour l'affichage progressif
+        
+        Flux:
+        1. Requête utilisateur
+        2. Traitement -> génération complète de la réponse
+        3. Récupération de la réponse complète
+        4. Streaming vers le frontend (pour l'effet visuel uniquement)
         
         Args:
             llm: Le LLM à utiliser
             system_prompt: Le prompt système
             user_prompt: Le prompt utilisateur
-            stream_callback: Callback appelé pour chaque token streamé en temps réel
+            stream_callback: Callback appelé pour streamer la réponse complète par petits morceaux
             
         Returns:
             La réponse complète nettoyée
@@ -188,52 +194,30 @@ class BaseAgent(ABC):
             HumanMessage(content=user_prompt)
         ]
         
-        full_response = ""
-        chunks_to_clean = []  # Accumuler les chunks pour nettoyage final
-        
         try:
-            # Utiliser le vrai streaming natif si un callback est fourni
-            if stream_callback:
-                # Vérifier si le LLM supporte astream (streaming natif)
-                if hasattr(llm, 'astream'):
-                    async for chunk in llm.astream(messages):
-                        if hasattr(chunk, 'content') and chunk.content:
-                            token = chunk.content
-                            full_response += token
-                            chunks_to_clean.append(token)
-                            # Streamer directement sans délai artificiel
-                            try:
-                                await stream_callback(token)
-                            except Exception as e:
-                                # Si le callback échoue (ex: WebSocket fermé), continuer quand même
-                                logger.debug("Stream callback error (likely WebSocket closed)", error=str(e))
-                                # Ne pas lever l'exception pour continuer à recevoir la réponse
-                else:
-                    # Fallback pour les LLMs qui ne supportent pas astream
-                    response = await llm.ainvoke(messages)
-                    full_response = response.content if hasattr(response, 'content') else str(response)
-                    chunks_to_clean.append(full_response)
-                    # Streamer rapidement sans délai artificiel
-                    if full_response:
-                        import asyncio
-                        # Streamer par petits morceaux pour un effet visuel
-                        chunk_size = 10  # Environ 10 caractères à la fois
-                        for i in range(0, len(full_response), chunk_size):
-                            token = full_response[i:i+chunk_size]
-                            try:
-                                await stream_callback(token)
-                            except Exception as e:
-                                logger.debug("Stream callback error", error=str(e))
-                                break
-                            # Délai minimal juste pour l'effet visuel (5ms au lieu de 20ms)
-                            await asyncio.sleep(0.005)
-            else:
-                # Pas de callback, générer normalement
-                response = await llm.ainvoke(messages)
-                full_response = response.content if hasattr(response, 'content') else str(response)
+            # ÉTAPE 1-2: Générer la réponse COMPLÈTE d'abord (traitement)
+            logger.debug("Generating complete response before streaming")
+            response = await llm.ainvoke(messages)
+            full_response = response.content if hasattr(response, 'content') else str(response)
             
-            # Nettoyer la réponse complète pour enlever tout JSON ou formatage interne
+            # ÉTAPE 3: Nettoyer la réponse complète pour enlever tout JSON ou formatage interne
             full_response = self.clean_response(full_response)
+            
+            # ÉTAPE 4: Streamer la réponse complète vers le frontend (pour l'effet visuel)
+            if stream_callback and full_response:
+                import asyncio
+                # Streamer par petits morceaux pour un effet visuel progressif
+                chunk_size = 10  # Environ 10 caractères à la fois
+                for i in range(0, len(full_response), chunk_size):
+                    token = full_response[i:i+chunk_size]
+                    try:
+                        await stream_callback(token)
+                    except Exception as e:
+                        # Si le callback échoue (ex: WebSocket fermé), arrêter le streaming
+                        logger.debug("Stream callback error (likely WebSocket closed)", error=str(e))
+                        break
+                    # Délai minimal pour l'effet visuel (5ms)
+                    await asyncio.sleep(0.005)
             
             return full_response
             
