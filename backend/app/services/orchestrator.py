@@ -85,16 +85,20 @@ class OrchestratorService:
             
             # Vérifier si une escalade humaine est déjà en cours
             if await self.human_support.is_session_escalated(session_id):
+                # Forwarder le message vers Slack (sans réponse au frontend pour éviter la duplication)
+                # Le message de confirmation n'est nécessaire que lors de la première escalade
                 await self.human_support.forward_user_message(
                     session_id=session_id,
                     user_id=user_id,
                     user_name=user_name,
                     text=message
                 )
+                # Ne pas retourner de message pour éviter la duplication
+                # L'utilisateur verra directement la réponse du support humain quand elle arrivera
                 return {
-                    "message": "Je transmets votre message à notre équipe support. Un collègue humain vous répondra directement ici.",
+                    "message": "",  # Message vide pour ne rien afficher
                     "agent": "human_support",
-                    "metadata": {"human_support": True, "status": "forwarded"}
+                    "metadata": {"human_support": True, "status": "forwarded", "silent": True}
                 }
 
             # Détection d'une demande de support humain

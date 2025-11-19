@@ -370,6 +370,12 @@ export default function ChatInterface({
             // CAS SPÉCIAL: Si c'est un message human_support et qu'il n'y a pas de message en streaming,
             // créer un nouveau message directement (les messages human_support n'ont pas de stream_start)
             if (!streamingMsg && data.metadata?.human_support) {
+              // Ignorer les messages silencieux (forwarded sans confirmation)
+              if (data.metadata?.silent && !finalMessage.trim()) {
+                setIsLoading(false) // Désactiver le loading
+                return prev // Ne pas ajouter de message
+              }
+              
               const messageId = (data.id || `msg-${Date.now()}`) as string
               const isValidUUID = (id: string): boolean => {
                 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -384,6 +390,9 @@ export default function ChatInterface({
                 agent: data.agent || 'human_support',
                 metadata: data.metadata || {},
               }
+              
+              // Désactiver le loading pour les messages human_support
+              setIsLoading(false)
               
               // Charger le feedback pour ce nouveau message bot si l'ID est un UUID valide (de manière asynchrone)
               if (isValidUUID(messageId) && token) {

@@ -152,40 +152,9 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                 content=message
             )
 
-            # Si la session est en mode support humain, transférer directement vers Slack
-            # Cette vérification DOIT être faite AVANT tout traitement par les agents
-            is_escalated = await human_support.is_session_escalated(session_id)
-            logger.debug(
-                "Checking human support escalation",
-                session_id=session_id,
-                is_escalated=is_escalated
-            )
-            
-            if is_escalated:
-                forwarded = await human_support.forward_user_message(
-                    session_id=session_id,
-                    user_id=user_id,
-                    user_name=user_info.get("name"),
-                    text=message
-                )
-                
-                if forwarded:
-                    # Envoyer une confirmation à l'utilisateur
-                    await manager.send_message(
-                        websocket,
-                        {
-                            "type": "stream_end",
-                            "message": "Je transmets votre message à notre équipe support. Un collègue humain vous répondra directement ici.",
-                            "agent": "human_support",
-                            "metadata": {"human_support": True, "status": "forwarded"}
-                        }
-                    )
-                else:
-                    logger.warning(
-                        "Failed to forward message to human support",
-                        session_id=session_id
-                    )
-                continue
+            # Si la session est en mode support humain, l'orchestrator gérera le forwarding
+            # et retournera un message silencieux pour éviter la duplication
+            # On laisse l'orchestrator gérer ça complètement
             
             # Variable pour accumuler la réponse complète
             agent_used = "processing"
@@ -242,6 +211,10 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             # Mise à jour des métadonnées APRÈS avoir reçu la réponse
             agent_used = response.get("agent", "unknown")
             metadata = response.get("metadata", {})
+            
+            # Si c'est un message silencieux (forwarded sans confirmation), ne rien faire
+            if metadata.get("silent") and not response.get("message", "").strip():
+                continue  # Passer au message suivant sans envoyer de stream_end
             
             # S'assurer que stream_end est TOUJOURS envoyé, même en cas d'erreur
             try:
