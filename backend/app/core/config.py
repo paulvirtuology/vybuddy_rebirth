@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     # Application
     ENVIRONMENT: str = "development"
     LOG_LEVEL: str = "INFO"
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:3001"]
+    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:3001","https://vybuddy-rebirth.vercel.app"]
     
     # API Keys
     OPENAI_API_KEY: str
