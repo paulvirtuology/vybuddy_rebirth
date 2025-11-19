@@ -877,17 +877,35 @@ async def slack_events(
                     mapped_session=mapped_session
                 )
                 if mapped_session:
-                    # Ignorer seulement si c'est un message du bot ET qu'il n'y a pas de user
-                    # (les messages humains ont toujours un user, même dans un thread)
-                    if bot_id and not user:
+                    # Ignorer les messages du bot VyBuddy (même s'ils ont un user)
+                    # Les messages du bot ont toujours un bot_id dans un thread d'escalade
+                    # Les vrais messages humains n'ont PAS de bot_id
+                    if bot_id:
                         logger.debug(
                             "Ignoring bot message in escalation thread",
                             bot_id=bot_id,
-                            session_id=mapped_session
+                            user=user,
+                            session_id=mapped_session,
+                            text_preview=text[:50]
+                        )
+                        return JSONResponse(content={"status": "ok"})
+                    
+                    # Vérifier aussi les patterns spécifiques du bot (sécurité supplémentaire)
+                    bot_patterns = [
+                        ":rotating_light: *Nouvelle demande d'escalade VyBuddy*",
+                        "*Nouvelle demande d'escalade VyBuddy*",
+                        "Nouvelle demande d'escalade VyBuddy"
+                    ]
+                    if any(pattern in text for pattern in bot_patterns):
+                        logger.debug(
+                            "Ignoring bot pattern message in escalation thread",
+                            session_id=mapped_session,
+                            text_preview=text[:50]
                         )
                         return JSONResponse(content={"status": "ok"})
                     
                     # Traiter le message (message humain dans un thread d'escalade)
+                    # Les vrais messages humains n'ont PAS de bot_id
                     logger.info(
                         "Routing Slack reply to user",
                         session_id=mapped_session,
@@ -899,7 +917,7 @@ async def slack_events(
                     await human_support.handle_slack_reply(
                         channel=channel,
                         thread_ts=thread_ts,
-                        slack_user_id=user or f"bot_{bot_id}",  # Fallback si pas de user
+                        slack_user_id=user,  # Pas de fallback bot_id car on a déjà filtré les bots
                         text=text
                     )
                     return JSONResponse(content={"status": "ok"})

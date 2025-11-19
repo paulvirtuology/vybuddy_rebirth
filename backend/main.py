@@ -128,11 +128,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
         return
     
     await manager.connect(websocket, session_id)
-    logger.debug(
-        "WebSocket connection established",
-        session_id=session_id,
-        user_email=user_info.get("email")
-    )
+    # Logs WebSocket réduits - seulement en cas d'erreur
     
     try:
         while True:
@@ -144,12 +140,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             # Utiliser l'email de l'utilisateur authentifié
             user_id = user_info.get("email", user_id_from_data)
             
-            logger.debug(
-                "Message received",
-                session_id=session_id,
-                user_id=user_id,
-                message_preview=message[:50]
-            )
+            # Logs réduits pour les messages reçus
             
             # Sauvegarder le message utilisateur dans Supabase
             from app.database.supabase_client import SupabaseClient

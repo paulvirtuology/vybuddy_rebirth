@@ -43,6 +43,10 @@ def setup_logging(log_level: str = "INFO"):
     logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
     logging.getLogger("uvicorn.error").setLevel(logging.INFO)  # Garder les erreurs
     
+    # Réduire les logs WebSocket de uvicorn (connection open/closed)
+    # Ces logs sont très verbeux et polluent les logs
+    logging.getLogger("uvicorn").setLevel(logging.WARNING)
+    
     # Réduire les logs de fastapi
     logging.getLogger("fastapi").setLevel(logging.WARNING)
 

@@ -325,13 +325,19 @@ export default function ChatInterface({
           // Fin du streaming : nettoyer le buffer et finaliser le message
           const finalMessage = data.message || ''
           
-          // Vérifier si ce stream_end a déjà été traité (utiliser un identifiant unique basé sur le contenu)
-          const contentHash = finalMessage.substring(0, 200).trim()
-          const streamEndId = `stream_end-${contentHash.substring(0, 100)}`
+          // Pour les messages human_support, utiliser l'ID du message pour la déduplication
+          // Pour les autres messages, utiliser le hash du contenu
+          let streamEndId: string
+          if (data.metadata?.human_support && data.id) {
+            streamEndId = `stream_end-${data.id}`
+          } else {
+            const contentHash = finalMessage.substring(0, 200).trim()
+            streamEndId = `stream_end-${contentHash.substring(0, 100)}`
+          }
           
           // Vérifier si ce stream_end a déjà été traité
           if (processedMessagesRef.current.has(streamEndId)) {
-            console.log('Ignoring duplicate stream_end', contentHash.substring(0, 50))
+            console.log('Ignoring duplicate stream_end', streamEndId.substring(0, 50))
             streamBufferRef.current = ''
             streamingMessageRef.current = null
             setIsLoading(false)
@@ -360,6 +366,54 @@ export default function ChatInterface({
             // PRIORITÉ 1: Toujours remplacer le message en streaming s'il existe
             // Trouver le message en streaming
             const streamingMsg = prev.find((msg) => msg.id === streamingMessageRef.current)
+            
+            // CAS SPÉCIAL: Si c'est un message human_support et qu'il n'y a pas de message en streaming,
+            // créer un nouveau message directement (les messages human_support n'ont pas de stream_start)
+            if (!streamingMsg && data.metadata?.human_support) {
+              const messageId = (data.id || `msg-${Date.now()}`) as string
+              const isValidUUID = (id: string): boolean => {
+                const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+                return uuidRegex.test(id)
+              }
+              
+              const newMessage: Message = {
+                id: messageId,
+                type: 'bot',
+                content: finalMessage,
+                timestamp: new Date(),
+                agent: data.agent || 'human_support',
+                metadata: data.metadata || {},
+              }
+              
+              // Charger le feedback pour ce nouveau message bot si l'ID est un UUID valide (de manière asynchrone)
+              if (isValidUUID(messageId) && token) {
+                axios.post(
+                  `${apiUrl}/api/v1/feedbacks/messages/batch`,
+                  { interaction_ids: [messageId] },
+                  {
+                    headers: {
+                      'Authorization': `Bearer ${token}`
+                    }
+                  }
+                ).then(feedbackResponse => {
+                  const feedbacksData = feedbackResponse.data.feedbacks || {}
+                  if (feedbacksData[messageId]) {
+                    const fb = feedbacksData[messageId] as any
+                    setFeedbacks(prev => ({
+                      ...prev,
+                      [messageId]: {
+                        reaction: fb.reaction || undefined,
+                        comment: fb.comment || undefined
+                      }
+                    }))
+                  }
+                }).catch(() => {
+                  // Pas de feedback existant, c'est normal
+                })
+              }
+              
+              return [...prev, newMessage]
+            }
             
             // Si le message en streaming existe, TOUJOURS le remplacer (même si le contenu est similaire)
             // C'est le message "processing" qui doit être remplacé par le message final avec le bon agent
