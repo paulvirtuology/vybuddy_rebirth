@@ -162,13 +162,38 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             )
 
             # Si la session est en mode support humain, transférer directement vers Slack
-            if await human_support.is_session_escalated(session_id):
-                await human_support.forward_user_message(
+            # Cette vérification DOIT être faite AVANT tout traitement par les agents
+            is_escalated = await human_support.is_session_escalated(session_id)
+            logger.info(
+                "Checking human support escalation",
+                session_id=session_id,
+                is_escalated=is_escalated
+            )
+            
+            if is_escalated:
+                forwarded = await human_support.forward_user_message(
                     session_id=session_id,
                     user_id=user_id,
                     user_name=user_info.get("name"),
                     text=message
                 )
+                
+                if forwarded:
+                    # Envoyer une confirmation à l'utilisateur
+                    await manager.send_message(
+                        websocket,
+                        {
+                            "type": "stream_end",
+                            "message": "Je transmets votre message à notre équipe support. Un collègue humain vous répondra directement ici.",
+                            "agent": "human_support",
+                            "metadata": {"human_support": True, "status": "forwarded"}
+                        }
+                    )
+                else:
+                    logger.warning(
+                        "Failed to forward message to human support",
+                        session_id=session_id
+                    )
                 continue
             
             # Variable pour accumuler la réponse complète

@@ -42,7 +42,15 @@ class HumanSupportService:
     async def is_session_escalated(self, session_id: str) -> bool:
         """Indique si la session est actuellement gérée par le support humain"""
         state = await self.get_session_state(session_id)
-        return bool(state and state.get("status") == "open")
+        is_escalated = bool(state and state.get("status") == "open")
+        logger.debug(
+            "Checking escalation status",
+            session_id=session_id,
+            has_state=bool(state),
+            status=state.get("status") if state else None,
+            is_escalated=is_escalated
+        )
+        return is_escalated
 
     async def start_escalation(
         self,
@@ -193,36 +201,57 @@ class HumanSupportService:
         responder_name = user_info.get("real_name") if user_info else slack_user_id
         responder_email = user_info.get("profile", {}).get("email") if user_info else None
 
-        # Sauvegarder dans Supabase comme message "human"
-        await self.supabase.save_message(
+        # Sauvegarder dans Supabase comme message "bot" avec agent "human_support"
+        # (le frontend attend "bot" pour afficher les messages du support)
+        saved_message = await self.supabase.save_message(
             session_id=session_id,
-            user_id=responder_email or f"slack_{slack_user_id}",
-            message_type="human",
+            user_id=state.get("user_id", responder_email or f"slack_{slack_user_id}"),
+            message_type="bot",
             content=text,
+            agent_used="human_support",
             metadata={
                 "platform": "slack",
                 "slack_channel": channel,
                 "slack_thread_ts": thread_ts,
                 "slack_user": slack_user_id,
                 "slack_user_name": responder_name,
-                "human_support": True
+                "human_support": True,
+                "responder": responder_name,
+                "responder_email": responder_email
             }
         )
 
         # Notifier le frontend via WebSocket
-        await manager.broadcast(
-            session_id,
-            {
-                "type": "stream_end",
-                "message": text,
-                "agent": "human_support",
-                "metadata": {
-                    "human_support": True,
-                    "responder": responder_name,
-                    "responder_email": responder_email
-                }
+        message_data = {
+            "type": "stream_end",
+            "message": text,
+            "agent": "human_support",
+            "metadata": {
+                "human_support": True,
+                "responder": responder_name,
+                "responder_email": responder_email
             }
-        )
+        }
+        
+        # Ajouter l'ID du message si disponible (pour le feedback)
+        if saved_message and saved_message.get("id"):
+            message_data["id"] = saved_message["id"]
+        
+        # Envoyer via WebSocket si connecté, sinon le message est déjà sauvegardé dans Supabase
+        try:
+            await manager.broadcast(session_id, message_data)
+            logger.info(
+                "Human support message sent via WebSocket",
+                session_id=session_id,
+                has_connection=session_id in manager.active_connections
+            )
+        except Exception as e:
+            logger.warning(
+                "Could not send human support message via WebSocket (user may not be connected)",
+                session_id=session_id,
+                error=str(e)
+            )
+            # Le message est déjà sauvegardé dans Supabase, il sera récupéré au prochain chargement
 
         state["last_activity_at"] = datetime.utcnow().isoformat()
         await self.redis.set_session_data(session_id, self.SESSION_KEY, state, ttl=self.DEFAULT_TTL)
