@@ -208,7 +208,7 @@ class OrchestratorService:
                 history=history
             )
             
-            logger.info(
+            logger.debug(
                 "Routing decision",
                 session_id=session_id,
                 intent=routing_decision["intent"],

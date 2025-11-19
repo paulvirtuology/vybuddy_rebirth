@@ -33,7 +33,7 @@ class RedisClient:
                     self.redis_url,
                     decode_responses=True
                 )
-            logger.info("Redis connection established")
+            logger.debug("Redis connection established")
         except Exception as e:
             logger.error("Redis connection error", error=str(e))
             raise
@@ -42,7 +42,7 @@ class RedisClient:
         """Ferme la connexion Redis"""
         if self.client:
             await self.client.close()
-            logger.info("Redis connection closed")
+            logger.debug("Redis connection closed")
     
     async def get_session_history(
         self,

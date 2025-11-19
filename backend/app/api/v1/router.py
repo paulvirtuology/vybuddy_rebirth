@@ -848,18 +848,76 @@ async def slack_events(
         # URL Verification Challenge (première connexion)
         if data.get("type") == "url_verification":
             challenge = data.get("challenge")
-            logger.info("Slack URL verification challenge received")
+            logger.debug("Slack URL verification challenge received")
             return JSONResponse(content={"challenge": challenge})
         
-        # Ignorer les événements de bot (éviter les boucles)
-        event = data.get("event", {})
-        if event.get("bot_id") or event.get("subtype") == "bot_message":
-            logger.debug("Ignoring bot message event")
-            return JSONResponse(content={"status": "ok"})
-        
         # Traiter les événements de message
+        event = data.get("event", {})
         if data.get("type") == "event_callback" and event.get("type") == "message":
+            # Extraire les informations du message d'abord
+            channel = event.get("channel")
+            user = event.get("user")
+            text = event.get("text", "").strip()
+            ts = event.get("ts")
+            thread_ts = event.get("thread_ts")  # Si c'est une réponse dans un thread
+            bot_id = event.get("bot_id")
             subtype = event.get("subtype")
+            
+            # PRIORITÉ 1: Si le message appartient à un thread d'escalade humain, le router vers l'utilisateur
+            # (même si c'est un message de bot, on veut traiter les réponses humaines dans les threads)
+            if thread_ts:
+                mapped_session = await human_support.get_session_by_thread(channel, thread_ts)
+                logger.info(
+                    "Checking thread for human support",
+                    channel=channel,
+                    thread_ts=thread_ts,
+                    user=user,
+                    bot_id=bot_id,
+                    text_preview=text[:50],
+                    mapped_session=mapped_session
+                )
+                if mapped_session:
+                    # Ignorer seulement si c'est un message du bot ET qu'il n'y a pas de user
+                    # (les messages humains ont toujours un user, même dans un thread)
+                    if bot_id and not user:
+                        logger.debug(
+                            "Ignoring bot message in escalation thread",
+                            bot_id=bot_id,
+                            session_id=mapped_session
+                        )
+                        return JSONResponse(content={"status": "ok"})
+                    
+                    # Traiter le message (message humain dans un thread d'escalade)
+                    logger.info(
+                        "Routing Slack reply to user",
+                        session_id=mapped_session,
+                        channel=channel,
+                        thread_ts=thread_ts,
+                        user=user,
+                        text_preview=text[:50]
+                    )
+                    await human_support.handle_slack_reply(
+                        channel=channel,
+                        thread_ts=thread_ts,
+                        slack_user_id=user or f"bot_{bot_id}",  # Fallback si pas de user
+                        text=text
+                    )
+                    return JSONResponse(content={"status": "ok"})
+                else:
+                    logger.warning(
+                        "Thread found but no session mapped",
+                        channel=channel,
+                        thread_ts=thread_ts
+                    )
+            
+            # Ignorer les messages vides
+            if not text:
+                return JSONResponse(content={"status": "ok"})
+            
+            # Ignorer les événements de bot (éviter les boucles) - SAUF dans les threads d'escalade déjà traités
+            if bot_id or subtype == "bot_message":
+                logger.debug("Ignoring bot message event", bot_id=bot_id, subtype=subtype)
+                return JSONResponse(content={"status": "ok"})
             
             # Ignorer les messages système que Slack ne permet pas de commenter
             system_subtypes = {
@@ -878,7 +936,7 @@ async def slack_events(
                 logger.debug(
                     "Ignoring Slack system message",
                     subtype=subtype,
-                    channel=event.get("channel")
+                    channel=channel
                 )
                 return JSONResponse(content={"status": "ok"})
             
@@ -886,30 +944,7 @@ async def slack_events(
             if subtype in ["message_changed", "message_deleted"]:
                 return JSONResponse(content={"status": "ok"})
             
-            # Extraire les informations du message
-            channel = event.get("channel")
-            user = event.get("user")
-            text = event.get("text", "").strip()
-            ts = event.get("ts")
-            thread_ts = event.get("thread_ts")  # Si c'est une réponse dans un thread
-            
-            # Ignorer les messages vides
-            if not text:
-                return JSONResponse(content={"status": "ok"})
-
-            # Si le message appartient à un thread d'escalade humain, le router vers l'utilisateur
-            if thread_ts:
-                mapped_session = await human_support.get_session_by_thread(channel, thread_ts)
-                if mapped_session:
-                    await human_support.handle_slack_reply(
-                        channel=channel,
-                        thread_ts=thread_ts,
-                        slack_user_id=user,
-                        text=text
-                    )
-                    return JSONResponse(content={"status": "ok"})
-            
-            logger.info(
+            logger.debug(
                 "Slack message received",
                 channel=channel,
                 user=user,
@@ -1066,7 +1101,7 @@ async def slack_commands(
         channel_id = form_data.get("channel_id", [""])[0] if form_data.get("channel_id") else ""
         response_url = form_data.get("response_url", [""])[0] if form_data.get("response_url") else ""
         
-        logger.info(
+        logger.debug(
             "Slack command received",
             command=command,
             user_id=user_id,
@@ -1175,7 +1210,7 @@ async def slack_interactions(
         payload_str = form_data.get("payload", [""])[0] if form_data.get("payload") else "{}"
         payload = json.loads(payload_str) if payload_str else {}
         
-        logger.info("Slack interaction received", payload_type=payload.get("type"))
+        logger.debug("Slack interaction received", payload_type=payload.get("type"))
         
         # Pour l'instant, on retourne juste un accusé de réception
         # Les interactions peuvent être implémentées plus tard (boutons, etc.)

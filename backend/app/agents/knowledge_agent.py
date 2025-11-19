@@ -195,7 +195,7 @@ Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les 
             # Enlever "needs_ticket: true" si présent (déjà fait dans clean_response mais on double la vérification)
             response_text = response_text.replace("needs_ticket: true", "").replace("needs_ticket:true", "").strip()
             
-            logger.info(
+            logger.debug(
                 "Knowledge agent response",
                 session_id=session_id,
                 needs_ticket=needs_ticket,

@@ -17,7 +17,7 @@ from app.services.orchestrator import OrchestratorService
 from app.services.human_support_service import HumanSupportService
 
 # Configuration du logging
-setup_logging()
+setup_logging(log_level=settings.LOG_LEVEL)
 logger = structlog.get_logger()
 
 # Services principaux
@@ -128,7 +128,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
         return
     
     await manager.connect(websocket, session_id)
-    logger.info(
+    logger.debug(
         "WebSocket connection established",
         session_id=session_id,
         user_email=user_info.get("email")
@@ -144,7 +144,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             # Utiliser l'email de l'utilisateur authentifié
             user_id = user_info.get("email", user_id_from_data)
             
-            logger.info(
+            logger.debug(
                 "Message received",
                 session_id=session_id,
                 user_id=user_id,
@@ -164,7 +164,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             # Si la session est en mode support humain, transférer directement vers Slack
             # Cette vérification DOIT être faite AVANT tout traitement par les agents
             is_escalated = await human_support.is_session_escalated(session_id)
-            logger.info(
+            logger.debug(
                 "Checking human support escalation",
                 session_id=session_id,
                 is_escalated=is_escalated
@@ -332,7 +332,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             
     except WebSocketDisconnect:
         manager.disconnect(session_id)
-        logger.info("WebSocket disconnected", session_id=session_id)
+        logger.debug("WebSocket disconnected", session_id=session_id)
     except Exception as e:
         logger.error(
             "WebSocket error",

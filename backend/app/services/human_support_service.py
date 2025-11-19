@@ -239,12 +239,27 @@ class HumanSupportService:
         
         # Envoyer via WebSocket si connecté, sinon le message est déjà sauvegardé dans Supabase
         try:
-            await manager.broadcast(session_id, message_data)
+            has_connection = session_id in manager.active_connections
             logger.info(
-                "Human support message sent via WebSocket",
+                "Broadcasting human support message",
                 session_id=session_id,
-                has_connection=session_id in manager.active_connections
+                has_connection=has_connection,
+                message_preview=text[:50],
+                active_sessions=list(manager.active_connections.keys())[:5]  # Premiers 5 pour debug
             )
+            if has_connection:
+                await manager.broadcast(session_id, message_data)
+                logger.info(
+                    "Human support message sent via WebSocket",
+                    session_id=session_id,
+                    message_preview=text[:50]
+                )
+            else:
+                logger.warning(
+                    "No WebSocket connection for session, message saved in Supabase",
+                    session_id=session_id,
+                    message_preview=text[:50]
+                )
         except Exception as e:
             logger.warning(
                 "Could not send human support message via WebSocket (user may not be connected)",
