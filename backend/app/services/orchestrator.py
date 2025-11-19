@@ -393,7 +393,9 @@ class OrchestratorService:
         Détecte si l'utilisateur demande à parler à un humain
         """
         message_lower = message.lower().strip()
-        keywords = [
+        
+        # Mots-clés complets (exact match)
+        exact_keywords = [
             "parler à une vraie personne",
             "parler à quelqu'un",
             "parler à un humain",
@@ -406,8 +408,38 @@ class OrchestratorService:
             "puis-je parler à un conseiller",
             "j'aimerais parler à un agent"
         ]
-
-        return any(keyword in message_lower for keyword in keywords)
+        
+        # Vérifier les mots-clés exacts d'abord
+        if any(keyword in message_lower for keyword in exact_keywords):
+            return True
+        
+        # Détection flexible : combinaisons de mots-clés
+        # "parler" + ("personne" ou "humain" ou "quelqu'un" ou "agent" ou "conseiller")
+        parler_keywords = ["parler", "discuter", "échanger", "contacter"]
+        human_keywords = ["personne", "humain", "quelqu'un", "agent", "conseiller", "collègue", "vraie personne"]
+        
+        has_parler = any(kw in message_lower for kw in parler_keywords)
+        has_human = any(kw in message_lower for kw in human_keywords)
+        
+        # Si les deux sont présents, c'est probablement une demande de support humain
+        if has_parler and has_human:
+            # Exclure les faux positifs
+            exclude_keywords = ["parler de", "parler du", "parler des", "parler d'"]
+            if not any(exc in message_lower for exc in exclude_keywords):
+                return True
+        
+        # Autres patterns
+        other_patterns = [
+            "vraie personne",
+            "personne réelle",
+            "agent humain",
+            "conseiller humain",
+            "support humain",
+            "besoin d'un humain",
+            "besoin d'une personne"
+        ]
+        
+        return any(pattern in message_lower for pattern in other_patterns)
     
     def _parse_escalation_choice(self, message: str) -> Optional[str]:
         """
