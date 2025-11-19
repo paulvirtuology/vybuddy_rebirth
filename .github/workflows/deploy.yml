@@ -33,7 +33,7 @@ jobs:
             echo "📥 Pulling latest changes from main branch..."
             git pull origin main
             
-            # Navigate to backendo directory
+            # Navigate to backend directory
             cd backend
 
             # Stop and remove containers

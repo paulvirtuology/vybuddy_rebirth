@@ -41,6 +41,11 @@ class Settings(BaseSettings):
     NEXTAUTH_SECRET: str = ""
     SECRET_KEY: str = ""  # Fallback si NEXTAUTH_SECRET n'est pas défini
     
+    # Slack Integration
+    SLACK_BOT_TOKEN: str = ""  # Token du bot Slack (xoxb-...)
+    SLACK_SIGNING_SECRET: str = ""  # Secret pour vérifier les signatures des webhooks
+    SLACK_APP_ID: str = ""  # ID de l'application Slack (optionnel)
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

@@ -1,7 +1,8 @@
 """
 Routes API REST
 """
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request, Header
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
@@ -9,8 +10,10 @@ from pathlib import Path
 import structlog
 import os
 import asyncio
+import json
 
 from app.services.orchestrator import OrchestratorService
+from app.services.slack_service import SlackService
 from app.database.supabase_client import SupabaseClient
 from app.database.redis_client import RedisClient
 from app.middleware.auth_middleware import get_current_user, get_current_admin
@@ -698,4 +701,372 @@ async def reindex_knowledge_base(
     except Exception as e:
         logger.error("Error reindexing knowledge base", error=str(e))
         raise HTTPException(status_code=500, detail=f"Error reindexing: {str(e)}")
+
+
+# ============================================
+# Slack Integration Endpoints
+# ============================================
+
+class SlackEventRequest(BaseModel):
+    """Modèle pour les événements Slack"""
+    token: Optional[str] = None
+    team_id: Optional[str] = None
+    api_app_id: Optional[str] = None
+    event: Optional[dict] = None
+    type: Optional[str] = None
+    challenge: Optional[str] = None  # Pour l'URL verification
+    event_id: Optional[str] = None
+    event_time: Optional[int] = None
+
+
+@api_router.post("/slack/events")
+async def slack_events(
+    request: Request,
+    x_slack_signature: Optional[str] = Header(None, alias="X-Slack-Signature"),
+    x_slack_request_timestamp: Optional[str] = Header(None, alias="X-Slack-Request-Timestamp")
+):
+    """
+    Endpoint webhook pour recevoir les événements Slack
+    Gère les messages, mentions et autres événements
+    """
+    try:
+        slack_service = SlackService()
+        
+        # Récupérer le corps de la requête
+        body_bytes = await request.body()
+        body_str = body_bytes.decode('utf-8')
+        
+        # Vérifier la signature Slack (sécurité)
+        if x_slack_signature and x_slack_request_timestamp:
+            if not slack_service.verify_slack_signature(
+                timestamp=x_slack_request_timestamp,
+                body=body_str,
+                signature=x_slack_signature
+            ):
+                logger.warning("Invalid Slack signature", signature=x_slack_signature)
+                return JSONResponse(
+                    status_code=401,
+                    content={"error": "Invalid signature"}
+                )
+        
+        # Parser le JSON
+        try:
+            data = json.loads(body_str)
+        except json.JSONDecodeError:
+            return JSONResponse(
+                status_code=400,
+                content={"error": "Invalid JSON"}
+            )
+        
+        # URL Verification Challenge (première connexion)
+        if data.get("type") == "url_verification":
+            challenge = data.get("challenge")
+            logger.info("Slack URL verification challenge received")
+            return JSONResponse(content={"challenge": challenge})
+        
+        # Ignorer les événements de bot (éviter les boucles)
+        event = data.get("event", {})
+        if event.get("bot_id") or event.get("subtype") == "bot_message":
+            logger.debug("Ignoring bot message event")
+            return JSONResponse(content={"status": "ok"})
+        
+        # Traiter les événements de message
+        if data.get("type") == "event_callback" and event.get("type") == "message":
+            # Ignorer les messages édités ou supprimés
+            if event.get("subtype") in ["message_changed", "message_deleted"]:
+                return JSONResponse(content={"status": "ok"})
+            
+            # Extraire les informations du message
+            channel = event.get("channel")
+            user = event.get("user")
+            text = event.get("text", "").strip()
+            ts = event.get("ts")
+            thread_ts = event.get("thread_ts")  # Si c'est une réponse dans un thread
+            
+            # Ignorer les messages vides
+            if not text:
+                return JSONResponse(content={"status": "ok"})
+            
+            logger.info(
+                "Slack message received",
+                channel=channel,
+                user=user,
+                text_preview=text[:50],
+                thread_ts=thread_ts
+            )
+            
+            # Créer un session_id basé sur le canal et le thread
+            # Si c'est un thread, utiliser le thread_ts comme session_id
+            # Sinon, utiliser le canal comme session_id
+            if thread_ts:
+                session_id = f"slack_{channel}_{thread_ts}"
+            else:
+                session_id = f"slack_{channel}_{ts}"
+            
+            # Récupérer les infos utilisateur Slack
+            user_info = await slack_service.get_user_info(user)
+            user_email = user_info.get("profile", {}).get("email", f"slack_{user}") if user_info else f"slack_{user}"
+            user_name = user_info.get("real_name", user_info.get("name", "Unknown")) if user_info else "Unknown"
+            
+            # Sauvegarder le message utilisateur dans Supabase
+            supabase = SupabaseClient()
+            await supabase.save_message(
+                session_id=session_id,
+                user_id=user_email,
+                message_type="user",
+                content=text,
+                metadata={
+                    "platform": "slack",
+                    "slack_channel": channel,
+                    "slack_user": user,
+                    "slack_user_name": user_name,
+                    "slack_ts": ts,
+                    "thread_ts": thread_ts
+                }
+            )
+            
+            # Traiter le message avec l'orchestrateur
+            orchestrator = OrchestratorService()
+            
+            # Callback pour streamer la réponse (mais on enverra tout d'un coup dans Slack)
+            response_parts = []
+            
+            async def stream_callback(token: str):
+                """Accumule les tokens pour la réponse complète"""
+                response_parts.append(token)
+            
+            # Traiter la requête
+            response = await orchestrator.process_request(
+                message=text,
+                session_id=session_id,
+                user_id=user_email,
+                stream_callback=stream_callback
+            )
+            
+            # Construire la réponse complète
+            response_text = response.get("message", "")
+            if response_parts:
+                response_text = "".join(response_parts)
+            
+            # Envoyer la réponse dans Slack (dans le thread si c'est une réponse)
+            try:
+                await slack_service.send_message(
+                    channel=channel,
+                    text=response_text,
+                    thread_ts=thread_ts or ts  # Répondre dans le thread ou créer un nouveau thread
+                )
+                
+                # Sauvegarder la réponse du bot
+                await supabase.save_message(
+                    session_id=session_id,
+                    user_id=user_email,
+                    message_type="bot",
+                    content=response_text,
+                    agent_used=response.get("agent", "unknown"),
+                    metadata={
+                        **response.get("metadata", {}),
+                        "platform": "slack",
+                        "slack_channel": channel
+                    }
+                )
+                
+                logger.info(
+                    "Slack response sent",
+                    channel=channel,
+                    thread_ts=thread_ts or ts
+                )
+                
+            except Exception as e:
+                logger.error(
+                    "Error sending Slack response",
+                    error=str(e),
+                    channel=channel
+                )
+                # Envoyer un message d'erreur
+                try:
+                    await slack_service.send_message(
+                        channel=channel,
+                        text="Désolé, j'ai rencontré un problème technique. Veuillez réessayer.",
+                        thread_ts=thread_ts or ts
+                    )
+                except:
+                    pass
+            
+            return JSONResponse(content={"status": "ok"})
+        
+        # Autres types d'événements (non gérés pour l'instant)
+        logger.debug("Unhandled Slack event type", event_type=data.get("type"))
+        return JSONResponse(content={"status": "ok"})
+        
+    except Exception as e:
+        logger.error("Slack events error", error=str(e), exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Internal server error"}
+        )
+
+
+@api_router.post("/slack/commands")
+async def slack_commands(
+    request: Request,
+    x_slack_signature: Optional[str] = Header(None, alias="X-Slack-Signature"),
+    x_slack_request_timestamp: Optional[str] = Header(None, alias="X-Slack-Request-Timestamp")
+):
+    """
+    Endpoint pour gérer les commandes Slack (slash commands)
+    Exemple: /vybuddy help
+    """
+    try:
+        slack_service = SlackService()
+        
+        # Lire le body brut d'abord (nécessaire pour la vérification de signature)
+        body_bytes = await request.body()
+        body_str = body_bytes.decode('utf-8')
+        
+        # Vérifier la signature AVANT de parser le form-data
+        if x_slack_signature and x_slack_request_timestamp:
+            if not slack_service.verify_slack_signature(
+                timestamp=x_slack_request_timestamp,
+                body=body_str,
+                signature=x_slack_signature
+            ):
+                return JSONResponse(
+                    status_code=401,
+                    content={"error": "Invalid signature"}
+                )
+        
+        # Parser le form-data (form-urlencoded)
+        from urllib.parse import parse_qs
+        form_data = parse_qs(body_str)
+        
+        # Extraire les informations de la commande (form_data est un dict de listes)
+        command = form_data.get("command", [""])[0] if form_data.get("command") else ""
+        text = form_data.get("text", [""])[0] if form_data.get("text") else ""
+        user_id = form_data.get("user_id", [""])[0] if form_data.get("user_id") else ""
+        channel_id = form_data.get("channel_id", [""])[0] if form_data.get("channel_id") else ""
+        response_url = form_data.get("response_url", [""])[0] if form_data.get("response_url") else ""
+        
+        logger.info(
+            "Slack command received",
+            command=command,
+            user_id=user_id,
+            channel_id=channel_id,
+            text=text
+        )
+        
+        # Traiter la commande
+        if command == "/vybuddy" or command == "/vybuddy-help":
+            help_text = """🤖 *VyBuddy - Assistant Support IT*
+
+*Commandes disponibles:*
+• `/vybuddy <votre question>` - Posez une question à VyBuddy
+• `/vybuddy-help` - Affiche cette aide
+
+*Exemples:*
+• `/vybuddy Comment réinitialiser mon mot de passe Google Workspace?`
+• `/vybuddy Mon MacBook ne se connecte pas au WiFi`
+
+VyBuddy peut vous aider avec:
+• Problèmes réseau et WiFi
+• Problèmes MacBook
+• Google Workspace
+• Procédures de support IT
+• Création de tickets
+
+*Note:* Vous pouvez aussi mentionner @VyBuddy dans un canal pour obtenir de l'aide !"""
+            
+            return JSONResponse(content={
+                "response_type": "ephemeral",  # Visible uniquement par l'utilisateur
+                "text": help_text
+            })
+        
+        # Si c'est une question, traiter avec l'orchestrateur
+        if text:
+            # Créer un session_id pour cette commande
+            session_id = f"slack_cmd_{channel_id}_{user_id}"
+            
+            # Récupérer les infos utilisateur
+            user_info = await slack_service.get_user_info(user_id)
+            user_email = user_info.get("profile", {}).get("email", f"slack_{user_id}") if user_info else f"slack_{user_id}"
+            
+            # Traiter avec l'orchestrateur
+            orchestrator = OrchestratorService()
+            response = await orchestrator.process_request(
+                message=text,
+                session_id=session_id,
+                user_id=user_email
+            )
+            
+            response_text = response.get("message", "")
+            
+            return JSONResponse(content={
+                "response_type": "in_channel",  # Visible par tous
+                "text": response_text
+            })
+        
+        # Commande non reconnue
+        return JSONResponse(content={
+            "response_type": "ephemeral",
+            "text": "Commande non reconnue. Utilisez `/vybuddy-help` pour voir l'aide."
+        })
+        
+    except Exception as e:
+        logger.error("Slack commands error", error=str(e), exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={
+                "response_type": "ephemeral",
+                "text": "Une erreur est survenue. Veuillez réessayer."
+            }
+        )
+
+
+@api_router.post("/slack/interactions")
+async def slack_interactions(
+    request: Request,
+    x_slack_signature: Optional[str] = Header(None, alias="X-Slack-Signature"),
+    x_slack_request_timestamp: Optional[str] = Header(None, alias="X-Slack-Request-Timestamp")
+):
+    """
+    Endpoint pour gérer les interactions interactives Slack (boutons, menus, etc.)
+    """
+    try:
+        slack_service = SlackService()
+        
+        # Lire le body brut d'abord (nécessaire pour la vérification de signature)
+        body_bytes = await request.body()
+        body_str = body_bytes.decode('utf-8')
+        
+        # Vérifier la signature AVANT de parser le form-data
+        if x_slack_signature and x_slack_request_timestamp:
+            if not slack_service.verify_slack_signature(
+                timestamp=x_slack_request_timestamp,
+                body=body_str,
+                signature=x_slack_signature
+            ):
+                return JSONResponse(
+                    status_code=401,
+                    content={"error": "Invalid signature"}
+                )
+        
+        # Parser le form-data (form-urlencoded)
+        from urllib.parse import parse_qs
+        form_data = parse_qs(body_str)
+        
+        # Parser le payload (JSON string dans form-data)
+        payload_str = form_data.get("payload", [""])[0] if form_data.get("payload") else "{}"
+        payload = json.loads(payload_str) if payload_str else {}
+        
+        logger.info("Slack interaction received", payload_type=payload.get("type"))
+        
+        # Pour l'instant, on retourne juste un accusé de réception
+        # Les interactions peuvent être implémentées plus tard (boutons, etc.)
+        return JSONResponse(content={"status": "ok"})
+        
+    except Exception as e:
+        logger.error("Slack interactions error", error=str(e), exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Internal server error"}
+        )
 

@@ -37,6 +37,9 @@ httpx
 aiohttp
 PyJWT==2.8.0
 
+# Slack Integration
+slack-sdk
+
 # Logging
 structlog
 
