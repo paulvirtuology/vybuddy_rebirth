@@ -12,18 +12,17 @@ from app.core.config import settings
 from app.core.logging import setup_logging
 from app.core.health_check import HealthChecker
 from app.api.v1.router import api_router
-from app.websocket.manager import ConnectionManager
+from app.websocket.manager_instance import manager
 from app.services.orchestrator import OrchestratorService
+from app.services.human_support_service import HumanSupportService
 
 # Configuration du logging
 setup_logging()
 logger = structlog.get_logger()
 
-# Gestionnaire de connexions WebSocket
-manager = ConnectionManager()
-
-# Service d'orchestration
+# Services principaux
 orchestrator = OrchestratorService()
+human_support = HumanSupportService()
 
 # Health checker
 health_checker = HealthChecker()
@@ -161,6 +160,16 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                 message_type="user",
                 content=message
             )
+
+            # Si la session est en mode support humain, transférer directement vers Slack
+            if await human_support.is_session_escalated(session_id):
+                await human_support.forward_user_message(
+                    session_id=session_id,
+                    user_id=user_id,
+                    user_name=user_info.get("name"),
+                    text=message
+                )
+                continue
             
             # Variable pour accumuler la réponse complète
             agent_used = "processing"
@@ -210,6 +219,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                 message=message,
                 session_id=session_id,
                 user_id=user_id,
+                user_name=user_info.get("name"),
                 stream_callback=stream_callback
             )
             

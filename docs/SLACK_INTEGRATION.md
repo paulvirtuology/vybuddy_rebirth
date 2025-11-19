@@ -103,6 +103,7 @@ Ajoutez ces variables dans votre fichier `.env`:
 SLACK_BOT_TOKEN=xoxb-votre-token-bot
 SLACK_SIGNING_SECRET=votre-signing-secret
 SLACK_APP_ID=votre-app-id
+SLACK_SUPPORT_CHANNEL=CXXXXXX   # ID du canal #support-it (format Slack)
 ```
 
 ### 7. Installer les dépendances
@@ -133,6 +134,16 @@ pip install -r requirements.txt
    /vybuddy Comment créer un compte Google Workspace?
    ```
 2. Le bot répondra dans le canal (ou en privé selon la commande)
+
+### Mode Support Humain (bridge VyBuddy → Slack)
+
+1. Lorsqu'un utilisateur tape "Je veux parler à une vraie personne" (ou clique sur le bouton d'escalade), VyBuddy ouvre automatiquement un thread dans le canal défini par `SLACK_SUPPORT_CHANNEL` (ex: `#support-it`).
+2. Le bot poste un message récapitulatif dans Slack : utilisateur, email, session, motif.
+3. L'équipe support doit **répondre dans le fil** (bouton “Répondre dans le fil”) pour que la réponse soit renvoyée en temps réel dans l'interface VyBuddy.
+4. Tant que l'escalade est ouverte, chaque message de l'utilisateur est envoyé dans le même thread Slack, et chaque réponse du support est retransmise dans le chat VyBuddy avec le badge "Support humain".
+5. Pour clôturer l'échange, répondez dans le fil (ex: “Clôturé ✅”). Un slash-command `/vybuddy-done` pourra être ajoutée ultérieurement si besoin.
+
+> ⚠️ Important : seules les réponses dans le thread sont relayées. Un message posté directement dans le canal principal ne sera pas envoyé à l'utilisateur.
 
 ## Développement local
 
@@ -218,6 +229,41 @@ Endpoint pour les commandes slash.
 Endpoint pour les interactions interactives (boutons, menus, etc.).
 
 **Note:** Actuellement, cet endpoint retourne juste un accusé de réception. Les interactions peuvent être implémentées plus tard.
+
+### POST /api/v1/support/escalations
+
+Déclenche une escalade humaine depuis l'application VyBuddy.
+
+**Body JSON:**
+```json
+{
+  "session_id": "session-uuid",
+  "message": "Contexte ou raison de l'escalade"
+}
+```
+
+**Réponse:**
+```json
+{
+  "status": "started",
+  "metadata": {
+    "human_support": true,
+    "session_id": "session-uuid"
+  }
+}
+```
+
+### POST /api/v1/support/escalations/{session_id}/close
+
+Clôture manuellement une escalade en cours pour revenir au mode bot.
+
+**Réponse:**
+```json
+{
+  "status": "closed",
+  "session_id": "session-uuid"
+}
+```
 
 ## Prochaines étapes
 

@@ -14,6 +14,7 @@ import json
 
 from app.services.orchestrator import OrchestratorService
 from app.services.slack_service import SlackService
+from app.services.human_support_service import HumanSupportService
 from app.database.supabase_client import SupabaseClient
 from app.database.redis_client import RedisClient
 from app.middleware.auth_middleware import get_current_user, get_current_admin
@@ -22,6 +23,8 @@ logger = structlog.get_logger()
 
 api_router = APIRouter()
 orchestrator = OrchestratorService()
+slack_service = SlackService()
+human_support = HumanSupportService()
 supabase = SupabaseClient()
 redis_client = RedisClient()
 
@@ -40,6 +43,18 @@ class ChatResponse(BaseModel):
     metadata: dict = {}
 
 
+class EscalationRequest(BaseModel):
+    """Requête pour démarrer une escalade humaine"""
+    session_id: str
+    message: str
+
+
+class EscalationResponse(BaseModel):
+    """Réponse d'escalade"""
+    status: str
+    metadata: dict
+
+
 @api_router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(
     request: ChatRequest,
@@ -52,11 +67,27 @@ async def chat_endpoint(
     try:
         # Utiliser l'email de l'utilisateur authentifié
         user_id = current_user.get("email", request.user_id)
+        user_name = current_user.get("name")
+        
+        # Support humain déjà actif ?
+        if await human_support.is_session_escalated(request.session_id):
+            await human_support.forward_user_message(
+                session_id=request.session_id,
+                user_id=user_id,
+                user_name=user_name,
+                text=request.message
+            )
+            return ChatResponse(
+                message="Je transmets votre message à notre équipe support. Un collègue vous répondra directement ici.",
+                agent="human_support",
+                metadata={"human_support": True, "status": "forwarded"}
+            )
         
         response = await orchestrator.process_request(
             message=request.message,
             session_id=request.session_id,
-            user_id=user_id
+            user_id=user_id,
+            user_name=user_name
         )
         
         return ChatResponse(
@@ -67,6 +98,64 @@ async def chat_endpoint(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/support/escalations", response_model=EscalationResponse)
+async def start_human_escalation(
+    request: EscalationRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Permet à un utilisateur de déclencher explicitement une escalade vers le support humain
+    """
+    try:
+        user_id = current_user.get("email")
+        user_name = current_user.get("name")
+        if not user_id:
+            raise HTTPException(status_code=401, detail="User not authenticated")
+        
+        result = await human_support.start_escalation(
+            session_id=request.session_id,
+            user_id=user_id,
+            user_name=user_name,
+            initial_message=request.message
+        )
+        
+        status = "already_active" if result.get("already_active") else "started"
+        return EscalationResponse(
+            status=status,
+            metadata={
+                "human_support": True,
+                "session_id": request.session_id
+            }
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error starting human escalation", error=str(e))
+        raise HTTPException(status_code=500, detail="Unable to start escalation")
+
+
+@api_router.post("/support/escalations/{session_id}/close")
+async def close_human_escalation(
+    session_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Permet de clôturer manuellement une escalade en cours
+    """
+    try:
+        # Vérifier que l'utilisateur est bien connecté (pas de contrôle supplémentaire pour l'instant)
+        if not current_user.get("email"):
+            raise HTTPException(status_code=401, detail="User not authenticated")
+        
+        await human_support.stop_escalation(session_id)
+        return {"status": "closed", "session_id": session_id}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error closing human escalation", error=str(e))
+        raise HTTPException(status_code=500, detail="Unable to close escalation")
 
 
 @api_router.get("/conversations")
@@ -730,8 +819,6 @@ async def slack_events(
     Gère les messages, mentions et autres événements
     """
     try:
-        slack_service = SlackService()
-        
         # Récupérer le corps de la requête
         body_bytes = await request.body()
         body_str = body_bytes.decode('utf-8')
@@ -772,8 +859,31 @@ async def slack_events(
         
         # Traiter les événements de message
         if data.get("type") == "event_callback" and event.get("type") == "message":
+            subtype = event.get("subtype")
+            
+            # Ignorer les messages système que Slack ne permet pas de commenter
+            system_subtypes = {
+                "channel_join",
+                "channel_leave",
+                "channel_topic",
+                "channel_purpose",
+                "channel_name",
+                "channel_archive",
+                "group_join",
+                "group_leave",
+                "message_replied",
+                "thread_broadcast"
+            }
+            if subtype in system_subtypes:
+                logger.debug(
+                    "Ignoring Slack system message",
+                    subtype=subtype,
+                    channel=event.get("channel")
+                )
+                return JSONResponse(content={"status": "ok"})
+            
             # Ignorer les messages édités ou supprimés
-            if event.get("subtype") in ["message_changed", "message_deleted"]:
+            if subtype in ["message_changed", "message_deleted"]:
                 return JSONResponse(content={"status": "ok"})
             
             # Extraire les informations du message
@@ -786,6 +896,18 @@ async def slack_events(
             # Ignorer les messages vides
             if not text:
                 return JSONResponse(content={"status": "ok"})
+
+            # Si le message appartient à un thread d'escalade humain, le router vers l'utilisateur
+            if thread_ts:
+                mapped_session = await human_support.get_session_by_thread(channel, thread_ts)
+                if mapped_session:
+                    await human_support.handle_slack_reply(
+                        channel=channel,
+                        thread_ts=thread_ts,
+                        slack_user_id=user,
+                        text=text
+                    )
+                    return JSONResponse(content={"status": "ok"})
             
             logger.info(
                 "Slack message received",
@@ -917,8 +1039,6 @@ async def slack_commands(
     Exemple: /vybuddy help
     """
     try:
-        slack_service = SlackService()
-        
         # Lire le body brut d'abord (nécessaire pour la vérification de signature)
         body_bytes = await request.body()
         body_str = body_bytes.decode('utf-8')
@@ -1031,8 +1151,6 @@ async def slack_interactions(
     Endpoint pour gérer les interactions interactives Slack (boutons, menus, etc.)
     """
     try:
-        slack_service = SlackService()
-        
         # Lire le body brut d'abord (nécessaire pour la vérification de signature)
         body_bytes = await request.body()
         body_str = body_bytes.decode('utf-8')

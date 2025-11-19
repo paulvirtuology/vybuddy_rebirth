@@ -4,14 +4,14 @@
 -- Ce fichier contient les modifications nécessaires à la base de données
 -- pour supporter l'intégration Slack dans VyBuddy
 --
--- Note: Les tables existantes (conversations, messages) sont déjà utilisées
+-- Note: Les tables existantes (conversations, interactions) sont déjà utilisées
 -- pour stocker les conversations Slack. Ce fichier documente les champs
 -- utilisés dans les métadonnées et les extensions possibles.
 --
 -- ============================================
--- Extension de la table messages (métadonnées)
+-- Extension de la table interactions (métadonnées)
 -- ============================================
--- La table messages existe déjà et contient un champ metadata (JSONB)
+-- La table interactions existe déjà et contient un champ metadata (JSONB)
 -- Les conversations Slack utilisent ce champ pour stocker:
 --
 -- Pour les messages utilisateur:
@@ -29,7 +29,9 @@
 --   "platform": "slack",
 --   "slack_channel": "C1234567890",
 --   "ticket_created": true (optionnel),
---   "ticket_id": "123" (optionnel)
+--   "ticket_id": "123" (optionnel),
+--   "human_support": true,            -- message renvoyé depuis le support humain
+--   "responder": "Nom du collègue"    -- informations sur l'agent humain
 -- }
 --
 -- ============================================
@@ -85,16 +87,16 @@ SELECT
     c.title,
     c.created_at,
     c.updated_at,
-    COUNT(m.id) as message_count,
-    MAX(m.created_at) as last_message_at,
-    (m.metadata->>'slack_channel')::text as slack_channel,
-    (m.metadata->>'slack_user_name')::text as slack_user_name
+    COUNT(i.id) as message_count,
+    MAX(i.created_at) as last_message_at,
+    (i.metadata->>'slack_channel')::text as slack_channel,
+    (i.metadata->>'slack_user_name')::text as slack_user_name
 FROM conversations c
-LEFT JOIN messages m ON c.session_id = m.session_id
-WHERE m.metadata->>'platform' = 'slack'
+LEFT JOIN interactions i ON c.session_id = i.session_id
+WHERE (i.metadata->>'platform') = 'slack'
    OR c.session_id LIKE 'slack_%'
 GROUP BY c.id, c.session_id, c.user_id, c.title, c.created_at, c.updated_at, 
-         (m.metadata->>'slack_channel')::text, (m.metadata->>'slack_user_name')::text;
+         (i.metadata->>'slack_channel')::text, (i.metadata->>'slack_user_name')::text;
 
 -- ============================================
 -- Fonction pour obtenir les statistiques Slack
@@ -126,7 +128,7 @@ BEGIN
                 ELSE NULL
             END
         )::INTERVAL as avg_response_time
-    FROM messages
+    FROM interactions
     WHERE metadata->>'platform' = 'slack'
       AND created_at BETWEEN start_date AND end_date;
 END;
@@ -137,11 +139,11 @@ $$ LANGUAGE plpgsql;
 -- ============================================
 -- Index sur les métadonnées pour les requêtes Slack:
 
-CREATE INDEX IF NOT EXISTS idx_messages_metadata_platform 
-ON messages USING GIN ((metadata->>'platform'));
+CREATE INDEX IF NOT EXISTS idx_interactions_metadata_platform 
+ON interactions ((metadata->>'platform'));
 
-CREATE INDEX IF NOT EXISTS idx_messages_metadata_slack_channel 
-ON messages USING GIN ((metadata->>'slack_channel'));
+CREATE INDEX IF NOT EXISTS idx_interactions_metadata_slack_channel 
+ON interactions ((metadata->>'slack_channel'));
 
 CREATE INDEX IF NOT EXISTS idx_conversations_session_slack 
 ON conversations(session_id) 
@@ -155,7 +157,7 @@ WHERE session_id LIKE 'slack_%';
 --    - "slack_{channel_id}_{ts}" pour les messages directs
 --    - "slack_cmd_{channel_id}_{user_id}" pour les commandes slash
 --
--- 2. Les messages sont stockés dans la table messages existante avec:
+-- 2. Les messages sont stockés dans la table interactions existante avec:
 --    - message_type: 'user' ou 'bot'
 --    - content: le texte du message
 --    - metadata: JSONB contenant les infos Slack

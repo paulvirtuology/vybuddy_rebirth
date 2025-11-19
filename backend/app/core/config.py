@@ -45,6 +45,7 @@ class Settings(BaseSettings):
     SLACK_BOT_TOKEN: str = ""  # Token du bot Slack (xoxb-...)
     SLACK_SIGNING_SECRET: str = ""  # Secret pour vérifier les signatures des webhooks
     SLACK_APP_ID: str = ""  # ID de l'application Slack (optionnel)
+    SLACK_SUPPORT_CHANNEL: str = ""  # Canal Slack (ID) pour les escalades humaines
     
     class Config:
         env_file = ".env"
