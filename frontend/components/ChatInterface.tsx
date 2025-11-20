@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { useWebSocket } from '@/hooks/useWebSocket'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 import MessageList from './MessageList'
 import MessageInput from './MessageInput'
 
@@ -151,10 +152,11 @@ export default function ChatInterface({
                 
                 setFeedbacks(feedbacksMap)
               }
-            } catch (error) {
-              console.error('Error loading feedbacks batch:', error)
-              // En cas d'erreur, continuer sans feedbacks
-            }
+        } catch (error) {
+          console.error('Error loading feedbacks batch:', error)
+          toast.error('Impossible de charger les retours sur les messages.')
+          // En cas d'erreur, continuer sans feedbacks
+        }
           }
           
           // Si des messages existent, ne pas afficher le message de bienvenue
@@ -173,6 +175,7 @@ export default function ChatInterface({
         }
       } catch (error) {
         console.error('Error loading messages:', error)
+        toast.error('Impossible de charger l’historique de la conversation.')
         // En cas d'erreur, on continue avec un historique vide
         // Vérifier que nous sommes toujours sur la même session
         if (loadedSessionIdRef.current === sessionId) {

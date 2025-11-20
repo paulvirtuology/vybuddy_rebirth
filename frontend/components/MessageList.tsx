@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
 interface Message {
   id: string
@@ -103,8 +104,10 @@ const MessageItem = memo(({
       if (reaction !== undefined) {
         setShowCommentInput(false)
       }
+      toast.success('Merci pour votre retour !')
     } catch (error) {
       console.error('Error submitting feedback:', error)
+      toast.error('Impossible d’enregistrer votre feedback.')
     } finally {
       setIsSubmitting(false)
     }
@@ -124,38 +127,67 @@ const MessageItem = memo(({
     submitFeedback()
     setShowCommentInput(false)
   }
+  const isHumanSupport = message.metadata?.human_support || message.agent === 'human_support'
+  const isUser = message.type === 'user'
+  const isSystem = message.type === 'system'
+  const isBot = message.type === 'bot' && !isHumanSupport
+  
+  // Couleurs distinctes pour chaque type de message
+  const bubbleClass = [
+    'max-w-[75%]',
+    'px-4',
+    'py-3',
+    'rounded-2xl',
+    isUser
+      ? 'bg-indigo-600 text-white shadow-lg rounded-br-sm' // Utilisateur : indigo foncé
+      : isHumanSupport
+      ? 'bg-emerald-500 text-white shadow-lg rounded-bl-sm border-2 border-emerald-600' // Support humain : vert émeraude
+      : isSystem
+      ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 shadow-sm' // Système : ambre clair
+      : 'bg-blue-50 text-blue-900 border-2 border-blue-200 shadow rounded-bl-sm' // Bot : bleu clair
+  ].join(' ')
+
   return (
-    <div
-      className={`flex ${
-        message.type === 'user' ? 'justify-end' : 'justify-start'
-      }`}
-    >
-      <div
-        className={`max-w-[75%] rounded-lg px-4 py-3 ${
-          message.type === 'user'
-            ? 'bg-gray-200 text-gray-900'
-            : message.type === 'system'
-            ? 'bg-yellow-50 text-yellow-800 border border-yellow-200'
-            : 'bg-gray-100 text-gray-900'
-        }`}
-      >
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+      <div className={bubbleClass}>
+        <div className="flex items-center justify-between text-xs mb-2">
+          {isUser && (
+            <span className="font-semibold text-white/90">Vous</span>
+          )}
+          {isHumanSupport && (
+            <span className="inline-flex items-center gap-1.5 text-white font-semibold">
+              <span className="w-2.5 h-2.5 bg-white rounded-full" />
+              Support humain
+            </span>
+          )}
+          {isBot && (
+            <span className="inline-flex items-center gap-1.5 text-blue-700 font-semibold">
+              <span className="w-2.5 h-2.5 bg-blue-500 rounded-full" />
+              VyBuddy {message.agent && `(${message.agent})`}
+            </span>
+          )}
+          {isSystem && (
+            <span className="inline-flex items-center gap-1.5 text-amber-800 font-semibold">
+              <span className="w-2.5 h-2.5 bg-amber-500 rounded-full" />
+              Système
+            </span>
+          )}
+        </div>
         <div className="whitespace-pre-wrap break-words text-sm leading-relaxed">
           {message.content}
         </div>
         <div
           className={`text-xs mt-2 flex items-center gap-2 ${
-            message.type === 'user'
-              ? 'text-gray-500'
-              : 'text-gray-500'
+            isUser 
+              ? 'text-white/80' 
+              : isHumanSupport 
+              ? 'text-white/80' 
+              : isSystem
+              ? 'text-amber-700'
+              : 'text-blue-600'
           }`}
         >
           <span>{format(message.timestamp, 'HH:mm', { locale: fr })}</span>
-          {message.agent && message.type === 'bot' && (
-            <>
-              <span>•</span>
-              <span>Agent: {message.agent}</span>
-            </>
-          )}
         </div>
         {message.metadata?.ticket_created && (
           <div className="mt-3 bg-green-50 border border-green-200 text-green-800 px-3 py-2 rounded text-xs">

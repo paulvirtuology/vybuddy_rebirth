@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 import Sidebar from '@/components/Sidebar'
 import ChatInterface from '@/components/ChatInterface'
 
@@ -54,6 +55,7 @@ export default function Home() {
       )
     } catch (error) {
       console.error('Error creating conversation:', error)
+      toast.error('Impossible de créer une nouvelle conversation.')
     }
     
     // Ajouter à l'historique local
@@ -89,6 +91,7 @@ export default function Home() {
         setChatHistory(conversations)
       } catch (error) {
         console.error('Error loading conversations:', error)
+        toast.error('Erreur lors du chargement des conversations.')
         // En cas d'erreur, on continue avec un historique vide
         setChatHistory([])
       } finally {
@@ -120,6 +123,7 @@ export default function Home() {
       )
     } catch (error) {
       console.error('Error updating conversation title:', error)
+      toast.error("Impossible de mettre à jour le titre de la conversation.")
     }
     
     // Mettre à jour l'historique local

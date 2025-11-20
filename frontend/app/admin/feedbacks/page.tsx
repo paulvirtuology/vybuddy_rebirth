@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
@@ -45,7 +46,6 @@ export default function AdminFeedbacksPage() {
   const [messageFeedbacks, setMessageFeedbacks] = useState<MessageFeedback[]>([])
   const [stats, setStats] = useState<FeedbackStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
   const token = (session as any)?.accessToken
@@ -65,7 +65,6 @@ export default function AdminFeedbacksPage() {
     if (!token) return
 
     setIsLoading(true)
-    setError(null)
 
     try {
       // Charger les statistiques
@@ -102,10 +101,12 @@ export default function AdminFeedbacksPage() {
       setFeedbacks(generalResponse.data.feedbacks)
     } catch (error: any) {
       if (error.response?.status === 403) {
-        setError('Accès refusé. Vous devez être administrateur pour accéder à cette page.')
+        const message = 'Accès refusé. Vous devez être administrateur pour accéder à cette page.'
+        toast.error(message)
       } else {
-        setError('Erreur lors du chargement des feedbacks. Veuillez réessayer.')
+        const message = 'Erreur lors du chargement des feedbacks. Veuillez réessayer.'
         console.error('Error loading feedbacks:', error)
+        toast.error(message)
       }
     } finally {
       setIsLoading(false)
@@ -123,21 +124,6 @@ export default function AdminFeedbacksPage() {
     )
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="text-red-600 text-lg mb-4">{error}</div>
-          <button
-            onClick={() => router.push('/')}
-            className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-          >
-            Retour à l'accueil
-          </button>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

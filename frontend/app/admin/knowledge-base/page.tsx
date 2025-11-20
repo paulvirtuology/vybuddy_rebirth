@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
@@ -25,8 +26,6 @@ export default function AdminKnowledgeBasePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [isReindexing, setIsReindexing] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
   const [isCreatingNew, setIsCreatingNew] = useState(false)
   const [newFileName, setNewFileName] = useState('')
 
@@ -56,7 +55,6 @@ export default function AdminKnowledgeBasePage() {
     if (!token) return
 
     setIsLoading(true)
-    setError(null)
 
     try {
       const response = await axios.get(
@@ -70,10 +68,12 @@ export default function AdminKnowledgeBasePage() {
       setFiles(response.data.files)
     } catch (error: any) {
       if (error.response?.status === 403) {
-        setError('Accès refusé. Vous devez être administrateur pour accéder à cette page.')
+        const message = 'Accès refusé. Vous devez être administrateur pour accéder à cette page.'
+        toast.error(message)
       } else {
-        setError('Erreur lors du chargement des fichiers. Veuillez réessayer.')
+        const message = 'Erreur lors du chargement des fichiers. Veuillez réessayer.'
         console.error('Error loading files:', error)
+        toast.error(message)
       }
     } finally {
       setIsLoading(false)
@@ -84,8 +84,6 @@ export default function AdminKnowledgeBasePage() {
     if (!token) return
 
     setIsLoading(true)
-    setError(null)
-    setSuccess(null)
 
     try {
       const response = await axios.get(
@@ -100,8 +98,9 @@ export default function AdminKnowledgeBasePage() {
       setFileContent(response.data.content)
       setIsCreatingNew(false)
     } catch (error: any) {
-      setError('Erreur lors du chargement du fichier. Veuillez réessayer.')
+      const message = 'Erreur lors du chargement du fichier. Veuillez réessayer.'
       console.error('Error loading file:', error)
+      toast.error(message)
     } finally {
       setIsLoading(false)
     }
@@ -111,8 +110,6 @@ export default function AdminKnowledgeBasePage() {
     if (!token || !selectedFile && !isCreatingNew) return
 
     setIsSaving(true)
-    setError(null)
-    setSuccess(null)
 
     try {
       const filePath = isCreatingNew ? `${newFileName}.md` : selectedFile!.path
@@ -127,7 +124,7 @@ export default function AdminKnowledgeBasePage() {
         }
       )
       
-      setSuccess('Fichier sauvegardé avec succès !')
+      toast.success('Fichier sauvegardé avec succès !')
       setIsCreatingNew(false)
       await loadFiles()
       
@@ -139,8 +136,9 @@ export default function AdminKnowledgeBasePage() {
         setNewFileName('')
       }
     } catch (error: any) {
-      setError('Erreur lors de la sauvegarde du fichier. Veuillez réessayer.')
+      const message = 'Erreur lors de la sauvegarde du fichier. Veuillez réessayer.'
       console.error('Error saving file:', error)
+      toast.error(message)
     } finally {
       setIsSaving(false)
     }
@@ -149,9 +147,6 @@ export default function AdminKnowledgeBasePage() {
   const deleteFile = async (filePath: string) => {
     if (!token) return
     if (!confirm(`Êtes-vous sûr de vouloir supprimer le fichier "${filePath}" ?`)) return
-
-    setError(null)
-    setSuccess(null)
 
     try {
       await axios.delete(
@@ -163,13 +158,14 @@ export default function AdminKnowledgeBasePage() {
         }
       )
       
-      setSuccess('Fichier supprimé avec succès !')
+      toast.success('Fichier supprimé avec succès !')
       setSelectedFile(null)
       setFileContent('')
       await loadFiles()
     } catch (error: any) {
-      setError('Erreur lors de la suppression du fichier. Veuillez réessayer.')
+      const message = 'Erreur lors de la suppression du fichier. Veuillez réessayer.'
       console.error('Error deleting file:', error)
+      toast.error(message)
     }
   }
 
@@ -178,8 +174,6 @@ export default function AdminKnowledgeBasePage() {
     if (!confirm('Êtes-vous sûr de vouloir re-indexer la base de connaissances dans Pinecone ? Cela peut prendre quelques minutes.')) return
 
     setIsReindexing(true)
-    setError(null)
-    setSuccess(null)
 
     try {
       await axios.post(
@@ -192,10 +186,11 @@ export default function AdminKnowledgeBasePage() {
         }
       )
       
-      setSuccess('Base de connaissances re-indexée avec succès dans Pinecone !')
+      toast.success('Base de connaissances re-indexée avec succès dans Pinecone !')
     } catch (error: any) {
-      setError('Erreur lors de la re-indexation. Veuillez réessayer.')
+      const message = 'Erreur lors de la re-indexation. Veuillez réessayer.'
       console.error('Error reindexing:', error)
+      toast.error(message)
     } finally {
       setIsReindexing(false)
     }
@@ -206,8 +201,6 @@ export default function AdminKnowledgeBasePage() {
     setFileContent('')
     setIsCreatingNew(true)
     setNewFileName('')
-    setError(null)
-    setSuccess(null)
   }
 
   const handleCancelNew = () => {
@@ -228,21 +221,6 @@ export default function AdminKnowledgeBasePage() {
     )
   }
 
-  if (error && !files.length) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="text-red-600 text-lg mb-4">{error}</div>
-          <button
-            onClick={() => router.push('/')}
-            className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-          >
-            Retour à l'accueil
-          </button>
-        </div>
-      </div>
-    )
-  }
 
   // Organiser les fichiers par catégorie
   const mainFiles = files.filter(f => !f.category)
@@ -386,18 +364,6 @@ export default function AdminKnowledgeBasePage() {
             </button>
           </div>
         </header>
-
-        {/* Messages d'erreur/succès */}
-        {error && (
-          <div className="mx-6 mt-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            {error}
-          </div>
-        )}
-        {success && (
-          <div className="mx-6 mt-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            {success}
-          </div>
-        )}
 
         {/* Zone d'édition */}
         <div className="flex-1 p-6">
