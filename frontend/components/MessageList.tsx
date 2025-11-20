@@ -7,6 +7,34 @@ import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
+// Fonction pour formater le markdown simple (**texte** en gras)
+const formatMarkdown = (text: string): (string | JSX.Element)[] => {
+  const parts: (string | JSX.Element)[] = []
+  const regex = /\*\*(.+?)\*\*/g
+  let lastIndex = 0
+  let match
+  let key = 0
+
+  while ((match = regex.exec(text)) !== null) {
+    // Ajouter le texte avant le match
+    if (match.index > lastIndex) {
+      parts.push(text.substring(lastIndex, match.index))
+    }
+    // Ajouter le texte en gras
+    parts.push(
+      <strong key={key++}>{match[1]}</strong>
+    )
+    lastIndex = regex.lastIndex
+  }
+
+  // Ajouter le reste du texte
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex))
+  }
+
+  return parts.length > 0 ? parts : [text]
+}
+
 interface Message {
   id: string
   type: 'user' | 'bot' | 'system'
@@ -174,7 +202,7 @@ const MessageItem = memo(({
           )}
         </div>
         <div className="whitespace-pre-wrap break-words text-sm leading-relaxed">
-          {message.content}
+          {formatMarkdown(message.content)}
         </div>
         <div
           className={`text-xs mt-2 flex items-center gap-2 ${

@@ -403,6 +403,16 @@ class OrchestratorService:
             "parler à une vraie personne",
             "parler à quelqu'un",
             "parler à un humain",
+            "parler directement avec",
+            "parler directement à",
+            "parler avec un membre",
+            "parler à un membre",
+            "parler avec un collègue",
+            "parler à un collègue",
+            "parler avec l'équipe",
+            "parler à l'équipe",
+            "parler avec quelqu'un de l'équipe",
+            "parler à quelqu'un de l'équipe",
             "assistant humain",
             "besoin d'un humain",
             "besoin d'une vraie personne",
@@ -410,7 +420,10 @@ class OrchestratorService:
             "support humain",
             "humain s'il te plaît",
             "puis-je parler à un conseiller",
-            "j'aimerais parler à un agent"
+            "j'aimerais parler à un agent",
+            "membre de l'équipe",
+            "personne de l'équipe",
+            "collègue humain"
         ]
         
         # Vérifier les mots-clés exacts d'abord
@@ -418,9 +431,12 @@ class OrchestratorService:
             return True
         
         # Détection flexible : combinaisons de mots-clés
-        # "parler" + ("personne" ou "humain" ou "quelqu'un" ou "agent" ou "conseiller")
-        parler_keywords = ["parler", "discuter", "échanger", "contacter"]
-        human_keywords = ["personne", "humain", "quelqu'un", "agent", "conseiller", "collègue", "vraie personne"]
+        # "parler" + ("personne" ou "humain" ou "quelqu'un" ou "agent" ou "conseiller" ou "membre" ou "équipe")
+        parler_keywords = ["parler", "discuter", "échanger", "contacter", "joindre", "avoir"]
+        human_keywords = [
+            "personne", "humain", "quelqu'un", "agent", "conseiller", "collègue", 
+            "vraie personne", "membre", "équipe", "membre de l'équipe", "personne de l'équipe"
+        ]
         
         has_parler = any(kw in message_lower for kw in parler_keywords)
         has_human = any(kw in message_lower for kw in human_keywords)
@@ -428,9 +444,23 @@ class OrchestratorService:
         # Si les deux sont présents, c'est probablement une demande de support humain
         if has_parler and has_human:
             # Exclure les faux positifs
-            exclude_keywords = ["parler de", "parler du", "parler des", "parler d'"]
+            exclude_keywords = ["parler de", "parler du", "parler des", "parler d'", "parler avec le bot"]
             if not any(exc in message_lower for exc in exclude_keywords):
                 return True
+        
+        # Patterns spécifiques pour "membre de l'équipe" et variantes
+        team_patterns = [
+            "membre de l'équipe",
+            "personne de l'équipe",
+            "quelqu'un de l'équipe",
+            "collègue de l'équipe",
+            "avec l'équipe",
+            "à l'équipe"
+        ]
+        
+        # Si le message contient "parler" + un pattern d'équipe
+        if has_parler and any(pattern in message_lower for pattern in team_patterns):
+            return True
         
         # Autres patterns
         other_patterns = [
@@ -440,7 +470,8 @@ class OrchestratorService:
             "conseiller humain",
             "support humain",
             "besoin d'un humain",
-            "besoin d'une personne"
+            "besoin d'une personne",
+            "besoin de parler à quelqu'un"
         ]
         
         return any(pattern in message_lower for pattern in other_patterns)
