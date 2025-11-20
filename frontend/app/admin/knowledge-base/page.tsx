@@ -107,37 +107,77 @@ export default function AdminKnowledgeBasePage() {
   }
 
   const saveFile = async () => {
-    if (!token || !selectedFile && !isCreatingNew) return
+    if (!token) {
+      toast.error('Vous devez être connecté pour sauvegarder un fichier.')
+      return
+    }
+    
+    if (!isCreatingNew && !selectedFile) {
+      toast.error('Aucun fichier sélectionné.')
+      return
+    }
+    
+    if (isCreatingNew && !newFileName.trim()) {
+      toast.error('Veuillez entrer un nom de fichier.')
+      return
+    }
 
     setIsSaving(true)
 
     try {
-      const filePath = isCreatingNew ? `${newFileName}.md` : selectedFile!.path
+      const filePath = isCreatingNew ? `${newFileName.trim()}.md` : selectedFile!.path
+      const encodedPath = encodeFilePath(filePath)
+      const url = `${apiUrl}/api/v1/admin/knowledge-base/files/${encodedPath}`
       
-      await axios.put(
-        `${apiUrl}/api/v1/admin/knowledge-base/files/${encodeFilePath(filePath)}`,
+      console.log('Saving file:', { filePath, encodedPath, url, isCreatingNew })
+      
+      const response = await axios.put(
+        url,
         { content: fileContent },
         {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         }
       )
+      
+      console.log('File saved successfully:', response.data)
       
       toast.success('Fichier sauvegardé avec succès !')
       setIsCreatingNew(false)
       await loadFiles()
       
-      // Recharger le fichier pour mettre à jour les métadonnées
-      if (!isCreatingNew) {
-        await loadFile(filePath)
-      } else {
-        await loadFile(filePath)
+      // Utiliser le path retourné par le backend (normalisé) pour recharger le fichier
+      const savedFilePath = response.data.path || filePath
+      await loadFile(savedFilePath)
+      
+      if (isCreatingNew) {
         setNewFileName('')
       }
     } catch (error: any) {
-      const message = 'Erreur lors de la sauvegarde du fichier. Veuillez réessayer.'
       console.error('Error saving file:', error)
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        statusText: error.response?.statusText
+      })
+      
+      let message = 'Erreur lors de la sauvegarde du fichier. Veuillez réessayer.'
+      
+      if (error.response?.data?.detail) {
+        message = error.response.data.detail
+      } else if (error.response?.status === 403) {
+        message = 'Accès refusé. Vous devez être administrateur pour sauvegarder des fichiers.'
+      } else if (error.response?.status === 400) {
+        message = error.response.data?.detail || 'Requête invalide. Vérifiez le nom du fichier et le contenu.'
+      } else if (error.response?.status === 500) {
+        message = error.response.data?.detail || 'Erreur serveur. Vérifiez que le bucket Supabase existe et que les permissions sont correctes.'
+      } else if (error.message) {
+        message = `Erreur: ${error.message}`
+      }
+      
       toast.error(message)
     } finally {
       setIsSaving(false)

@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     # Supabase
     SUPABASE_URL: str
     SUPABASE_KEY: str
+    SUPABASE_SERVICE_ROLE_KEY: str = ""  # Service role key pour bypass RLS (admin operations)
     
     # Redis Cloud
     REDIS_URL: str

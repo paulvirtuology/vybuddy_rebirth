@@ -673,7 +673,19 @@ export default function ChatInterface({
   }, [lastMessage, onTitleUpdate])
 
   const handleSendMessage = (content: string) => {
-    if (!content.trim() || !isConnected) return
+    if (!content.trim() || !isConnected) {
+      console.warn('Cannot send message:', { isConnected, hasContent: !!content.trim() })
+      return
+    }
+
+    // Vérifier que le WebSocket est bien connecté à la bonne session
+    if (connectionStatus !== 'Open') {
+      console.warn('WebSocket not open, cannot send message', { connectionStatus, sessionId })
+      toast.error('Connexion non établie. Veuillez réessayer.')
+      return
+    }
+
+    console.log('Sending message to session:', sessionId, { content: content.substring(0, 50) + '...' })
 
     // Ajout du message utilisateur
     const userMessage: Message = {

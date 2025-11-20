@@ -16,9 +16,19 @@ class ConnectionManager:
     
     async def connect(self, websocket: WebSocket, session_id: str):
         """Établit une nouvelle connexion"""
+        # Si une connexion existe déjà pour ce session_id, la fermer d'abord
+        if session_id in self.active_connections:
+            old_websocket = self.active_connections[session_id]
+            try:
+                await old_websocket.close(code=1000, reason="Replaced by new connection")
+            except Exception as e:
+                logger.debug("Error closing old WebSocket connection", error=str(e), session_id=session_id)
+            del self.active_connections[session_id]
+            logger.info("Replaced existing WebSocket connection", session_id=session_id)
+        
         await websocket.accept()
         self.active_connections[session_id] = websocket
-        # Logs WebSocket réduits
+        logger.debug("WebSocket connected", session_id=session_id)
     
     def disconnect(self, session_id: str):
         """Ferme une connexion"""

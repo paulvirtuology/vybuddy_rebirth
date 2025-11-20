@@ -15,6 +15,7 @@ import json
 from app.services.orchestrator import OrchestratorService
 from app.services.slack_service import SlackService
 from app.services.human_support_service import HumanSupportService
+from app.services.knowledge_base_storage import KnowledgeBaseStorage
 from app.database.supabase_client import SupabaseClient
 from app.database.redis_client import RedisClient
 from app.middleware.auth_middleware import get_current_user, get_current_admin
@@ -25,6 +26,7 @@ api_router = APIRouter()
 orchestrator = OrchestratorService()
 slack_service = SlackService()
 human_support = HumanSupportService()
+knowledge_base_storage = KnowledgeBaseStorage()  # Instance partagée utilisant le service role key
 supabase = SupabaseClient()
 redis_client = RedisClient()
 
@@ -563,42 +565,10 @@ async def list_knowledge_base_files(
 ):
     """
     Liste tous les fichiers de la base de connaissances (admin uniquement)
+    Utilise Supabase Storage
     """
     try:
-        # Chemin vers la base de connaissances
-        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
-        
-        if not knowledge_dir.exists():
-            return {"files": []}
-        
-        files = []
-        
-        # Lister les fichiers .md dans le répertoire principal
-        for md_file in knowledge_dir.glob("*.md"):
-            if md_file.name != "README.md":
-                files.append({
-                    "path": md_file.name,
-                    "name": md_file.name,
-                    "type": "file",
-                    "size": md_file.stat().st_size,
-                    "modified": datetime.fromtimestamp(md_file.stat().st_mtime).isoformat()
-                })
-        
-        # Lister les fichiers .md dans le répertoire procedures
-        procedures_dir = knowledge_dir / "procedures"
-        if procedures_dir.exists():
-            for md_file in procedures_dir.glob("*.md"):
-                files.append({
-                    "path": f"procedures/{md_file.name}",
-                    "name": md_file.name,
-                    "type": "file",
-                    "category": "procedures",
-                    "size": md_file.stat().st_size,
-                    "modified": datetime.fromtimestamp(md_file.stat().st_mtime).isoformat()
-                })
-        
-        # Trier par nom
-        files.sort(key=lambda x: x["path"])
+        files = await knowledge_base_storage.list_files()
         
         return {"files": files}
         
@@ -663,47 +633,29 @@ async def get_knowledge_base_file(
 ):
     """
     Récupère le contenu d'un fichier de la base de connaissances (admin uniquement)
+    Utilise Supabase Storage
     """
     try:
-        # Décoder le chemin URL (en cas d'encodage %2F pour /)
         from urllib.parse import unquote
+        
+        # Décoder le chemin URL (en cas d'encodage %2F pour /)
         file_path = unquote(file_path)
         
         # Sécuriser le chemin pour éviter les path traversal attacks
         if ".." in file_path or file_path.startswith("/"):
             raise HTTPException(status_code=400, detail="Invalid file path")
         
-        # Chemin vers la base de connaissances
-        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
-        file_path_obj = knowledge_dir / file_path
+        file_data = await knowledge_base_storage.get_file(file_path)
         
-        # Vérifier que le fichier est bien dans le répertoire de la base de connaissances
-        try:
-            file_path_obj.resolve().relative_to(knowledge_dir.resolve())
-        except ValueError:
-            raise HTTPException(status_code=403, detail="Access denied")
-        
-        # Vérifier que c'est un fichier .md
-        if not file_path_obj.suffix == ".md":
-            raise HTTPException(status_code=400, detail="Only .md files are allowed")
-        
-        if not file_path_obj.exists():
+        if not file_data:
             raise HTTPException(status_code=404, detail="File not found")
         
-        # Lire le contenu
-        with open(file_path_obj, 'r', encoding='utf-8') as f:
-            content = f.read()
-        
-        return {
-            "path": file_path,
-            "name": file_path_obj.name,
-            "content": content,
-            "size": file_path_obj.stat().st_size,
-            "modified": datetime.fromtimestamp(file_path_obj.stat().st_mtime).isoformat()
-        }
+        return file_data
         
     except HTTPException:
         raise
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error("Error reading knowledge base file", error=str(e), file_path=file_path)
         raise HTTPException(status_code=500, detail=str(e))
@@ -717,50 +669,38 @@ async def update_knowledge_base_file(
 ):
     """
     Crée ou modifie un fichier de la base de connaissances (admin uniquement)
+    Utilise Supabase Storage
     """
     try:
-        # Décoder le chemin URL (en cas d'encodage %2F pour /)
         from urllib.parse import unquote
+        
+        logger.info("PUT request received for knowledge base file", file_path=file_path, user=current_user.get("email"))
+        
+        # Décoder le chemin URL (en cas d'encodage %2F pour /)
         file_path = unquote(file_path)
         
         # Sécuriser le chemin pour éviter les path traversal attacks
         if ".." in file_path or file_path.startswith("/"):
             raise HTTPException(status_code=400, detail="Invalid file path")
         
-        # Chemin vers la base de connaissances
-        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
-        file_path_obj = knowledge_dir / file_path
+        logger.debug("Saving file to storage", file_path=file_path, content_length=len(request.content))
+        file_data = await knowledge_base_storage.save_file(file_path, request.content)
         
-        # Vérifier que le fichier est bien dans le répertoire de la base de connaissances
-        try:
-            file_path_obj.resolve().relative_to(knowledge_dir.resolve())
-        except ValueError:
-            raise HTTPException(status_code=403, detail="Access denied")
+        if not file_data:
+            logger.error("save_file returned None", file_path=file_path)
+            raise HTTPException(status_code=500, detail="Failed to save file to storage")
         
-        # Vérifier que c'est un fichier .md
-        if not file_path_obj.suffix == ".md":
-            raise HTTPException(status_code=400, detail="Only .md files are allowed")
+        logger.info("Knowledge base file updated successfully", file_path=file_path, normalized_path=file_data.get("path"), user=current_user.get("email"))
         
-        # Créer le répertoire parent s'il n'existe pas
-        file_path_obj.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Écrire le contenu
-        with open(file_path_obj, 'w', encoding='utf-8') as f:
-            f.write(request.content)
-        
-        logger.info("Knowledge base file updated", file_path=file_path, user=current_user.get("email"))
-        
-        return {
-            "path": file_path,
-            "name": file_path_obj.name,
-            "size": file_path_obj.stat().st_size,
-            "modified": datetime.fromtimestamp(file_path_obj.stat().st_mtime).isoformat()
-        }
+        return file_data
         
     except HTTPException:
         raise
+    except ValueError as e:
+        logger.error("ValueError in update_knowledge_base_file", error=str(e), file_path=file_path)
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        logger.error("Error updating knowledge base file", error=str(e), file_path=file_path)
+        logger.error("Error updating knowledge base file", error=str(e), exc_info=True, file_path=file_path)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -771,10 +711,12 @@ async def delete_knowledge_base_file(
 ):
     """
     Supprime un fichier de la base de connaissances (admin uniquement)
+    Utilise Supabase Storage
     """
     try:
-        # Décoder le chemin URL (en cas d'encodage %2F pour /)
         from urllib.parse import unquote
+        
+        # Décoder le chemin URL (en cas d'encodage %2F pour /)
         file_path = unquote(file_path)
         
         # Sécuriser le chemin pour éviter les path traversal attacks
@@ -785,25 +727,15 @@ async def delete_knowledge_base_file(
         if file_path.endswith("README.md") or file_path == "README.md":
             raise HTTPException(status_code=400, detail="Cannot delete README.md")
         
-        # Chemin vers la base de connaissances
-        knowledge_dir = Path(__file__).parent.parent.parent.parent / "data" / "knowledge_base"
-        file_path_obj = knowledge_dir / file_path
-        
-        # Vérifier que le fichier est bien dans le répertoire de la base de connaissances
-        try:
-            file_path_obj.resolve().relative_to(knowledge_dir.resolve())
-        except ValueError:
-            raise HTTPException(status_code=403, detail="Access denied")
-        
-        # Vérifier que c'est un fichier .md
-        if not file_path_obj.suffix == ".md":
-            raise HTTPException(status_code=400, detail="Only .md files are allowed")
-        
-        if not file_path_obj.exists():
+        # Vérifier que le fichier existe
+        if not await knowledge_base_storage.file_exists(file_path):
             raise HTTPException(status_code=404, detail="File not found")
         
         # Supprimer le fichier
-        file_path_obj.unlink()
+        success = await knowledge_base_storage.delete_file(file_path)
+        
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to delete file")
         
         logger.info("Knowledge base file deleted", file_path=file_path, user=current_user.get("email"))
         
@@ -811,6 +743,8 @@ async def delete_knowledge_base_file(
         
     except HTTPException:
         raise
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error("Error deleting knowledge base file", error=str(e), file_path=file_path)
         raise HTTPException(status_code=500, detail=str(e))

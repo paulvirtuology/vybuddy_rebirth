@@ -47,40 +47,41 @@ async def load_knowledge_base():
     - Section Contexte (##)
     - Sections FAQ avec Q: et R: (##)
     - Sections procédures si nécessaire (##)
+    
+    Lit maintenant depuis Supabase Storage au lieu du filesystem
     """
+    from app.services.knowledge_base_storage import KnowledgeBaseStorage
+    
     pinecone = PineconeClient()
     embeddings = OpenAIEmbeddings(
         model="text-embedding-3-small",
         openai_api_key=settings.OPENAI_API_KEY
     )
     
-    # Chemin vers les fichiers de connaissances
-    knowledge_dir = Path(__file__).parent.parent / "data" / "knowledge_base"
+    # Utiliser Supabase Storage
+    storage = KnowledgeBaseStorage()
+    files = await storage.list_files()
     
-    if not knowledge_dir.exists():
-        logger.error(f"Directory not found: {knowledge_dir}")
-        return
+    # Filtrer pour ne garder que les fichiers .md (exclure README.md)
+    md_files = [f for f in files if f["path"].endswith(".md") and not f["path"].endswith("README.md")]
+    
+    logger.info(f"Found {len(md_files)} markdown knowledge files in Supabase Storage")
     
     vectors_to_upsert = []
     
-    # Traiter uniquement les fichiers Markdown (format uniforme)
-    md_files = list(knowledge_dir.glob("*.md"))
-    
-    # Charger aussi les procédures si elles existent
-    procedures_dir = knowledge_dir / "procedures"
-    if procedures_dir.exists():
-        logger.info("Found procedures directory, loading procedures...")
-        md_files.extend(list(procedures_dir.glob("*.md")))
-    # Exclure README.md
-    md_files = [f for f in md_files if f.name != "README.md"]
-    
-    logger.info(f"Found {len(md_files)} markdown knowledge files")
-    
-    for md_file in md_files:
-        logger.info(f"Processing: {md_file.name}")
+    for file_info in md_files:
+        file_path = file_info["path"]
+        file_name = file_info["name"]
         
-        with open(md_file, 'r', encoding='utf-8') as f:
-            content = f.read()
+        logger.info(f"Processing: {file_name}")
+        
+        # Récupérer le contenu depuis Supabase Storage
+        file_data = await storage.get_file(file_path)
+        if not file_data:
+            logger.warning(f"Could not read file: {file_path}")
+            continue
+        
+        content = file_data["content"]
         
         # Diviser le contenu en sections pour créer des embeddings plus précis
         # Chaque section (##) devient un vecteur séparé
@@ -113,10 +114,12 @@ async def load_knowledge_base():
         
         # Si pas de sections détectées, traiter le document entier
         if not sections:
-            sections = [{"title": md_file.stem, "content": content}]
+            sections = [{"title": file_stem, "content": content}]
         
         # Normaliser le nom de fichier pour l'ID
-        normalized_stem = normalize_id(md_file.stem)
+        # Enlever l'extension .md
+        file_stem = file_name.rsplit(".md", 1)[0] if file_name.endswith(".md") else file_name
+        normalized_stem = normalize_id(file_stem)
         
         # Créer un embedding pour le document complet
         doc_embedding = await embeddings.aembed_query(content)
@@ -125,7 +128,7 @@ async def load_knowledge_base():
             "values": doc_embedding,
             "metadata": {
                 "text": content,
-                "source": md_file.name,
+                "source": file_name,
                 "type": "knowledge_base",
                 "format": "markdown",
                 "section": "full_document"
@@ -147,7 +150,7 @@ async def load_knowledge_base():
                 "metadata": {
                     "text": section_text,
                     "title": section['title'],
-                    "source": md_file.name,
+                    "source": file_name,
                     "type": "knowledge_base",
                     "format": "markdown",
                     "section": section['title'],
