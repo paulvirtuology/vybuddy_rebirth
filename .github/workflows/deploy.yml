@@ -24,7 +24,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
-            echo "🚀 Starting backend deployment..."
+            echo "🚀 Starting backend deployment now..."
             
             # Navigate to repo directory
             cd /home/paul_smartelia/vybuddy_rebirth
