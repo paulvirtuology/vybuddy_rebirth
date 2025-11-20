@@ -771,7 +771,7 @@ export default function ChatInterface({
             />
           </svg>
           <p className="text-xs text-gray-600 leading-relaxed">
-            <span className="font-semibold">VyBuddy est en phase d'apprentissage</span> - Il apprend de chaque interaction pour mieux vous servir. Merci de votre patience et de votre bienveillance ! 🙏
+            <span className="font-semibold">VyBuddy est en phase d'apprentissage</span> - Il apprend de chaque interaction pour mieux vous servir. N'hésitez pas à remonter les feedbacks avec les boutons dédiés ! 🙏
           </p>
         </div>
       </div>
