@@ -139,12 +139,12 @@ const MessageItem = memo(({
     'py-3',
     'rounded-2xl',
     isUser
-      ? 'bg-indigo-600 text-white shadow-lg rounded-br-sm' // Utilisateur : indigo foncé
+      ? 'bg-indigo-500 text-white shadow rounded-br-sm' // Utilisateur : indigo adouci
       : isHumanSupport
-      ? 'bg-emerald-500 text-white shadow-lg rounded-bl-sm border-2 border-emerald-600' // Support humain : vert émeraude
+      ? 'bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-bl-sm' // Support humain : vert pastel
       : isSystem
-      ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 shadow-sm' // Système : ambre clair
-      : 'bg-blue-50 text-blue-900 border-2 border-blue-200 shadow rounded-bl-sm' // Bot : bleu clair
+      ? 'bg-amber-50 text-amber-900 border border-amber-200 shadow-sm' // Système : ambre clair
+      : 'bg-blue-50 text-blue-900 border border-blue-100 rounded-bl-sm' // Bot : bleu très léger
   ].join(' ')
 
   return (
@@ -155,8 +155,8 @@ const MessageItem = memo(({
             <span className="font-semibold text-white/90">Vous</span>
           )}
           {isHumanSupport && (
-            <span className="inline-flex items-center gap-1.5 text-white font-semibold">
-              <span className="w-2.5 h-2.5 bg-white rounded-full" />
+            <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
+              <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full" />
               Support humain
             </span>
           )}
