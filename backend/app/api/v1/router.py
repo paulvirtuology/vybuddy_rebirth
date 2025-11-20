@@ -609,6 +609,53 @@ async def list_knowledge_base_files(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# Route OPTIONS explicite pour les fichiers knowledge-base
+# Nécessaire car Apache peut avoir des problèmes avec les chemins contenant %2F
+# Le middleware ForceCORSMiddleware devrait normalement gérer ça, mais cette route
+# sert de fallback spécifique pour les chemins avec %2F qui peuvent ne pas être
+# correctement routés par Apache vers le middleware
+@api_router.options("/admin/knowledge-base/files/{file_path:path}")
+async def options_knowledge_base_file(file_path: str, request: Request):
+    """
+    Gère les requêtes OPTIONS (preflight CORS) pour les fichiers de la base de connaissances
+    Les requêtes OPTIONS ne nécessitent pas d'authentification (preflight CORS)
+    Cette route est un fallback spécifique pour les chemins avec %2F
+    """
+    from fastapi.responses import Response
+    from app.core.config import settings
+    
+    # Décoder le chemin URL (en cas d'encodage %2F pour /)
+    from urllib.parse import unquote
+    file_path = unquote(file_path)
+    
+    origin = request.headers.get("origin")
+    allowed_origin = None
+    if origin and origin in settings.CORS_ORIGINS:
+        allowed_origin = origin
+    elif settings.CORS_ORIGINS:
+        allowed_origin = settings.CORS_ORIGINS[0]
+    else:
+        allowed_origin = "*"
+    
+    logger.info(
+        "OPTIONS handler for knowledge-base file (fallback)",
+        path=file_path,
+        origin=origin,
+        allowed_origin=allowed_origin
+    )
+    
+    return Response(
+        status_code=200,
+        headers={
+            "Access-Control-Allow-Origin": allowed_origin,
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+            "Access-Control-Allow-Headers": "Authorization, Content-Type, Accept, X-Requested-With",
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Max-Age": "3600",
+        }
+    )
+
+
 @api_router.get("/admin/knowledge-base/files/{file_path:path}")
 async def get_knowledge_base_file(
     file_path: str,
@@ -618,6 +665,10 @@ async def get_knowledge_base_file(
     Récupère le contenu d'un fichier de la base de connaissances (admin uniquement)
     """
     try:
+        # Décoder le chemin URL (en cas d'encodage %2F pour /)
+        from urllib.parse import unquote
+        file_path = unquote(file_path)
+        
         # Sécuriser le chemin pour éviter les path traversal attacks
         if ".." in file_path or file_path.startswith("/"):
             raise HTTPException(status_code=400, detail="Invalid file path")
@@ -668,6 +719,10 @@ async def update_knowledge_base_file(
     Crée ou modifie un fichier de la base de connaissances (admin uniquement)
     """
     try:
+        # Décoder le chemin URL (en cas d'encodage %2F pour /)
+        from urllib.parse import unquote
+        file_path = unquote(file_path)
+        
         # Sécuriser le chemin pour éviter les path traversal attacks
         if ".." in file_path or file_path.startswith("/"):
             raise HTTPException(status_code=400, detail="Invalid file path")
@@ -718,6 +773,10 @@ async def delete_knowledge_base_file(
     Supprime un fichier de la base de connaissances (admin uniquement)
     """
     try:
+        # Décoder le chemin URL (en cas d'encodage %2F pour /)
+        from urllib.parse import unquote
+        file_path = unquote(file_path)
+        
         # Sécuriser le chemin pour éviter les path traversal attacks
         if ".." in file_path or file_path.startswith("/"):
             raise HTTPException(status_code=400, detail="Invalid file path")

@@ -33,6 +33,14 @@ export default function AdminKnowledgeBasePage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
   const token = (session as any)?.accessToken
 
+  // Fonction pour encoder le chemin en préservant les / (slash)
+  // encodeURIComponent encode / en %2F, ce qui cause des problèmes CORS
+  // On encode seulement les caractères spéciaux mais on garde les /
+  const encodeFilePath = (filePath: string): string => {
+    // Encoder chaque segment du chemin séparément, puis les joindre avec /
+    return filePath.split('/').map(segment => encodeURIComponent(segment)).join('/')
+  }
+
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login')
@@ -81,7 +89,7 @@ export default function AdminKnowledgeBasePage() {
 
     try {
       const response = await axios.get(
-        `${apiUrl}/api/v1/admin/knowledge-base/files/${encodeURIComponent(filePath)}`,
+        `${apiUrl}/api/v1/admin/knowledge-base/files/${encodeFilePath(filePath)}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -110,7 +118,7 @@ export default function AdminKnowledgeBasePage() {
       const filePath = isCreatingNew ? `${newFileName}.md` : selectedFile!.path
       
       await axios.put(
-        `${apiUrl}/api/v1/admin/knowledge-base/files/${encodeURIComponent(filePath)}`,
+        `${apiUrl}/api/v1/admin/knowledge-base/files/${encodeFilePath(filePath)}`,
         { content: fileContent },
         {
           headers: {
@@ -147,7 +155,7 @@ export default function AdminKnowledgeBasePage() {
 
     try {
       await axios.delete(
-        `${apiUrl}/api/v1/admin/knowledge-base/files/${encodeURIComponent(filePath)}`,
+        `${apiUrl}/api/v1/admin/knowledge-base/files/${encodeFilePath(filePath)}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`

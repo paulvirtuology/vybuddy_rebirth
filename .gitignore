@@ -61,5 +61,6 @@ logs/
 *.log.docker
 docker-compose.override.yml
 backend/myenv
+apache-config-example.conf
 
 

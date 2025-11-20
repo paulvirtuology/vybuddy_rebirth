@@ -2,9 +2,9 @@
 FastAPI Gateway - Point d'entrée principal de l'API
 Orchestre les requêtes et gère les WebSockets
 """
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Request
+from fastapi.responses import JSONResponse, Response
+from starlette.middleware.base import BaseHTTPMiddleware
 import structlog
 from contextlib import asynccontextmanager
 
@@ -62,14 +62,89 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Middleware personnalisé pour forcer les headers CORS sur toutes les requêtes
+class ForceCORSMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        # Logger TOUTES les requêtes (pour voir si elles arrivent au middleware)
+        # Spécialement important pour les requêtes OPTIONS qui échouent
+        if request.method == "OPTIONS":
+            logger.error(
+                "🔴 OPTIONS request reached middleware",
+                path=request.url.path,
+                raw_path=str(request.url),
+                method=request.method,
+                origin=request.headers.get("origin")
+            )
+        
+        # Logger TOUTES les requêtes OPTIONS pour le débogage (même celles qui échouent)
+        if request.method == "OPTIONS":
+            logger.warning(
+                "OPTIONS preflight request received",
+                path=request.url.path,
+                raw_path=str(request.url),
+                query_string=str(request.url.query),
+                origin=request.headers.get("origin"),
+                access_control_request_method=request.headers.get("access-control-request-method"),
+                access_control_request_headers=request.headers.get("access-control-request-headers"),
+                host=request.headers.get("host"),
+                user_agent=request.headers.get("user-agent")
+            )
+        
+        # Gérer les requêtes OPTIONS (preflight) explicitement AVANT tout autre traitement
+        if request.method == "OPTIONS":
+            logger.info(
+                "OPTIONS preflight request intercepted",
+                path=request.url.path,
+                raw_path=str(request.url),
+                origin=request.headers.get("origin"),
+                access_control_request_method=request.headers.get("access-control-request-method"),
+                access_control_request_headers=request.headers.get("access-control-request-headers")
+            )
+            # Créer une réponse OPTIONS avec tous les headers CORS
+            origin = request.headers.get("origin")
+            allowed_origin = None
+            if origin and origin in settings.CORS_ORIGINS:
+                allowed_origin = origin
+            elif settings.CORS_ORIGINS:
+                allowed_origin = settings.CORS_ORIGINS[0]
+            else:
+                allowed_origin = "*"
+            
+            response = Response(
+                status_code=200,
+                headers={
+                    "Access-Control-Allow-Origin": allowed_origin,
+                    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+                    "Access-Control-Allow-Headers": "Authorization, Content-Type, Accept, X-Requested-With",
+                    "Access-Control-Allow-Credentials": "true",
+                    "Access-Control-Max-Age": "3600",
+                }
+            )
+            logger.info("OPTIONS response sent", headers=dict(response.headers))
+            return response
+        
+        # Pour les autres méthodes, appeler la route normale puis ajouter les headers CORS
+        response = await call_next(request)
+        
+        # Ajouter les headers CORS à toutes les réponses
+        origin = request.headers.get("origin")
+        if origin and origin in settings.CORS_ORIGINS:
+            response.headers["Access-Control-Allow-Origin"] = origin
+        elif settings.CORS_ORIGINS:
+            response.headers["Access-Control-Allow-Origin"] = settings.CORS_ORIGINS[0]
+        else:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+        
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+        response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-Requested-With"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Max-Age"] = "3600"
+        
+        return response
+
+# CORS - Middleware personnalisé unique (gère toutes les requêtes OPTIONS et ajoute les headers CORS)
+# C'est la seule source de vérité pour CORS dans l'application
+app.add_middleware(ForceCORSMiddleware)
 
 # Routes API REST
 app.include_router(api_router, prefix="/api/v1")
