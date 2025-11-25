@@ -202,8 +202,38 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
         await websocket.close(code=1008, reason="Invalid or expired token")
         return
     
-    await manager.connect(websocket, session_id)
+    # Récupérer l'email de l'utilisateur pour le tracking des connexions
+    user_id = user_info.get("email")
+    await manager.connect(websocket, session_id, user_id=user_id)
     # Logs WebSocket réduits - seulement en cas d'erreur
+    
+    # LOGIQUE SPÉCIALE POUR LE SUPPORT HUMAIN
+    # Si la session est en mode support humain, envoyer automatiquement les messages en attente
+    # Cela garantit que les messages du support humain ne sont pas perdus lors des reconnexions
+    # On attend un peu pour laisser le temps à la connexion WebSocket de se stabiliser
+    if await human_support.is_session_escalated(session_id):
+        import asyncio
+        # Attendre 500ms pour laisser le temps à la connexion de se stabiliser
+        await asyncio.sleep(0.5)
+        
+        logger.info(
+            "Session in human support mode - sending pending messages on reconnect",
+            session_id=session_id,
+            user_id=user_id
+        )
+        sent_count = await human_support.send_pending_messages_on_reconnect(session_id, user_id)
+        if sent_count > 0:
+            logger.info(
+                "Pending human support messages sent on WebSocket reconnect",
+                session_id=session_id,
+                sent_count=sent_count
+            )
+        elif sent_count == 0:
+            logger.warning(
+                "No pending messages were sent (connection may have closed too quickly)",
+                session_id=session_id,
+                user_id=user_id
+            )
     
     try:
         while True:

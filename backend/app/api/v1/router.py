@@ -19,6 +19,7 @@ from app.services.knowledge_base_storage import KnowledgeBaseStorage
 from app.database.supabase_client import SupabaseClient
 from app.database.redis_client import RedisClient
 from app.middleware.auth_middleware import get_current_user, get_current_admin
+from app.core.config import settings
 
 logger = structlog.get_logger()
 
@@ -750,6 +751,70 @@ async def delete_knowledge_base_file(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@api_router.get("/admin/slack/bot-info")
+async def get_slack_bot_info(
+    current_admin: dict = Depends(get_current_admin)
+):
+    """
+    Endpoint admin pour récupérer les informations du bot Slack.
+    Utile pour savoir comment inviter le bot dans les canaux.
+    """
+    try:
+        bot_info = await slack_service.get_bot_info()
+        
+        if not bot_info:
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "error": "Slack bot not configured or not accessible",
+                    "hint": "Check SLACK_BOT_TOKEN in .env and ensure the app is installed in the workspace"
+                }
+            )
+        
+        # Vérifier l'accès au canal support
+        support_channel = getattr(settings, "SLACK_SUPPORT_CHANNEL", "")
+        channel_info = None
+        channel_access = False
+        
+        if support_channel:
+            channel_info = await slack_service.get_channel_info(support_channel)
+            channel_access = channel_info is not None
+            
+            # Si pas d'accès, tenter de rejoindre
+            if not channel_access:
+                await slack_service.join_channel(support_channel)
+                channel_info = await slack_service.get_channel_info(support_channel)
+                channel_access = channel_info is not None
+        
+        return {
+            "bot": {
+                "user_id": bot_info.get("bot_user_id"),
+                "user_name": bot_info.get("bot_user_name"),
+                "team_id": bot_info.get("team_id"),
+                "team_name": bot_info.get("team_name"),
+            },
+            "support_channel": {
+                "channel_id": support_channel,
+                "configured": bool(support_channel),
+                "accessible": channel_access,
+                "channel_name": channel_info.get("name") if channel_info else None,
+                "is_private": channel_info.get("is_private") if channel_info else None,
+            },
+            "invite_instructions": {
+                "method_1": f"Dans le canal #support-it, tapez: /invite @{bot_info.get('bot_user_name', 'VyBuddy Live Support')}",
+                "method_2": f"OU utilisez l'ID du bot: /invite <@{bot_info.get('bot_user_id', '')}>" if bot_info.get('bot_user_id') else "ID du bot non disponible",
+                "method_3": "OU via l'interface: Cliquez sur le nom du canal → Membres → Ajouter des personnes",
+                "note": "Pour les canaux privés, le bot doit être invité manuellement. Les canaux publics peuvent être rejoints automatiquement."
+            }
+        }
+    except Exception as e:
+        logger.error("Error getting Slack bot info", error=str(e), exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Internal server error", "details": str(e)}
+        )
+
+
 @api_router.post("/admin/knowledge-base/reindex")
 async def reindex_knowledge_base(
     current_user: dict = Depends(get_current_admin)
@@ -816,18 +881,34 @@ async def slack_events(
         body_bytes = await request.body()
         body_str = body_bytes.decode('utf-8')
         
+        # Log de diagnostic : on reçoit bien des requêtes ?
+        logger.info(
+            "Slack webhook called",
+            has_signature=bool(x_slack_signature),
+            has_timestamp=bool(x_slack_request_timestamp),
+            body_preview=body_str[:200] if body_str else "empty"
+        )
+        
         # Vérifier la signature Slack (sécurité)
+        # #ZNOTE: En développement, on peut temporairement désactiver la vérification pour debug
         if x_slack_signature and x_slack_request_timestamp:
-            if not slack_service.verify_slack_signature(
+            signature_valid = slack_service.verify_slack_signature(
                 timestamp=x_slack_request_timestamp,
                 body=body_str,
                 signature=x_slack_signature
-            ):
-                logger.warning("Invalid Slack signature", signature=x_slack_signature)
+            )
+            if not signature_valid:
+                logger.error(
+                    "Invalid Slack signature - event will be rejected",
+                    signature_preview=x_slack_signature[:20] if x_slack_signature else None,
+                    timestamp=x_slack_request_timestamp,
+                    body_preview=body_str[:200]
+                )
                 return JSONResponse(
                     status_code=401,
                     content={"error": "Invalid signature"}
                 )
+            logger.debug("Slack signature verified successfully")
         
         # Parser le JSON
         try:
@@ -844,8 +925,20 @@ async def slack_events(
             logger.debug("Slack URL verification challenge received")
             return JSONResponse(content={"challenge": challenge})
         
-        # Traiter les événements de message
+        # Log tous les événements reçus pour debug
+        event_type = data.get("type")
         event = data.get("event", {})
+        event_subtype = event.get("type") if event else None
+        
+        logger.info(
+            "Slack event received",
+            event_type=event_type,
+            event_subtype=event_subtype,
+            has_event=bool(event),
+            event_keys=list(event.keys()) if event else []
+        )
+        
+        # Traiter les événements de message
         if data.get("type") == "event_callback" and event.get("type") == "message":
             # Extraire les informations du message d'abord
             channel = event.get("channel")
@@ -855,6 +948,19 @@ async def slack_events(
             thread_ts = event.get("thread_ts")  # Si c'est une réponse dans un thread
             bot_id = event.get("bot_id")
             subtype = event.get("subtype")
+            
+            # Log tous les messages reçus pour diagnostic
+            support_channel_id = getattr(settings, "SLACK_SUPPORT_CHANNEL", "")
+            logger.info(
+                "Slack message event received",
+                channel=channel,
+                channel_type=event.get("channel_type"),  # 'C' pour public, 'G' pour privé, 'D' pour DM
+                user=user,
+                has_thread=bool(thread_ts),
+                thread_ts=thread_ts,
+                is_support_channel=(channel == support_channel_id),
+                text_preview=text[:50] if text else "empty"
+            )
             
             # PRIORITÉ 1: Si le message appartient à un thread d'escalade humain, le router vers l'utilisateur
             # (même si c'est un message de bot, on veut traiter les réponses humaines dans les threads)
@@ -867,7 +973,8 @@ async def slack_events(
                     user=user,
                     bot_id=bot_id,
                     text_preview=text[:50],
-                    mapped_session=mapped_session
+                    mapped_session=mapped_session,
+                    is_support_channel=(channel == support_channel_id)
                 )
                 if mapped_session:
                     # Ignorer les messages du bot VyBuddy (même s'ils ont un user)
@@ -938,6 +1045,7 @@ async def slack_events(
                 "channel_purpose",
                 "channel_name",
                 "channel_archive",
+                "channel_convert",  # Conversion de canal public en privé (ou vice versa)
                 "group_join",
                 "group_leave",
                 "message_replied",

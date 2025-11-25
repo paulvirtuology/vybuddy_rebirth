@@ -202,9 +202,108 @@ export default function ChatInterface({
     }
   }, [])
 
+  // Ref pour le polling des messages
+  const pollingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const lastMessageTimestampRef = useRef<Date | null>(null)
+
   useEffect(() => {
     setIsConnected(connectionStatus === 'Open')
-  }, [connectionStatus])
+    
+    // Fonction pour récupérer les messages récents depuis Supabase
+    const fetchRecentMessages = async () => {
+      if (!sessionId || !token || isLoadingMessages) return
+      
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/v1/conversations/${sessionId}/messages`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+            params: {
+              limit: 20 // Récupérer les 20 derniers messages
+            }
+          }
+        )
+        
+        const loadedMessages: Message[] = response.data.messages.map((msg: any) => ({
+          id: msg.id,
+          type: msg.type === 'user' ? 'user' : 'bot',
+          content: msg.content,
+          timestamp: new Date(msg.timestamp),
+          agent: msg.agent,
+          metadata: msg.metadata || {}
+        }))
+        
+        // Mettre à jour les messages seulement si on en a de nouveaux
+        setMessages((prev) => {
+          const existingIds = new Set(prev.map(m => m.id))
+          const newMessages = loadedMessages.filter(m => !existingIds.has(m.id))
+          
+          if (newMessages.length > 0) {
+            // Fusionner les messages en gardant l'ordre chronologique
+            const allMessages = [...prev, ...newMessages].sort((a, b) => 
+              a.timestamp.getTime() - b.timestamp.getTime()
+            )
+            
+            // S'assurer que le loading est désactivé si on a reçu des messages du support humain
+            if (newMessages.some(m => m.type === 'bot' && m.agent === 'human_support')) {
+              setIsLoading(false)
+            }
+            
+            // Mettre à jour le timestamp du dernier message
+            const latestMessage = newMessages[newMessages.length - 1]
+            if (latestMessage) {
+              lastMessageTimestampRef.current = latestMessage.timestamp
+            }
+            
+            return allMessages
+          }
+          
+          return prev
+        })
+      } catch (error) {
+        console.error('Error fetching recent messages:', error)
+      }
+    }
+    
+    // Récupérer les messages lors de la reconnexion WebSocket
+    if (connectionStatus === 'Open' && sessionId && token && !isLoadingMessages) {
+      // Attendre un peu avant de récupérer pour laisser le temps au WebSocket de se stabiliser
+      const timeoutId = setTimeout(fetchRecentMessages, 1500)
+      
+      // Démarrer un polling périodique si la connexion est fermée ou instable
+      // Cela garantit que les messages du support humain sont toujours récupérés
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current)
+      }
+      
+      // Polling toutes les 5 secondes si la connexion est fermée
+      if (connectionStatus !== 'Open') {
+        pollingIntervalRef.current = setInterval(fetchRecentMessages, 5000)
+      }
+      
+      return () => {
+        clearTimeout(timeoutId)
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current)
+          pollingIntervalRef.current = null
+        }
+      }
+    } else if (connectionStatus !== 'Open' && sessionId && token && !isLoadingMessages) {
+      // Si la connexion est fermée, démarrer le polling
+      if (!pollingIntervalRef.current) {
+        pollingIntervalRef.current = setInterval(fetchRecentMessages, 5000)
+      }
+    }
+    
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current)
+        pollingIntervalRef.current = null
+      }
+    }
+  }, [connectionStatus, sessionId, token, apiUrl, isLoadingMessages])
 
   // Message de bienvenue initial - une seule fois quand la connexion est établie et qu'il n'y a pas de messages
   useEffect(() => {

@@ -159,6 +159,8 @@ class LangGraphSwarm:
             message=state["message"],
             agent_response=response.get("message", ""),
             agent_used=state.get("agent_used", "unknown"),
+            session_id=state.get("session_id", ""),
+            user_id=state.get("user_id"),
             history=state.get("history", []),
             needs_ticket_suggested=needs_ticket_suggested
         )
@@ -175,6 +177,39 @@ class LangGraphSwarm:
                 
                 state["ticket_created"] = True
                 state["ticket_id"] = ticket.get("id")
+                
+                # Invalider le cache après création de ticket
+                await self.ticket_validator.invalidate_cache(
+                    session_id=state.get("session_id", ""),
+                    user_id=state.get("user_id")
+                )
+                
+                # Modifier le message de l'agent pour enlever les questions et confirmer la création du ticket
+                agent_message = state["response"].get("message", "")
+                # Enlever les questions qui demandent encore des informations (car le ticket est créé)
+                import re
+                # Supprimer les phrases qui contiennent des questions après "je crée" ou "je lance"
+                # Pattern pour trouver les questions après une confirmation de création
+                question_patterns = [
+                    r"j'aurais besoin de[^.]*\.",  # "j'aurais besoin de..."
+                    r"j'aurais juste besoin de[^.]*\.",  # "j'aurais juste besoin de..."
+                    r"pour.*j'aurais besoin de[^.]*\.",  # "pour... j'aurais besoin de..."
+                    r"pour.*j'aurais juste besoin de[^.]*\.",  # "pour... j'aurais juste besoin de..."
+                    r"s'il vous plaît[^.]*\.",  # "s'il vous plaît..."
+                ]
+                
+                # Si le message contient "je crée" ou "je lance" et des questions, nettoyer
+                if any(indicator in agent_message.lower() for indicator in ["je crée", "je lance", "création", "créer la demande"]):
+                    for pattern in question_patterns:
+                        agent_message = re.sub(pattern, "", agent_message, flags=re.IGNORECASE)
+                    # Nettoyer les espaces multiples et les points doubles
+                    agent_message = re.sub(r'\s+', ' ', agent_message).strip()
+                    agent_message = re.sub(r'\.\.+', '.', agent_message)
+                    # S'assurer que le message se termine par un point
+                    if agent_message and not agent_message.endswith('.'):
+                        agent_message += '.'
+                    
+                    state["response"]["message"] = agent_message
                 
                 # Ne pas modifier le message après streaming - utiliser les métadonnées à la place
                 # Le frontend affichera l'info du ticket via les métadonnées

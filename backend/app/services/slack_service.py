@@ -18,10 +18,42 @@ class SlackService:
     def __init__(self):
         """Initialise le client Slack"""
         self.client = WebClient(token=settings.SLACK_BOT_TOKEN) if hasattr(settings, 'SLACK_BOT_TOKEN') and settings.SLACK_BOT_TOKEN else None
+        self._bot_user_id: Optional[str] = None
+        self._bot_user_name: Optional[str] = None
     
     def is_configured(self) -> bool:
         """Vérifie si le service Slack est configuré"""
         return self.client is not None
+    
+    async def get_bot_info(self) -> Optional[Dict[str, Any]]:
+        """
+        Récupère les informations du bot (ID, nom, etc.)
+        Utile pour savoir comment inviter le bot dans les canaux.
+        
+        Returns:
+            Dict avec bot_id, bot_name, etc. ou None
+        """
+        if not self.is_configured():
+            return None
+        
+        try:
+            # Utiliser auth.test pour obtenir l'ID du bot
+            response = await asyncio.to_thread(self.client.auth_test)
+            if response["ok"]:
+                bot_info = {
+                    "bot_user_id": response.get("user_id"),
+                    "bot_user_name": response.get("user"),
+                    "team_id": response.get("team_id"),
+                    "team_name": response.get("team"),
+                }
+                self._bot_user_id = bot_info["bot_user_id"]
+                self._bot_user_name = bot_info["bot_user_name"]
+                logger.info("Bot info retrieved", **bot_info)
+                return bot_info
+            return None
+        except SlackApiError as e:
+            logger.error("Error fetching bot info", error=str(e))
+            return None
     
     async def send_message(
         self,
@@ -39,6 +71,10 @@ class SlackService:
             
         Returns:
             Réponse de l'API Slack
+            
+        Raises:
+            ValueError: Si le service n'est pas configuré
+            SlackApiError: Si l'API Slack retourne une erreur
         """
         if not self.is_configured():
             logger.error("Slack service not configured - SLACK_BOT_TOKEN missing")
@@ -67,11 +103,37 @@ class SlackService:
             }
             
         except SlackApiError as e:
-            logger.error(
-                "Slack API error",
-                error=str(e),
-                channel=channel
-            )
+            error_code = e.response.get("error", "unknown") if hasattr(e, "response") else "unknown"
+            
+            # Messages d'erreur spécifiques selon le type d'erreur
+            if error_code == "channel_not_found":
+                logger.error(
+                    "Slack channel not found - Bot must be invited to the channel",
+                    channel=channel,
+                    error=str(e),
+                    hint="Invite the bot to the channel with: /invite @VyBuddy Live Support"
+                )
+            elif error_code == "not_in_channel":
+                logger.error(
+                    "Bot is not a member of the Slack channel",
+                    channel=channel,
+                    error=str(e),
+                    hint="Invite the bot to the channel with: /invite @VyBuddy Live Support"
+                )
+            elif error_code == "invalid_auth":
+                logger.error(
+                    "Slack authentication failed - Check SLACK_BOT_TOKEN",
+                    channel=channel,
+                    error=str(e),
+                    hint="Verify SLACK_BOT_TOKEN is valid and has required scopes"
+                )
+            else:
+                logger.error(
+                    "Slack API error",
+                    error=str(e),
+                    error_code=error_code,
+                    channel=channel
+                )
             raise
     
     async def send_ephemeral_message(
@@ -175,6 +237,52 @@ class SlackService:
         except SlackApiError as e:
             logger.error("Error fetching Slack channel info", error=str(e), channel_id=channel_id)
             return None
+    
+    async def join_channel(self, channel_id: str) -> bool:
+        """
+        Tente de faire rejoindre le bot à un canal Slack.
+        
+        Note: Ne fonctionne que pour les canaux publics.
+        Pour les canaux privés, le bot doit être invité manuellement.
+        
+        Args:
+            channel_id: ID du canal Slack
+            
+        Returns:
+            True si le bot a rejoint le canal, False sinon
+        """
+        if not self.is_configured():
+            return False
+        
+        try:
+            # Exécuter l'appel synchrone dans un thread pour ne pas bloquer
+            response = await asyncio.to_thread(
+                self.client.conversations_join,
+                channel=channel_id
+            )
+            if response["ok"]:
+                logger.info("Bot joined Slack channel", channel=channel_id)
+                return True
+            return False
+        except SlackApiError as e:
+            error_code = e.response.get("error", "unknown") if hasattr(e, "response") else "unknown"
+            if error_code == "channel_not_found":
+                logger.warning(
+                    "Cannot join channel - channel not found or bot not allowed",
+                    channel=channel_id,
+                    hint="For private channels, invite the bot manually: /invite @VyBuddy Live Support"
+                )
+            elif error_code == "already_in_channel":
+                logger.info("Bot is already in the channel", channel=channel_id)
+                return True
+            else:
+                logger.warning(
+                    "Error joining Slack channel",
+                    error=str(e),
+                    error_code=error_code,
+                    channel=channel_id
+                )
+            return False
     
     def verify_slack_signature(
         self,
