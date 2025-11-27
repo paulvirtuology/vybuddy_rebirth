@@ -162,17 +162,17 @@ const MessageItem = memo(({
   
   // Couleurs distinctes pour chaque type de message
   const bubbleClass = [
-    'max-w-[75%]',
+    'max-w-[75%] sm:max-w-[85%]',
     'px-4',
     'py-3',
     'rounded-2xl',
     isUser
-      ? 'bg-indigo-500 text-white shadow rounded-br-sm' // Utilisateur : indigo adouci
+      ? 'bg-indigo-500 dark:bg-indigo-600 text-white shadow rounded-br-sm' // Utilisateur : indigo adouci
       : isHumanSupport
-      ? 'bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-bl-sm' // Support humain : vert pastel
+      ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 border border-emerald-200 dark:border-emerald-800 rounded-bl-sm' // Support humain : vert pastel
       : isSystem
-      ? 'bg-amber-50 text-amber-900 border border-amber-200 shadow-sm' // Système : ambre clair
-      : 'bg-blue-50 text-blue-900 border border-blue-100 rounded-bl-sm' // Bot : bleu très léger
+      ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 border border-amber-200 dark:border-amber-800 shadow-sm' // Système : ambre clair
+      : 'bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-100 border border-blue-100 dark:border-blue-800 rounded-bl-sm' // Bot : bleu très léger
   ].join(' ')
 
   return (
@@ -183,20 +183,20 @@ const MessageItem = memo(({
             <span className="font-semibold text-white/90">Vous</span>
           )}
           {isHumanSupport && (
-            <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
-              <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full" />
+            <span className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-semibold">
+              <span className="w-2.5 h-2.5 bg-emerald-400 dark:bg-emerald-500 rounded-full" />
               Support humain
             </span>
           )}
           {isBot && (
-            <span className="inline-flex items-center gap-1.5 text-blue-700 font-semibold">
-              <span className="w-2.5 h-2.5 bg-blue-500 rounded-full" />
+            <span className="inline-flex items-center gap-1.5 text-blue-700 dark:text-blue-300 font-semibold">
+              <span className="w-2.5 h-2.5 bg-blue-500 dark:bg-blue-400 rounded-full" />
               VyBuddy {message.agent && `(${message.agent})`}
             </span>
           )}
           {isSystem && (
-            <span className="inline-flex items-center gap-1.5 text-amber-800 font-semibold">
-              <span className="w-2.5 h-2.5 bg-amber-500 rounded-full" />
+            <span className="inline-flex items-center gap-1.5 text-amber-800 dark:text-amber-300 font-semibold">
+              <span className="w-2.5 h-2.5 bg-amber-500 dark:bg-amber-400 rounded-full" />
               Système
             </span>
           )}
@@ -218,7 +218,7 @@ const MessageItem = memo(({
           <span>{format(message.timestamp, 'HH:mm', { locale: fr })}</span>
         </div>
         {message.metadata?.ticket_created && (
-          <div className="mt-3 bg-green-50 border border-green-200 text-green-800 px-3 py-2 rounded text-xs">
+          <div className="mt-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 px-3 py-2 rounded text-xs">
             <div className="flex items-center gap-2 mb-1">
               <svg
                 className="w-4 h-4 flex-shrink-0"
@@ -244,15 +244,15 @@ const MessageItem = memo(({
         {/* Système de feedback pour les messages du bot */}
         {/* Afficher les boutons seulement si l'ID est un UUID valide (message sauvegardé dans Supabase) */}
         {message.type === 'bot' && isValidUUID(message.id) && (
-          <div className="mt-3 pt-3 border-t border-gray-200">
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
               <button
                 onClick={handleLike}
                 disabled={isSubmitting}
                 className={`flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors ${
                   feedback?.reaction === 'like'
-                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                 } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 title="Like"
               >
@@ -277,8 +277,8 @@ const MessageItem = memo(({
                 disabled={isSubmitting}
                 className={`flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors ${
                   feedback?.reaction === 'dislike'
-                    ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                 } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 title="Dislike"
               >
@@ -302,8 +302,8 @@ const MessageItem = memo(({
                 onClick={() => setShowCommentInput(!showCommentInput)}
                 className={`flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors ${
                   feedback?.comment
-                    ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
                 title="Ajouter un commentaire"
               >
@@ -331,7 +331,7 @@ const MessageItem = memo(({
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Ajoutez un commentaire..."
-                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                  className="w-full px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                   rows={2}
                 />
                 <div className="flex justify-end gap-2 mt-2">
@@ -340,14 +340,14 @@ const MessageItem = memo(({
                       setShowCommentInput(false)
                       setCommentText(feedback?.comment || '')
                     }}
-                    className="px-3 py-1 text-xs text-gray-600 hover:text-gray-800"
+                    className="px-3 py-1 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                   >
                     Annuler
                   </button>
                   <button
                     onClick={handleCommentSubmit}
                     disabled={isSubmitting}
-                    className="px-3 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50"
+                    className="px-3 py-1 text-xs bg-indigo-600 dark:bg-indigo-500 text-white rounded hover:bg-indigo-700 dark:hover:bg-indigo-600 disabled:opacity-50"
                   >
                     {isSubmitting ? 'Envoi...' : 'Envoyer'}
                   </button>
@@ -357,7 +357,7 @@ const MessageItem = memo(({
             
             {/* Afficher le commentaire existant */}
             {feedback?.comment && !showCommentInput && (
-              <div className="mt-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800">
+              <div className="mt-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded text-xs text-blue-800 dark:text-blue-200">
                 <div className="font-semibold mb-1">Votre commentaire:</div>
                 <div>{feedback.comment}</div>
               </div>

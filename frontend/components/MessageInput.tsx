@@ -47,13 +47,13 @@ export default function MessageInput({ onSend, disabled }: MessageInputProps) {
           placeholder={disabled ? 'Connexion en cours...' : 'Décrivez votre problème...'}
           disabled={disabled}
           rows={1}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-tropical focus:border-transparent bg-white text-gray-900 placeholder-gray-400 resize-none min-h-[48px] max-h-[120px] overflow-y-auto"
+          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-tropical dark:focus:ring-indigo-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 resize-none min-h-[48px] max-h-[120px] overflow-y-auto"
         />
       </div>
       <button
         onClick={handleSend}
         disabled={disabled || !message.trim()}
-        className="p-3 bg-indigo-tropical text-white rounded-lg hover:bg-indigo-tropical-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-[48px] h-[48px]"
+        className="p-3 bg-indigo-tropical dark:bg-indigo-600 text-white rounded-lg hover:bg-indigo-tropical-medium dark:hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-[48px] h-[48px]"
         aria-label="Envoyer le message"
       >
         <svg

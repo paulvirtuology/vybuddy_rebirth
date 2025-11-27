@@ -148,10 +148,10 @@ export default function Home() {
   // Attendre que la session soit chargée
   if (status === 'loading') {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen bg-blanc dark:bg-gray-900">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-tropical"></div>
-          <p className="mt-4 text-gray-600">Chargement...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Chargement...</p>
         </div>
       </div>
     )
@@ -169,7 +169,7 @@ export default function Home() {
         onSelectChat={handleSelectChat}
         chatHistory={chatHistory}
       />
-      <div className="flex-1 flex flex-col bg-blanc">
+      <div className="flex-1 flex flex-col bg-blanc dark:bg-gray-900 lg:ml-0">
         {currentChatId ? (
           <ChatInterface
             sessionId={currentChatId}
@@ -177,8 +177,8 @@ export default function Home() {
             onTitleUpdate={(title) => handleChatTitleUpdate(currentChatId, title)}
           />
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500">
-            <p>Sélectionnez un chat ou créez-en un nouveau</p>
+          <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400 px-4">
+            <p className="text-center">Sélectionnez un chat ou créez-en un nouveau</p>
           </div>
         )}
       </div>

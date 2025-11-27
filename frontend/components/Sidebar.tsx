@@ -5,6 +5,7 @@ import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useAdmin } from '@/hooks/useAdmin'
 import toast from 'react-hot-toast'
+import ThemeSwitch from './ThemeSwitch'
 
 interface ChatHistory {
   id: string
@@ -27,6 +28,7 @@ export default function Sidebar({
 }: SidebarProps) {
   const router = useRouter()
   const { isAdmin } = useAdmin()
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
   
   const handleSignOut = async () => {
     await signOut({ 
@@ -36,9 +38,54 @@ export default function Sidebar({
   }
 
   return (
-    <div className="w-64 bg-vert-profond text-white flex flex-col h-screen">
+    <>
+      {/* Mobile menu button */}
+      <button
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-vert-profond text-white dark:bg-gray-800 dark:text-gray-200"
+        aria-label="Toggle menu"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          {isMobileOpen ? (
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          ) : (
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          )}
+        </svg>
+      </button>
+
+      {/* Overlay pour mobile */}
+      {isMobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`
+        fixed lg:static inset-y-0 left-0 z-40
+        w-64 bg-vert-profond dark:bg-gray-900 text-white flex flex-col h-screen
+        transform transition-transform duration-300 ease-in-out
+        ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
       {/* Header avec logo */}
-      <div className="p-6 border-b border-vert-profond-light">
+          <div className="p-6 border-b border-vert-profond-light dark:border-gray-700">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-full bg-indigo-tropical flex items-center justify-center">
             <svg
@@ -57,7 +104,7 @@ export default function Sidebar({
           </div>
           <div>
             <h1 className="text-xl font-bold">VyBuddy</h1>
-            <p className="text-sm text-gray-300">Support IT</p>
+            <p className="text-sm text-gray-300 dark:text-gray-400">Support IT</p>
           </div>
         </div>
       </div>
@@ -65,8 +112,11 @@ export default function Sidebar({
       {/* Bouton Nouveau chat */}
       <div className="p-4">
         <button
-          onClick={onNewChat}
-          className="w-full bg-white text-vert-profond font-semibold py-3 px-4 rounded-lg hover:bg-sable transition-colors flex items-center justify-center gap-2"
+          onClick={() => {
+            onNewChat()
+            setIsMobileOpen(false)
+          }}
+          className="w-full bg-white dark:bg-gray-800 text-vert-profond dark:text-white font-semibold py-3 px-4 rounded-lg hover:bg-sable dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
         >
           <svg
             className="w-5 h-5"
@@ -86,25 +136,28 @@ export default function Sidebar({
       </div>
 
       {/* Séparateur */}
-      <div className="border-t border-vert-profond-light"></div>
+      <div className="border-t border-vert-profond-light dark:border-gray-700"></div>
 
       {/* Historique */}
       <div className="flex-1 overflow-y-auto p-4">
-        <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+        <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
           HISTORIQUE
         </h2>
         <div className="space-y-1">
           {chatHistory.length === 0 ? (
-            <p className="text-sm text-gray-400 italic">Aucun chat précédent</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 italic">Aucun chat précédent</p>
           ) : (
             chatHistory.map((chat) => (
               <button
                 key={chat.id}
-                onClick={() => onSelectChat(chat.id)}
+                onClick={() => {
+                  onSelectChat(chat.id)
+                  setIsMobileOpen(false)
+                }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                   currentChatId === chat.id
-                    ? 'bg-vert-profond-light text-white'
-                    : 'text-gray-300 hover:bg-vert-profond-light hover:text-white'
+                    ? 'bg-vert-profond-light dark:bg-gray-800 text-white'
+                    : 'text-gray-300 dark:text-gray-400 hover:bg-vert-profond-light dark:hover:bg-gray-800 hover:text-white'
                 }`}
               >
                 {chat.title}
@@ -114,13 +167,20 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Footer avec Support téléphonique, Paramètres et Déconnexion */}
-      <div className="p-4 border-t border-vert-profond-light space-y-2">
+      {/* Footer avec Support téléphonique, Paramètres, Thème et Déconnexion */}
+      <div className="p-4 border-t border-vert-profond-light dark:border-gray-700 space-y-2">
+        {/* Theme Switch */}
+        <div className="mb-4">
+          <ThemeSwitch />
+        </div>
         {isAdmin && (
           <>
             <button
-              onClick={() => router.push('/admin/feedbacks')}
-              className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-indigo-600 hover:text-white transition-colors flex items-center gap-3"
+              onClick={() => {
+                router.push('/admin/feedbacks')
+                setIsMobileOpen(false)
+              }}
+              className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 dark:text-gray-400 hover:bg-indigo-600 dark:hover:bg-gray-800 hover:text-white transition-colors flex items-center gap-3"
             >
               <svg
                 className="w-5 h-5"
@@ -138,8 +198,11 @@ export default function Sidebar({
               Administration - Feedbacks
             </button>
             <button
-              onClick={() => router.push('/admin/knowledge-base')}
-              className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-indigo-600 hover:text-white transition-colors flex items-center gap-3"
+              onClick={() => {
+                router.push('/admin/knowledge-base')
+                setIsMobileOpen(false)
+              }}
+              className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 dark:text-gray-400 hover:bg-indigo-600 dark:hover:bg-gray-800 hover:text-white transition-colors flex items-center gap-3"
             >
               <svg
                 className="w-5 h-5"
@@ -159,8 +222,11 @@ export default function Sidebar({
           </>
         )}
         <button
-          onClick={() => toast('Bientôt disponible')}
-          className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-vert-profond-light hover:text-white transition-colors flex items-center gap-3"
+          onClick={() => {
+            toast('Bientôt disponible')
+            setIsMobileOpen(false)
+          }}
+          className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 dark:text-gray-400 hover:bg-vert-profond-light dark:hover:bg-gray-800 hover:text-white transition-colors flex items-center gap-3"
         >
           <svg
             className="w-5 h-5"
@@ -178,8 +244,11 @@ export default function Sidebar({
           Support téléphonique
         </button>
         <button
-          onClick={() => toast('Bientôt disponible')}
-          className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-vert-profond-light hover:text-white transition-colors flex items-center gap-3"
+          onClick={() => {
+            toast('Bientôt disponible')
+            setIsMobileOpen(false)
+          }}
+          className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 dark:text-gray-400 hover:bg-vert-profond-light dark:hover:bg-gray-800 hover:text-white transition-colors flex items-center gap-3"
         >
           <svg
             className="w-5 h-5"
@@ -203,8 +272,11 @@ export default function Sidebar({
           Paramètres
         </button>
         <button 
-          onClick={handleSignOut}
-          className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-red-600 hover:text-white transition-colors flex items-center gap-3"
+          onClick={() => {
+            handleSignOut()
+            setIsMobileOpen(false)
+          }}
+          className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 dark:text-gray-400 hover:bg-red-600 dark:hover:bg-red-800 hover:text-white transition-colors flex items-center gap-3"
         >
           <svg
             className="w-5 h-5"
@@ -223,6 +295,7 @@ export default function Sidebar({
         </button>
       </div>
     </div>
+    </>
   )
 }
 

@@ -844,17 +844,17 @@ export default function ChatInterface({
   }, [messages.length]) // Seulement la longueur, pas le contenu
 
   return (
-    <div className="flex flex-col h-full bg-blanc">
+    <div className="flex flex-col h-full bg-blanc dark:bg-gray-900">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">Chat Support</h2>
-          <p className="text-sm text-gray-500">Assistant IA</p>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white">Chat Support</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Assistant IA</p>
         </div>
       </div>
 
       {/* Disclaimer */}
-      <div className="px-6 py-3 bg-sable-lighter border-b border-sable">
+      <div className="px-4 sm:px-6 py-3 bg-sable-lighter dark:bg-gray-800 border-b border-sable dark:border-gray-700">
         <div className="flex items-start gap-2">
           <svg
             className="w-5 h-5 text-indigo-tropical flex-shrink-0 mt-0.5"
@@ -869,19 +869,19 @@ export default function ChatInterface({
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <p className="text-xs text-gray-600 leading-relaxed">
+          <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
             <span className="font-semibold">VyBuddy est en phase d'apprentissage</span> - Il apprend de chaque interaction pour mieux vous servir. N'hésitez pas à remonter les feedbacks avec les boutons dédiés ! 🙏
           </p>
         </div>
       </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
             {isLoadingMessages ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-tropical"></div>
-                  <p className="mt-4 text-gray-600">Chargement de l'historique...</p>
+                  <p className="mt-4 text-gray-600 dark:text-gray-400">Chargement de l'historique...</p>
                 </div>
               </div>
             ) : (
@@ -889,8 +889,8 @@ export default function ChatInterface({
             )}
         {/* Indicateur de chargement */}
         {isLoading && (
-          <div className="flex justify-start mt-4">
-            <div className="bg-gray-100 rounded-lg px-4 py-3 max-w-[75%]">
+          <div className="flex justify-start mt-4 px-4 sm:px-6">
+            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-3 max-w-[75%]">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1.5 items-center">
                   <div 
@@ -906,7 +906,7 @@ export default function ChatInterface({
                     style={{ animationDelay: '400ms', animationDuration: '1.4s' }}
                   ></div>
                 </div>
-                <span className="text-xs text-gray-500 ml-2">VyBuddy réfléchit...</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">VyBuddy réfléchit...</span>
               </div>
             </div>
           </div>
@@ -915,9 +915,9 @@ export default function ChatInterface({
       </div>
 
       {/* Input */}
-      <div className="px-6 py-4 border-t border-gray-200 bg-sable-lighter">
+      <div className="px-4 sm:px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-sable-lighter dark:bg-gray-800">
         <MessageInput onSend={handleSendMessage} disabled={!isConnected} />
-        <p className="text-xs text-gray-500 mt-2 text-center">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
           VyBuddy répondra dans les meilleurs délais. Temps moyen: 1 minute
         </p>
       </div>
