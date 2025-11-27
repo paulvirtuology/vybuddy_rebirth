@@ -34,39 +34,44 @@ Le widget s'initialise **automatiquement** ! 🎉
 </script>
 ```
 
-## Exemple complet
+## Exemple complet HTML
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+  <meta charset="UTF-8">
   <title>Mon Portail</title>
 </head>
 <body>
-  <!-- Votre contenu -->
+  <h1>Mon Portail</h1>
+  <p>Contenu de votre portail...</p>
   
-  <!-- Widget VyBuddy -->
+  <!-- Widget VyBuddy - Auto-initialisation -->
   <script src="https://chatbot.vygeek.com/chat-widget.js"></script>
-  <script>
-    VyBuddyWidget.init({
-      chatbotUrl: 'https://chatbot.vygeek.com',
-      position: 'bottom-right',
-      buttonColor: '#6366f1',
-      buttonSize: 'large'
-    });
-  </script>
 </body>
 </html>
 ```
+
+## Paramètres dans l'URL
+
+Vous pouvez passer les paramètres directement dans l'URL du script :
+
+```html
+<script src="https://chatbot.vygeek.com/chat-widget.js?position=bottom-left&buttonColor=%2310b981&buttonSize=medium"></script>
+```
+
+**Note :** `%23` = `#` dans les URLs (pour `buttonColor=%2310b981` = `#10b981`)
 
 ## Options disponibles
 
 | Option | Type | Défaut | Description |
 |--------|------|--------|-------------|
-| `chatbotUrl` | string | requis | URL de votre chatbot |
-| `position` | string | `'bottom-right'` | Position du bouton |
-| `buttonColor` | string | `'#6366f1'` | Couleur du bouton (hex) |
-| `buttonSize` | string | `'large'` | Taille: `'small'`, `'medium'`, `'large'` |
+| `chatbotUrl` | string | Auto-détecté | URL de votre chatbot (détecté depuis l'URL du script) |
+| `position` | string | `'bottom-right'` | Position: `'bottom-right'`, `'bottom-left'`, `'top-right'`, `'top-left'` |
+| `buttonColor` | string | `'#6366f1'` | Couleur du bouton en hex (encoder `#` comme `%23` dans l'URL) |
+| `buttonSize` | string | `'large'` | Taille: `'small'` (48px), `'medium'` (56px), `'large'` (64px) |
+| `zIndex` | number | `9999` | Z-index du widget |
 
 ## API JavaScript
 
@@ -84,15 +89,15 @@ VyBuddyWidget.toggle();
 VyBuddyWidget.destroy();
 ```
 
-## Fichiers créés
+## Fichiers du widget
 
-- **`/public/chat-widget.js`** : Script loader externe
-- **`/app/widget/page.tsx`** : Page iframe du widget
+- **`/public/chat-widget.js`** : Script loader externe (à charger depuis votre portail)
+- **`/app/widget/page.tsx`** : Page iframe du widget (servie automatiquement)
 - **`/components/ChatWidgetIframe.tsx`** : Composant React pour l'iframe
-- **`/public/widget-example.html`** : Exemple HTML complet
 
 ## Documentation complète
 
-- **[INTEGRATION_URL_SIMPLE.md](./INTEGRATION_URL_SIMPLE.md)** - Intégration via URL (recommandé)
+Pour plus de détails, consultez :
 - **[INTEGRATION_WIDGET_EXTERNE.md](./INTEGRATION_WIDGET_EXTERNE.md)** - Documentation complète avec toutes les options
+- **[AUTHENTIFICATION_WIDGET.md](./AUTHENTIFICATION_WIDGET.md)** - Comment fonctionne l'authentification Google OAuth dans l'iframe
 

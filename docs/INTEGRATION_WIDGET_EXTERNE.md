@@ -11,36 +11,39 @@ Le widget est chargé via un script externe qui crée automatiquement :
 
 ## Installation
 
-### Étape 1 : Ajouter le script dans votre HTML
+### Méthode 1 : Auto-initialisation (Recommandé - 1 ligne)
 
-Ajoutez le script dans le `<head>` ou avant la fermeture du `</body>` de votre page HTML :
+Le widget s'initialise automatiquement ! Ajoutez simplement :
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Portail Vygeek</title>
-</head>
-<body>
-  <!-- Votre contenu -->
-  
-  <!-- Script du widget VyBuddy -->
-  <script src="https://votre-chatbot.com/chat-widget.js"></script>
-  <script>
-    VyBuddyWidget.init({
-      chatbotUrl: 'https://votre-chatbot.com',
-      position: 'bottom-right',
-      buttonColor: '#6366f1',
-      buttonSize: 'large'
-    });
-  </script>
-</body>
-</html>
+<script src="https://chatbot.vygeek.com/chat-widget.js"></script>
 ```
 
-### Étape 2 : Configuration
+Le widget détecte automatiquement l'URL du chatbot depuis l'URL du script.
 
-Remplacez `https://votre-chatbot.com` par l'URL de votre environnement chatbot.
+### Méthode 2 : Avec paramètres dans l'URL
+
+```html
+<script src="https://chatbot.vygeek.com/chat-widget.js?position=bottom-right&buttonColor=%236366f1&buttonSize=large"></script>
+```
+
+**Note :** `%23` = `#` dans les URLs (pour `buttonColor=%236366f1` = `#6366f1`)
+
+### Méthode 3 : Initialisation manuelle
+
+Si vous préférez contrôler manuellement l'initialisation :
+
+```html
+<script src="https://votre-chatbot.com/chat-widget.js" data-auto-init="false"></script>
+<script>
+  VyBuddyWidget.init({
+    chatbotUrl: 'https://votre-chatbot.com',
+    position: 'bottom-right',
+    buttonColor: '#6366f1',
+    buttonSize: 'large'
+  });
+</script>
+```
 
 ## Options de configuration
 
@@ -237,7 +240,11 @@ window.parent.postMessage(data, 'https://votre-portail.com');
 
 ### Authentification
 
-L'authentification Google OAuth fonctionne dans l'iframe. NextAuth gère automatiquement les redirections et les cookies.
+L'authentification Google OAuth fonctionne **entièrement dans l'iframe**. NextAuth gère automatiquement les redirections et les cookies.
+
+**Important :** L'authentification est **isolée** dans l'iframe - le portail externe n'a aucun accès à la session.
+
+Pour plus de détails sur le flux d'authentification, consultez **[AUTHENTIFICATION_WIDGET.md](./AUTHENTIFICATION_WIDGET.md)**.
 
 ## Dépannage
 
