@@ -26,7 +26,10 @@ class KnowledgeAgent(BaseAgent):
         user_id: str,
         history: List[Dict[str, str]] = None,
         llm_provider: str = "anthropic",
-        stream_callback = None
+        stream_callback = None,
+        missing_fields: List[str] = None,
+        collected_fields: List[str] = None,
+        request_type: str = None
     ) -> Dict[str, Any]:
         """
         Traite une demande de connaissances/procédures avec RAG
@@ -53,6 +56,24 @@ class KnowledgeAgent(BaseAgent):
             logger.error("Pinecone search error", error=str(e))
             knowledge_context = "Erreur lors de la recherche dans la base de connaissances."
         
+        missing_fields = missing_fields or []
+        collected_fields = collected_fields or []
+        missing_fields_context = ""
+        if missing_fields:
+            collected_info = ", ".join(collected_fields) if collected_fields else "aucune information collectée pour le moment"
+            missing_info = ", ".join(missing_fields)
+            detected_type = request_type or "type de demande encore indéterminé"
+            missing_fields_context = f"""
+⚠️ INFORMATIONS REQUISES POUR LA CRÉATION DU TICKET:
+- Type de demande détecté: {detected_type}
+- Informations déjà collectées: {collected_info}
+- Informations manquantes: {missing_info}
+
+RÈGLE CRITIQUE:
+- Vous devez poser UNE question à la fois pour récupérer ces informations avant de dire que vous créez un ticket.
+- Tant que ces informations ne sont pas collectées, ne dites PAS "je crée" ou "un ticket va être créé".
+"""
+
         system_prompt = """Vous êtes VyBuddy, un assistant de support IT chaleureux et empathique qui répond aux questions en vous basant sur la documentation interne et les procédures.
 
 IMPORTANT - SUIVI DES PROCÉDURES (CRITIQUE):
@@ -123,6 +144,8 @@ CONCISION IMPORTANTE:
 
 Documentation pertinente:
 {knowledge_context}
+
+{missing_fields_context}
 
 Message actuel de l'utilisateur: {message}
 

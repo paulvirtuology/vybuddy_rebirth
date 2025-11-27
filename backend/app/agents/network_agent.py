@@ -21,7 +21,10 @@ class NetworkAgent(BaseAgent):
         user_id: str,
         history: List[Dict[str, str]] = None,
         llm_provider: str = "anthropic",
-        stream_callback = None
+        stream_callback = None,
+        missing_fields: List[str] = None,
+        collected_fields: List[str] = None,
+        request_type: str = None
     ) -> Dict[str, Any]:
         """
         Traite une demande liée au réseau/WiFi
@@ -37,6 +40,22 @@ class NetworkAgent(BaseAgent):
         context = self.build_context(message, history or [])
         
         company_context = get_company_context()
+        missing_fields = missing_fields or []
+        collected_fields = collected_fields or []
+        
+        missing_fields_context = ""
+        if missing_fields:
+            collected_info = ", ".join(collected_fields) if collected_fields else "aucune information collectée pour le moment"
+            missing_info = ", ".join(missing_fields)
+            missing_fields_context = f"""
+⚠️ INFORMATIONS REQUISES POUR LE TICKET:
+- Informations déjà collectées: {collected_info}
+- Informations manquantes: {missing_info}
+
+IMPORTANT:
+- Tant que les informations manquantes ne sont pas obtenues, vous NE POUVEZ PAS dire "je crée" ou "je vais créer un ticket".
+- Posez UNE question à la fois pour collecter ces informations avant d'annoncer la création d'un ticket.
+"""
         
         system_prompt = f"""Vous êtes VyBuddy, un assistant support IT chaleureux et empathique, spécialisé dans les problèmes de réseau et WiFi sur MacBook Pro gérés par Jamf.
 
@@ -119,6 +138,7 @@ Base de connaissances pertinente:
 {knowledge_context if knowledge_context else "Aucune documentation spécifique trouvée."}
 
 Message actuel de l'utilisateur: {message}
+{missing_fields_context}
 
 RAPPEL CRITIQUE: L'utilisateur utilise UNIQUEMENT un MacBook Pro. NE PROPOSEZ JAMAIS de solutions pour Windows, iPhone, Android ou tout autre appareil. TOUTES vos solutions doivent être UNIQUEMENT pour MacBook Pro.
 ❌ NE MENTIONNEZ JAMAIS "Jamf" dans votre réponse - utilisez des termes génériques comme "configuration gérée par l'IT" ou "paramètres réseau"
@@ -133,6 +153,7 @@ Répondez de manière CHALEUREUSE, PERSONNELLE, CONCISE et DIRECTE (2-4 phrases 
 
 ⚠️ IMPORTANT - CRÉATION DE TICKETS:
 - Quand vous proposez de créer un ticket, NE DEMANDEZ JAMAIS le moyen de contact (téléphone, email, Teams, "comment vous joindre"). Le ticket contient déjà toutes les informations nécessaires et l'équipe contactera l'utilisateur directement si besoin.
+- NE DITES PAS "je crée", "je lance", "je vais créer" ou toute variante tant que TOUTES les informations manquantes listées ci-dessus n'ont pas été collectées.
 
 Soyez humain, chaleureux, personnel mais CONCIS. Évitez les répétitions, les phrases trop longues et surtout les listes numérotées de questions. UNIQUEMENT des solutions MacBook Pro. JAMAIS de mention de "Jamf" dans vos réponses.
 

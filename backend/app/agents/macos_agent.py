@@ -61,7 +61,10 @@ class MacOSAgent(BaseAgent):
         user_id: str,
         history: List[Dict[str, str]] = None,
         llm_provider: str = "openai",
-        stream_callback = None
+        stream_callback = None,
+        missing_fields: List[str] = None,
+        collected_fields: List[str] = None,
+        request_type: str = None
     ) -> Dict[str, Any]:
         """
         Traite une demande liée à macOS
@@ -70,6 +73,22 @@ class MacOSAgent(BaseAgent):
         context = self.build_context(message, history or [])
         
         company_context = get_company_context()
+        missing_fields = missing_fields or []
+        collected_fields = collected_fields or []
+        
+        missing_fields_context = ""
+        if missing_fields:
+            collected_info = ", ".join(collected_fields) if collected_fields else "aucune information collectée pour le moment"
+            missing_info = ", ".join(missing_fields)
+            missing_fields_context = f"""
+⚠️ INFORMATIONS REQUISES POUR LA CRÉATION DU TICKET:
+- Informations déjà collectées: {collected_info}
+- Informations manquantes: {missing_info}
+
+RÈGLE CRITIQUE:
+- Tant que les informations manquantes ne sont pas collectées, vous NE POUVEZ PAS annoncer la création d'un ticket.
+- Posez UNE question à la fois pour obtenir les informations manquantes, puis confirmez la création sans poser de nouvelles questions.
+"""
         
         system_prompt = f"""Vous êtes VyBuddy, un assistant support IT chaleureux et empathique, spécialisé dans macOS et MacBook Pro gérés par Jamf.
 
@@ -234,6 +253,7 @@ Base de connaissances pertinente:
 
 Message actuel de l'utilisateur: {message}
 {ticket_context}
+{missing_fields_context}
 
 RAPPEL CRITIQUE ABSOLU:
 1. L'utilisateur utilise UNIQUEMENT un MacBook Pro
