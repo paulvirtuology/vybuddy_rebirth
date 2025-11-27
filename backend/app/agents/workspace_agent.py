@@ -20,7 +20,10 @@ class WorkspaceAgent(BaseAgent):
         user_id: str,
         history: List[Dict[str, str]] = None,
         llm_provider: str = "gemini",
-        stream_callback = None
+        stream_callback = None,
+        missing_fields: List[str] = None,
+        collected_fields: List[str] = None,
+        request_type: str = None
     ) -> Dict[str, Any]:
         """
         Traite une demande liée à Google Workspace
@@ -79,10 +82,28 @@ CONCISION IMPORTANTE:
 - Si vous posez des questions: UNE question à la fois, de manière conversationnelle
 """
         
+        # Construire le contexte sur les champs manquants si nécessaire
+        missing_fields_context = ""
+        if missing_fields and len(missing_fields) > 0:
+            collected_info = f"Informations déjà collectées: {', '.join(collected_fields) if collected_fields and len(collected_fields) > 0 else 'aucune'}"
+            missing_info = f"Informations manquantes nécessaires: {', '.join(missing_fields)}"
+            missing_fields_context = f"""
+⚠️ COLLECTE D'INFORMATIONS REQUISE:
+{collected_info}
+{missing_info}
+
+IMPORTANT: Avant de proposer de créer un ticket, vous DEVEZ collecter toutes les informations manquantes listées ci-dessus.
+- Posez UNE question à la fois pour chaque information manquante
+- Attendez la réponse de l'utilisateur avant de passer à la question suivante
+- Ne proposez de créer un ticket QUE lorsque TOUTES les informations sont collectées
+- Reformulez les questions de manière naturelle et conversationnelle ("J'aurais besoin de..." au lieu de "Demander...")
+"""
+
         prompt = f"""Contexte de la conversation:
 {context}
 
 Message actuel de l'utilisateur: {message}
+{missing_fields_context}
 
 INSTRUCTIONS CRITIQUES:
 - Si vous avez besoin d'informations, posez UNE SEULE question à la fois, de manière naturelle et conversationnelle

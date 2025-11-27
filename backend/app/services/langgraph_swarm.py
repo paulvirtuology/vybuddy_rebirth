@@ -112,6 +112,23 @@ class LangGraphSwarm:
     async def _workspace_node(self, state: dict) -> dict:
         """Nœud Workspace Agent"""
         try:
+            # Validation préalable pour détecter les champs manquants
+            # On fait une validation "sèche" (sans réponse d'agent) pour obtenir les champs manquants
+            preliminary_validation = await self.ticket_validator.should_create_ticket(
+                message=state["message"],
+                agent_response="",  # Pas de réponse d'agent pour cette validation préalable
+                agent_used=state.get("agent_used", "workspace"),
+                session_id=state.get("session_id", ""),
+                user_id=state.get("user_id"),
+                history=state.get("history", []),
+                needs_ticket_suggested=False
+            )
+            
+            # Extraire les champs manquants de la validation
+            missing_fields = preliminary_validation.get("details", {}).get("missing_info", [])
+            collected_fields = preliminary_validation.get("details", {}).get("collected_fields", [])
+            request_type = preliminary_validation.get("details", {}).get("request_type")
+            
             stream_callback = state.get("stream_callback")
             response = await self.workspace_agent.process(
                 message=state["message"],
@@ -119,7 +136,10 @@ class LangGraphSwarm:
                 user_id=state["user_id"],
                 history=state.get("history", []),
                 llm_provider=state["routing_decision"]["llm"],
-                stream_callback=stream_callback
+                stream_callback=stream_callback,
+                missing_fields=missing_fields,
+                collected_fields=collected_fields,
+                request_type=request_type
             )
             state["response"] = response
             state["agent_used"] = "workspace"

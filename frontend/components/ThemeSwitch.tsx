@@ -21,7 +21,7 @@ export default function ThemeSwitch() {
           Thème
         </span>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-1.5">
         <button
           onClick={() => setTheme('light')}
           className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
