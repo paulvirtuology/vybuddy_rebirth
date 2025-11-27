@@ -195,17 +195,20 @@ class LangGraphSwarm:
         """Nœud Ticket Agent - Valide et crée un ticket si nécessaire"""
         response = state.get("response", {})
         needs_ticket_suggested = response.get("needs_ticket", False)
+        agent_message = response.get("message", "")
         
         # Valider si un ticket doit être créé
         validation = await self.ticket_validator.should_create_ticket(
             message=state["message"],
-            agent_response=response.get("message", ""),
+            agent_response=agent_message,
             agent_used=state.get("agent_used", "unknown"),
             session_id=state.get("session_id", ""),
             user_id=state.get("user_id"),
             history=state.get("history", []),
             needs_ticket_suggested=needs_ticket_suggested
         )
+        
+        import re
         
         if validation.get("should_create", False):
             try:
@@ -227,11 +230,7 @@ class LangGraphSwarm:
                 )
                 
                 # Modifier le message de l'agent pour enlever les questions et confirmer la création du ticket
-                agent_message = state["response"].get("message", "")
                 # Enlever les questions qui demandent encore des informations (car le ticket est créé)
-                import re
-                # Supprimer les phrases qui contiennent des questions après "je crée" ou "je lance"
-                # Pattern pour trouver les questions après une confirmation de création
                 question_patterns = [
                     r"j'aurais besoin de[^.]*\.",  # "j'aurais besoin de..."
                     r"j'aurais juste besoin de[^.]*\.",  # "j'aurais juste besoin de..."
@@ -269,16 +268,64 @@ class LangGraphSwarm:
                 
             except Exception as e:
                 logger.error("Ticket creation error", error=str(e))
-                # En cas d'erreur, on peut ajouter un message d'erreur dans les métadonnées
+                # En cas d'erreur, modifier le message pour enlever les mentions de création
+                creation_indicators = [
+                    r"je crée[^.]*\.", r"je lance[^.]*\.", r"je vais créer[^.]*\.", 
+                    r"création[^.]*\.", r"créer la demande[^.]*\.", r"je m'occupe[^.]*\.",
+                    r"un ticket va être créé[^.]*\.", r"le ticket est créé[^.]*\.",
+                    r"ticket créé[^.]*\.", r"ticket a été créé[^.]*\."
+                ]
+                for pattern in creation_indicators:
+                    agent_message = re.sub(pattern, "", agent_message, flags=re.IGNORECASE)
+                agent_message = re.sub(r'\s+', ' ', agent_message).strip()
+                if agent_message and not agent_message.endswith('.'):
+                    agent_message += '.'
+                
+                state["response"]["message"] = agent_message
                 if "metadata" not in state["response"]:
                     state["response"]["metadata"] = {}
                 state["response"]["metadata"]["ticket_error"] = True
         else:
+            # Si le ticket ne doit pas être créé, enlever toutes les mentions de création du message
+            missing_fields = validation.get("details", {}).get("missing_info", [])
+            
+            if missing_fields and any(indicator in agent_message.lower() for indicator in [
+                "je crée", "je lance", "je vais créer", "création", "créer la demande",
+                "je m'occupe", "un ticket va être créé", "le ticket est créé",
+                "ticket créé", "ticket a été créé"
+            ]):
+                # Enlever toutes les phrases qui mentionnent la création de ticket
+                creation_indicators = [
+                    r"je crée[^.]*\.", r"je lance[^.]*\.", r"je vais créer[^.]*\.",
+                    r"création[^.]*\.", r"créer la demande[^.]*\.", r"je m'occupe[^.]*\.",
+                    r"un ticket va être créé[^.]*\.", r"le ticket est créé[^.]*\.",
+                    r"ticket créé[^.]*\.", r"ticket a été créé[^.]*\.",
+                    r"immédiatement[^.]*\.", r"tout de suite[^.]*\."
+                ]
+                for pattern in creation_indicators:
+                    agent_message = re.sub(pattern, "", agent_message, flags=re.IGNORECASE)
+                
+                # Nettoyer les espaces
+                agent_message = re.sub(r'\s+', ' ', agent_message).strip()
+                agent_message = re.sub(r'\.\.+', '.', agent_message)
+                
+                # Si le message est vide ou trop court après nettoyage, ajouter un message de fallback
+                if len(agent_message.strip()) < 20:
+                    agent_message = "Je comprends votre demande. Pour avancer, j'aurais besoin de quelques informations supplémentaires."
+                
+                state["response"]["message"] = agent_message
+                logger.info(
+                    "Agent message modified - ticket creation mentions removed",
+                    reason=validation.get("reason", ""),
+                    missing_fields=missing_fields
+                )
+            
             logger.info(
                 "Ticket not created after validation",
                 reason=validation.get("reason", ""),
                 confidence=validation.get("confidence", 0.5),
-                suggested=needs_ticket_suggested
+                suggested=needs_ticket_suggested,
+                missing_fields=missing_fields
             )
         
         return state

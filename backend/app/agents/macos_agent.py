@@ -252,8 +252,8 @@ Base de connaissances pertinente:
 {knowledge_context if knowledge_context else "Aucune documentation spécifique trouvée."}
 
 Message actuel de l'utilisateur: {message}
-{ticket_context}
 {missing_fields_context}
+{ticket_context}
 
 RAPPEL CRITIQUE ABSOLU:
 1. L'utilisateur utilise UNIQUEMENT un MacBook Pro
