@@ -51,6 +51,6 @@ jobs:
             
             # Show recent logs
             echo "📋 Recent logs:"
-            sudo docker-compose logs --tail=50
+            #sudo docker-compose logs --tail=50
           EOF
 
